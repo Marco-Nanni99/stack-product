@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Make Your Stack — STACK</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="/builder.css" />
+</head>
+<body class="builder-page">
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="/" class="nav-logo">STACK</a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/#about">About</a></li>
+      <li><a href="/#layers">Layers</a></li>
+      <li><a href="/#contact">Contact</a></li>
+      <li><a href="/stack-builder.html" class="nav-cta nav-cta--active">Make Your Stack</a></li>
+    </ul>
+  </nav>
+
+  <!-- BUILDER LAYOUT -->
+  <div class="builder-layout">
+
+    <!-- 3D CANVAS -->
+    <div class="builder-canvas-wrap" id="drop-target">
+      <canvas id="builder-canvas"></canvas>
+
+      <!-- Slot indicators updated by JS -->
+      <div id="drop-zones"></div>
+
+      <!-- Bottom-left info -->
+      <div class="builder-info">
+        <div class="builder-layer-count">
+          <span id="layer-count">3</span>
+          <span class="builder-layer-word"> layers</span>
+        </div>
+        <p class="builder-hint">Drag a layer from the panel to add it.<br>Click a layer in the stack to remove it.</p>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <aside class="builder-panel">
+      <div class="builder-panel-head">
+        <div class="section-eyebrow">Layer library</div>
+        <h2>Build your<br>perfect stack.</h2>
+        <p>Drag any layer onto the stack.<br>Max <strong>5</strong> layers.</p>
+      </div>
+
+      <div class="builder-panel-list" id="layer-options">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="builder-panel-foot">
+        <button class="btn builder-reset" id="reset-btn">Reset stack</button>
+      </div>
+    </aside>
+
+  </div>
+
+  <script type="module" src="/src/builder.js"></script>
+</body>
+</html>

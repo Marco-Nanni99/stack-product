@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STACK — Modular Food Container</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-logo">STACK</div>
+    <ul class="nav-links">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#layers">Layers</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="/stack-builder.html" class="nav-cta">Make Your Stack</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero" class="hero">
+    <canvas id="three-canvas"></canvas>
+
+    <!-- Floating section labels — positions updated by JS -->
+    <div class="label label-right" id="label-dessert">
+      <div class="label-content">
+        <div class="label-title">DESSERT</div>
+        <div class="label-sub">Sweet finish</div>
+      </div>
+      <span class="label-dot"></span>
+    </div>
+    <div class="label label-left" id="label-main">
+      <span class="label-dot"></span>
+      <div class="label-content">
+        <div class="label-title">MAIN</div>
+        <div class="label-sub">The hearty core</div>
+      </div>
+    </div>
+    <div class="label label-right" id="label-snack">
+      <div class="label-content">
+        <div class="label-title">SNACK</div>
+        <div class="label-sub">Quick bites</div>
+      </div>
+      <span class="label-dot"></span>
+    </div>
+
+    <!-- Hero copy -->
+    <div class="hero-copy">
+      <div class="hero-eyebrow">MODULAR · SEALED · FRESH</div>
+      <h1 class="hero-title">STACK<br><span>YOUR MEAL.</span></h1>
+      <p class="hero-sub">Three compartments. One cylinder.<br>Everything you need, perfectly layered.</p>
+    </div>
+
+    <div class="scroll-cue">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="about">
+    <div class="about-inner">
+      <div class="about-text">
+        <div class="section-eyebrow">About the product</div>
+        <h2>Designed for the<br>way you eat.</h2>
+        <p>STACK is a precision-engineered food container made of three airtight cylindrical modules that click together into a single elegant form. Each layer is thermally insulated and individually sealed — so your snack stays crispy, your main stays warm, and your dessert stays sweet.</p>
+        <a href="#contact" class="btn">Get early access</a>
+      </div>
+      <div class="about-stats">
+        <div class="stat">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Modular layers</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Airtight seal</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">BPA</div>
+          <div class="stat-label">Free materials</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">6h</div>
+          <div class="stat-label">Temperature retention</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LAYERS -->
+  <section id="layers" class="layers">
+    <div class="layers-inner">
+      <div class="section-eyebrow">Every layer</div>
+      <h2>Built for every<br>part of your meal.</h2>
+      <div class="layers-grid">
+
+        <div class="layer-card" data-layer="dessert">
+          <div class="layer-card-top">
+            <div class="layer-num">01</div>
+            <div class="layer-accent" style="--accent: #7edcdc;"></div>
+          </div>
+          <h3>Dessert</h3>
+          <p>The crown jewel. Fits a small pastry, fruit cups, yoghurt, or a protein ball. Sealed to keep moisture out and freshness in.</p>
+          <ul>
+            <li>Airtight twist-lock lid</li>
+            <li>200ml capacity</li>
+            <li>Transparent window</li>
+          </ul>
+        </div>
+
+        <div class="layer-card" data-layer="main">
+          <div class="layer-card-top">
+            <div class="layer-num">02</div>
+            <div class="layer-accent" style="--accent: #4a9eff;"></div>
+          </div>
+          <h3>Main</h3>
+          <p>The powerhouse. Deep enough for a proper meal — rice, pasta, salad, or a packed sandwich. Double-walled for 6 hours of heat retention.</p>
+          <ul>
+            <li>Double-walled insulation</li>
+            <li>500ml capacity</li>
+            <li>Microwave safe</li>
+          </ul>
+        </div>
+
+        <div class="layer-card" data-layer="snack">
+          <div class="layer-card-top">
+            <div class="layer-num">03</div>
+            <div class="layer-accent" style="--accent: #c084fc;"></div>
+          </div>
+          <h3>Snack</h3>
+          <p>The base. Perfect for nuts, crackers, dips, or chips. Keeps crunch intact. Doubles as the stable footing for the whole stack.</p>
+          <ul>
+            <li>Non-slip base</li>
+            <li>300ml capacity</li>
+            <li>Dishwasher safe</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA / CONTACT -->
+  <section id="contact" class="contact">
+    <div class="contact-inner">
+      <div class="section-eyebrow">Get in touch</div>
+      <h2>Ready to<br>stack up?</h2>
+      <p>Join the waitlist and be the first to know when STACK ships.</p>
+      <form class="contact-form">
+        <input type="email" placeholder="your@email.com" required />
+        <button type="submit" class="btn">Join waitlist</button>
+      </form>
+    </div>
+    <div class="contact-footer">
+      <span>© 2026 STACK. All rights reserved.</span>
+    </div>
+  </section>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
