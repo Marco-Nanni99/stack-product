@@ -12,7 +12,9 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.toneMapping = THREE.ACESFilmicToneMapping
 renderer.toneMappingExposure = 1.4
-renderer.shadowMap.enabled = true
+
+const isMobile = window.innerWidth < 768
+renderer.shadowMap.enabled = !isMobile
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
 // ── Scene & Camera ────────────────────────────────────────────────────────────
@@ -22,7 +24,7 @@ scene.background = new THREE.Color(0x080808)
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 50)
 camera.position.set(0, 0.4, 7)
 // Look slightly left so the cylinder sits in the right half of the screen
-camera.lookAt(new THREE.Vector3(-1.2, 0, 0))
+camera.lookAt(new THREE.Vector3(isMobile ? 0 : -1.2, 0, 0))
 
 // ── Lights — studio 3-point setup ─────────────────────────────────────────────
 // Soft base so shadows aren't pitch black
@@ -32,7 +34,7 @@ scene.add(ambient)
 // KEY — strong white from upper-right-front (main highlight on the surface)
 const keyLight = new THREE.DirectionalLight(0xffffff, 4.5)
 keyLight.position.set(5, 8, 6)
-keyLight.castShadow = true
+keyLight.castShadow = !isMobile
 keyLight.shadow.mapSize.set(2048, 2048)
 keyLight.shadow.camera.near = 1
 keyLight.shadow.camera.far = 30
@@ -94,7 +96,7 @@ const bloom = new UnrealBloomPass(
   0.5,    // radius
   0.68    // threshold
 )
-composer.addPass(bloom)
+if (!isMobile) composer.addPass(bloom)
 
 // ── Raycaster for hover ───────────────────────────────────────────────────────
 const raycaster = new THREE.Raycaster()
@@ -113,6 +115,20 @@ canvas.addEventListener('mouseleave', () => {
     hoveredSection = null
   }
 })
+
+canvas.addEventListener('touchstart', (e) => {
+  const touch = e.touches[0]
+  mouse.x =  (touch.clientX / window.innerWidth)  * 2 - 1
+  mouse.y = -(touch.clientY / window.innerHeight) * 2 + 1
+}, { passive: true })
+
+canvas.addEventListener('touchend', () => {
+  mouse.set(9999, 9999)
+  if (hoveredSection) {
+    hoverSection(hoveredSection, false)
+    hoveredSection = null
+  }
+}, { passive: true })
 
 // ── Start explode-in animation ────────────────────────────────────────────────
 playExplodeIn(sections)
@@ -167,6 +183,7 @@ window.addEventListener('resize', () => {
   const w = window.innerWidth
   const h = window.innerHeight
   camera.aspect = w / h
+  camera.lookAt(new THREE.Vector3(w < 768 ? 0 : -1.2, 0, 0))
   camera.updateProjectionMatrix()
   renderer.setSize(w, h)
   composer.setSize(w, h)

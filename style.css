@@ -427,6 +427,22 @@ section h2 {
 
 @media (max-width: 600px) {
   .nav-links { display: none; }
+
+  /* Hide floating 3D labels — too cramped on small screens */
+  .label { display: none; }
+
+  /* Hero copy: tighten for narrow viewport */
+  .hero-copy { left: 5%; bottom: 8%; right: 5%; }
+  .hero-sub { max-width: 100%; }
+
+  /* Hide scroll cue on short mobile viewports */
+  .scroll-cue { display: none; }
+
+  /* Contact form stacks vertically */
   .contact-form { flex-direction: column; }
-  .contact-form input { border-right: 1px solid var(--border); border-bottom: none; }
+  .contact-form input {
+    border-right: 1px solid var(--border);
+    border-bottom: none;
+  }
+  .contact-form .btn { width: 100%; }
 }
