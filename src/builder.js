@@ -14,11 +14,13 @@ const wrap     = canvasEl.parentElement
 
 function cSize() { return { w: wrap.clientWidth, h: wrap.clientHeight } }
 
+const isMobile = window.innerWidth < 768
+
 const renderer = new THREE.WebGLRenderer({ canvas: canvasEl, antialias: true })
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.toneMapping = THREE.ACESFilmicToneMapping
 renderer.toneMappingExposure = 1.35
-renderer.shadowMap.enabled = true
+renderer.shadowMap.enabled = !isMobile
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
 const scene = new THREE.Scene()
@@ -35,7 +37,7 @@ scene.add(new THREE.AmbientLight(0xffffff, 0.38))
 
 const key = new THREE.DirectionalLight(0xffffff, 4.0)
 key.position.set(4, 8, 5)
-key.castShadow = true
+key.castShadow = !isMobile
 key.shadow.mapSize.set(1024, 1024)
 key.shadow.camera.left = key.shadow.camera.bottom = -5
 key.shadow.camera.right = key.shadow.camera.top  =  5
@@ -315,7 +317,6 @@ function populatePanel() {
   LAYER_TYPES.forEach(lt => {
     const card = document.createElement('div')
     card.className = 'layer-option-card'
-    card.draggable = true
     card.dataset.typeId = lt.id
     card.innerHTML = `
       <div class="layer-card-icon">
@@ -329,20 +330,31 @@ function populatePanel() {
       <div class="layer-card-drag">⠿</div>
     `
 
-    card.addEventListener('dragstart', () => {
-      draggedType = lt
-      card.classList.add('dragging')
-      showZones(true)
-    })
-    card.addEventListener('dragend', () => {
-      draggedType = null
-      card.classList.remove('dragging')
-      showZones(false)
-      setActiveSlot(-1)
-    })
+    if (isMobile) {
+      // Tap to add on top of stack
+      card.addEventListener('click', () => insertLayer(lt, stackLayers.length))
+    } else {
+      card.draggable = true
+      card.addEventListener('dragstart', () => {
+        draggedType = lt
+        card.classList.add('dragging')
+        showZones(true)
+      })
+      card.addEventListener('dragend', () => {
+        draggedType = null
+        card.classList.remove('dragging')
+        showZones(false)
+        setActiveSlot(-1)
+      })
+    }
 
     container.appendChild(card)
   })
+
+  if (isMobile) {
+    const hint = document.querySelector('.builder-hint')
+    if (hint) hint.innerHTML = 'Tap a layer below to add it.<br>Tap a layer in the stack to remove it.'
+  }
 }
 
 const dropTarget = document.getElementById('drop-target')

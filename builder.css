@@ -228,6 +228,95 @@ body.builder-page {
   background: transparent !important;
 }
 
+/* ── Mobile layout ────────────────────────────────────── */
+@media (max-width: 600px) {
+  /* Stack canvas on top, panel drawer at bottom */
+  .builder-layout {
+    flex-direction: column;
+    height: calc(100vh - 72px);
+  }
+
+  .builder-canvas-wrap {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .builder-info {
+    bottom: 1rem;
+    left: 1.25rem;
+  }
+
+  .builder-layer-count { font-size: 2rem; }
+
+  /* Bottom panel — fixed height drawer */
+  .builder-panel {
+    width: 100%;
+    height: 220px;
+    flex-shrink: 0;
+    border-left: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .builder-panel-head {
+    padding: 0.65rem 1.25rem 0.55rem;
+  }
+
+  .builder-panel-head h2 {
+    font-size: 0.95rem;
+    margin: 0.2rem 0 0;
+  }
+
+  /* Hide the descriptive text — hint is in the canvas area */
+  .builder-panel-head p { display: none; }
+
+  /* Horizontal scroll row of cards */
+  .builder-panel-list {
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.65rem 1rem;
+    gap: 0.6rem;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .builder-panel-list::-webkit-scrollbar { display: none; }
+
+  /* Compact vertical tap card */
+  .layer-option-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: 74px;
+    max-width: 74px;
+    flex-shrink: 0;
+    padding: 0.65rem 0.4rem;
+    gap: 0.35rem;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .layer-option-card:hover { transform: translateY(-2px); }
+
+  .layer-card-drag,
+  .layer-card-badge,
+  .layer-card-meta { display: none; }
+
+  .layer-card-icon { width: 30px; height: 30px; }
+  .layer-card-icon svg { width: 30px; height: 30px; }
+  .layer-card-name { font-size: 0.68rem; }
+
+  .builder-panel-foot {
+    padding: 0.55rem 1.25rem;
+  }
+
+  .builder-reset {
+    padding: 0.4rem 1rem !important;
+    font-size: 0.67rem !important;
+  }
+}
+
 /* ── Remove-layer tooltip on hover ───────────────────────*/
 .remove-hint {
   position: absolute;
