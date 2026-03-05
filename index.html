@@ -11,15 +11,21 @@
 <body>
 
   <!-- NAV -->
+  <div class="nav-overlay" id="nav-overlay"></div>
   <nav class="nav">
     <div class="nav-logo">STACK</div>
-    <ul class="nav-links">
+    <ul class="nav-links" id="nav-links">
       <li><a href="#hero">Home</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#layers">Layers</a></li>
       <li><a href="#contact">Contact</a></li>
       <li><a href="./stack-builder.html" class="nav-cta">Make Your Stack</a></li>
     </ul>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </nav>
 
   <!-- HERO -->
@@ -162,5 +168,19 @@
   </section>
 
   <script type="module" src="/src/main.js"></script>
+
+  <script>
+    const hamburger = document.getElementById('nav-hamburger')
+    const navLinks  = document.getElementById('nav-links')
+    const overlay   = document.getElementById('nav-overlay')
+
+    function openMenu()  { hamburger.classList.add('open'); navLinks.classList.add('open'); overlay.classList.add('open') }
+    function closeMenu() { hamburger.classList.remove('open'); navLinks.classList.remove('open'); overlay.classList.remove('open') }
+    function toggleMenu() { navLinks.classList.contains('open') ? closeMenu() : openMenu() }
+
+    hamburger.addEventListener('click', toggleMenu)
+    overlay.addEventListener('click', closeMenu)
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu))
+  </script>
 </body>
 </html>
