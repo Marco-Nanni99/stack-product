@@ -11,7 +11,7 @@ const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.toneMapping = THREE.ACESFilmicToneMapping
-renderer.toneMappingExposure = 1.4
+renderer.toneMappingExposure = 1.1
 
 const isMobile = window.innerWidth < 768
 renderer.shadowMap.enabled = !isMobile
@@ -19,7 +19,7 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
 // ── Scene & Camera ────────────────────────────────────────────────────────────
 const scene = new THREE.Scene()
-scene.background = new THREE.Color(0x080808)
+scene.background = new THREE.Color(0x2F4460)
 
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 50)
 camera.position.set(0, 0.4, 7)
@@ -50,13 +50,13 @@ const fillLight = new THREE.DirectionalLight(0xd0eeff, 1.8)
 fillLight.position.set(-5, 2, 4)
 scene.add(fillLight)
 
-// RIM / BACK — teal from behind-left, creates the glowing edge like the reference
-const rimTeal = new THREE.PointLight(0x7edcdc, 10, 14)
+// RIM / BACK — muted blue from behind-left, creates a soft glowing edge
+const rimTeal = new THREE.PointLight(0x8BB8C8, 7, 14)
 rimTeal.position.set(-3, 2, -4)
 scene.add(rimTeal)
 
-// ACCENT — subtle purple-blue from below-right for the bottom sections
-const accentLow = new THREE.PointLight(0x8060ff, 4, 10)
+// ACCENT — subtle slate-blue from below-right for the bottom sections
+const accentLow = new THREE.PointLight(0x607090, 3, 10)
 accentLow.position.set(3, -4, 3)
 scene.add(accentLow)
 
@@ -92,9 +92,9 @@ composer.addPass(new RenderPass(scene, camera))
 
 const bloom = new UnrealBloomPass(
   new THREE.Vector2(window.innerWidth, window.innerHeight),
-  0.7,    // strength
+  0.5,    // strength
   0.5,    // radius
-  0.68    // threshold
+  0.85    // threshold — raised so the mid-blue bg doesn't trigger bloom
 )
 if (!isMobile) composer.addPass(bloom)
 

@@ -7,15 +7,15 @@ body.builder-page {
 /* nav-cta pill button */
 .nav-cta {
   padding: 0.45rem 1rem !important;
-  border: 1px solid rgba(255,255,255,0.2) !important;
-  color: #fff !important;
+  border: 1px solid rgba(244,244,244,0.20) !important;
+  color: var(--text) !important;
   transition: background 0.2s, border-color 0.2s !important;
 }
 .nav-cta:hover,
 .nav-cta--active {
-  background: rgba(255,255,255,0.08) !important;
-  border-color: rgba(255,255,255,0.4) !important;
-  color: #fff !important;
+  background: rgba(244,244,244,0.08) !important;
+  border-color: rgba(244,244,244,0.38) !important;
+  color: var(--text) !important;
 }
 
 /* ── Layout ───────────────────────────────────────────── */
@@ -58,7 +58,7 @@ body.builder-page {
 }
 
 .builder-layer-word {
-  color: #fff;
+  color: var(--text);
 }
 
 .builder-hint {
@@ -82,15 +82,15 @@ body.builder-page {
   height: 12px;
   transform: translate(-50%, -50%);
   border-radius: 6px;
-  border: 1.5px dashed rgba(126,220,220,0);
-  background: rgba(126,220,220,0);
+  border: 1.5px dashed rgba(139,184,200,0);
+  background: rgba(139,184,200,0);
   transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
 }
 
 .drop-zone.active {
-  border-color: rgba(126,220,220,0.7);
-  background: rgba(126,220,220,0.10);
-  box-shadow: 0 0 20px rgba(126,220,220,0.25);
+  border-color: rgba(139,184,200,0.7);
+  background: rgba(139,184,200,0.10);
+  box-shadow: 0 0 20px rgba(139,184,200,0.25);
 }
 
 /* ── Right panel ──────────────────────────────────────── */
@@ -121,7 +121,7 @@ body.builder-page {
 }
 
 .builder-panel-head strong {
-  color: #fff;
+  color: var(--text);
 }
 
 .builder-panel-list {
@@ -132,7 +132,7 @@ body.builder-page {
   flex-direction: column;
   gap: 0.6rem;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.08) transparent;
+  scrollbar-color: rgba(244,244,244,0.10) transparent;
 }
 
 /* ── Layer option card ────────────────────────────────── */
@@ -150,8 +150,8 @@ body.builder-page {
 }
 
 .layer-option-card:hover {
-  border-color: rgba(255,255,255,0.18);
-  background: rgba(255,255,255,0.03);
+  border-color: rgba(244,244,244,0.22);
+  background: rgba(244,244,244,0.06);
   transform: translateX(-2px);
 }
 
@@ -200,7 +200,7 @@ body.builder-page {
 
 /* drag handle icon */
 .layer-card-drag {
-  color: rgba(255,255,255,0.2);
+  color: rgba(244,244,244,0.28);
   font-size: 1rem;
   flex-shrink: 0;
   line-height: 1;
@@ -223,8 +223,8 @@ body.builder-page {
 }
 
 .builder-reset:hover {
-  color: #fff !important;
-  border-color: rgba(255,255,255,0.25) !important;
+  color: var(--text) !important;
+  border-color: rgba(244,244,244,0.30) !important;
   background: transparent !important;
 }
 

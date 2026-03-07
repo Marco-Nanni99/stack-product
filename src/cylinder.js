@@ -7,9 +7,9 @@ const SEGMENTS = 64
 
 // Colors per section (bottom → top)
 const SECTION_DATA = [
-  { name: 'snack',   color: 0x2a0a4a, emissive: 0x7030e0, emissiveIntensity: 0.18 },
-  { name: 'main',    color: 0x0a2040, emissive: 0x2060b0, emissiveIntensity: 0.18 },
-  { name: 'dessert', color: 0x083535, emissive: 0x20a0a0, emissiveIntensity: 0.22 },
+  { name: 'snack',   color: 0xA090C0, emissive: 0x8060b0, emissiveIntensity: 0.15 },
+  { name: 'main',    color: 0x8AABCC, emissive: 0x5090c0, emissiveIntensity: 0.15 },
+  { name: 'dessert', color: 0x70AAAA, emissive: 0x40a0a0, emissiveIntensity: 0.18 },
 ]
 
 export function buildCylinder() {
@@ -27,8 +27,8 @@ export function buildCylinder() {
       color: data.color,
       emissive: data.emissive,
       emissiveIntensity: data.emissiveIntensity,
-      metalness: 0.75,
-      roughness: 0.22,
+      metalness: 0.45,
+      roughness: 0.30,
     })
     const body = new THREE.Mesh(bodyGeo, bodyMat)
     sectionGroup.add(body)
@@ -41,9 +41,9 @@ export function buildCylinder() {
       SEGMENTS
     )
     const ringMat = new THREE.MeshStandardMaterial({
-      color: 0x303030,
-      metalness: 0.95,
-      roughness: 0.1,
+      color: 0x8090a0,
+      metalness: 0.90,
+      roughness: 0.12,
     })
     const ring = new THREE.Mesh(ringGeo, ringMat)
     ring.position.y = (SECTION_HEIGHT + RING_HEIGHT) / 2

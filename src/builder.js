@@ -19,12 +19,12 @@ const isMobile = window.innerWidth < 768
 const renderer = new THREE.WebGLRenderer({ canvas: canvasEl, antialias: true })
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.toneMapping = THREE.ACESFilmicToneMapping
-renderer.toneMappingExposure = 1.35
+renderer.toneMappingExposure = 1.1
 renderer.shadowMap.enabled = !isMobile
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
 const scene = new THREE.Scene()
-scene.background = new THREE.Color(0x080808)
+scene.background = new THREE.Color(0x2F4460)
 
 let { w: CW, h: CH } = cSize()
 renderer.setSize(CW, CH)
@@ -50,7 +50,7 @@ const fill = new THREE.DirectionalLight(0xd0eeff, 1.6)
 fill.position.set(-5, 2, 4)
 scene.add(fill)
 
-const rim = new THREE.PointLight(0x7edcdc, 8, 14)
+const rim = new THREE.PointLight(0x8BB8C8, 6, 14)
 rim.position.set(-3, 2, -4)
 scene.add(rim)
 
@@ -103,7 +103,7 @@ function makeTopTexture(compartments, accentHex) {
 
   ctx.beginPath()
   ctx.arc(cx, cy, r, 0, Math.PI * 2)
-  ctx.fillStyle = '#0a1828'
+  ctx.fillStyle = '#1F2A38'
   ctx.fill()
 
   if (compartments > 1) {
@@ -141,8 +141,8 @@ function createLayerMesh(lt) {
     color: lt.color,
     emissive: lt.emissive,
     emissiveIntensity: lt.emissiveIntensity,
-    metalness: 0.75,
-    roughness: 0.22,
+    metalness: 0.45,
+    roughness: 0.30,
   })
   const topMat = new THREE.MeshStandardMaterial({
     map: makeTopTexture(lt.compartments, lt.accentCss),
@@ -158,7 +158,7 @@ function createLayerMesh(lt) {
   body.castShadow = true
   g.add(body)
 
-  const ringMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, metalness: 0.95, roughness: 0.1 })
+  const ringMat = new THREE.MeshStandardMaterial({ color: 0x8090a0, metalness: 0.90, roughness: 0.12 })
   const ringGeo = new THREE.CylinderGeometry(RADIUS + 0.025, RADIUS + 0.025, RING_H, 64)
   const rt = new THREE.Mesh(ringGeo, ringMat)
   rt.position.y = (lt.height + RING_H) / 2
