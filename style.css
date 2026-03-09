@@ -39,6 +39,12 @@ body {
   color: var(--text);
 }
 
+.nav-logo-img {
+  height: 28px;
+  width: auto;
+  display: block;
+}
+
 .nav-links {
   list-style: none;
   display: flex;
