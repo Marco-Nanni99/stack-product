@@ -116,24 +116,42 @@ loadModel()
 
 // ── Mouse / Touch events ──────────────────────────────────────────────────────
 canvas.addEventListener('mousemove', (e) => {
+  if (isMobile) return
   mouse.x =  (e.clientX / window.innerWidth)  * 2 - 1
   mouse.y = -(e.clientY / window.innerHeight) * 2 + 1
 })
 
 canvas.addEventListener('mouseleave', () => {
+  if (isMobile) return
   mouse.set(9999, 9999)
   if (isExploded) { hoverExplode(sections, false); isExploded = false }
 })
 
+// Mobile tap-to-toggle explode
+let tapStartX = 0
+let tapStartY = 0
+
 canvas.addEventListener('touchstart', (e) => {
-  const t = e.touches[0]
-  mouse.x =  (t.clientX / window.innerWidth)  * 2 - 1
-  mouse.y = -(t.clientY / window.innerHeight) * 2 + 1
+  tapStartX = e.touches[0].clientX
+  tapStartY = e.touches[0].clientY
 }, { passive: true })
 
-canvas.addEventListener('touchend', () => {
-  mouse.set(9999, 9999)
-  if (isExploded) { hoverExplode(sections, false); isExploded = false }
+canvas.addEventListener('touchend', (e) => {
+  const dx = Math.abs(e.changedTouches[0].clientX - tapStartX)
+  const dy = Math.abs(e.changedTouches[0].clientY - tapStartY)
+  if (dx > 10 || dy > 10) return  // was a scroll/swipe, not a tap
+
+  const t = e.changedTouches[0]
+  const tapMouse = new THREE.Vector2(
+    (t.clientX / window.innerWidth)  * 2 - 1,
+    -(t.clientY / window.innerHeight) * 2 + 1
+  )
+  raycaster.setFromCamera(tapMouse, camera)
+  const hit = raycaster.intersectObjects(allMeshes).length > 0
+  if (!hit) return
+
+  isExploded = !isExploded
+  hoverExplode(sections, isExploded)
 }, { passive: true })
 
 // ── Render loop ───────────────────────────────────────────────────────────────
@@ -145,16 +163,18 @@ function animate() {
 
   idleRotation(group, delta)
 
-  // Hover: any mesh hit → explode all; nothing hit → collapse
-  raycaster.setFromCamera(mouse, camera)
-  const hovering = raycaster.intersectObjects(allMeshes).length > 0
+  // Desktop hover: any mesh hit → explode; nothing hit → collapse
+  if (!isMobile) {
+    raycaster.setFromCamera(mouse, camera)
+    const hovering = raycaster.intersectObjects(allMeshes).length > 0
 
-  if (hovering && !isExploded) {
-    hoverExplode(sections, true)
-    isExploded = true
-  } else if (!hovering && isExploded) {
-    hoverExplode(sections, false)
-    isExploded = false
+    if (hovering && !isExploded) {
+      hoverExplode(sections, true)
+      isExploded = true
+    } else if (!hovering && isExploded) {
+      hoverExplode(sections, false)
+      isExploded = false
+    }
   }
 
   updateLabels(sections, camera, canvas)
