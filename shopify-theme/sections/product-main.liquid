@@ -1,0 +1,108 @@
+<section class="product-page">
+  <div class="product-inner">
+
+    <div class="product-media">
+      {% if product.featured_image %}
+        <img
+          src="{{ product.featured_image | image_url: width: 800 }}"
+          alt="{{ product.featured_image.alt | escape }}"
+          class="product-image"
+          width="800"
+          loading="lazy"
+        >
+      {% else %}
+        <div class="product-image-placeholder"></div>
+      {% endif %}
+    </div>
+
+    <div class="product-info">
+      <div class="section-eyebrow">{{ product.type }}</div>
+      <h1 class="product-title">{{ product.title }}</h1>
+      <div class="product-price">
+        {% if product.compare_at_price > product.price %}
+          <span class="product-price-compare">{{ product.compare_at_price | money }}</span>
+        {% endif %}
+        <span class="product-price-current">{{ product.price | money }}</span>
+      </div>
+
+      {% if product.description != blank %}
+        <div class="product-description">{{ product.description }}</div>
+      {% endif %}
+
+      {% form 'product', product, id: 'product-form' %}
+        {% if product.variants.size > 1 %}
+          <div class="product-variants">
+            <label for="variant-select">{{ section.settings.variant_label }}</label>
+            <select id="variant-select" name="id" class="product-variant-select">
+              {% for variant in product.variants %}
+                <option
+                  value="{{ variant.id }}"
+                  {% unless variant.available %}disabled{% endunless %}
+                >
+                  {{ variant.title }}{% unless variant.available %} — Sold out{% endunless %}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+        {% else %}
+          <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+        {% endif %}
+
+        <div class="product-quantity">
+          <label for="quantity">{{ section.settings.quantity_label }}</label>
+          <input type="number" id="quantity" name="quantity" value="1" min="1" class="product-qty-input">
+        </div>
+
+        <button
+          type="submit"
+          class="btn product-add-btn"
+          {% unless product.available %}disabled{% endunless %}
+        >
+          {% if product.available %}
+            {{ section.settings.add_to_cart_label }}
+          {% else %}
+            {{ section.settings.sold_out_label }}
+          {% endif %}
+        </button>
+      {% endform %}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": [
+    {
+      "type": "text",
+      "id": "variant_label",
+      "label": "Variant label",
+      "default": "Configuration"
+    },
+    {
+      "type": "text",
+      "id": "quantity_label",
+      "label": "Quantity label",
+      "default": "Quantity"
+    },
+    {
+      "type": "text",
+      "id": "add_to_cart_label",
+      "label": "Add to cart label",
+      "default": "Add to cart"
+    },
+    {
+      "type": "text",
+      "id": "sold_out_label",
+      "label": "Sold out label",
+      "default": "Sold out"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product"
+    }
+  ]
+}
+{% endschema %}

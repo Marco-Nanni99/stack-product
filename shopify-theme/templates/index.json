@@ -1,0 +1,85 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {}
+    },
+    "about": {
+      "type": "about",
+      "blocks": {
+        "stat_1": {
+          "type": "stat",
+          "settings": {
+            "value": "Custom system",
+            "label": "Add or remove pods"
+          }
+        },
+        "stat_2": {
+          "type": "stat",
+          "settings": {
+            "value": "3 Modular pods",
+            "label": "For any needs"
+          }
+        },
+        "stat_3": {
+          "type": "stat",
+          "settings": {
+            "value": "TSA compliant",
+            "label": "Compact and organized for travel"
+          }
+        },
+        "stat_4": {
+          "type": "stat",
+          "settings": {
+            "value": "100% BPA-free",
+            "label": "Safe materials"
+          }
+        }
+      },
+      "block_order": ["stat_1", "stat_2", "stat_3", "stat_4"],
+      "settings": {}
+    },
+    "layers": {
+      "type": "layers",
+      "blocks": {
+        "pod_1": {
+          "type": "layer_card",
+          "settings": {
+            "number": "01",
+            "accent_color": "#8BB8C8",
+            "title": "Base Pill Pod",
+            "description": "Stores larger daily capsules and tablets. Divided into 3 sections with a dispensing mechanism for easy access. Large pill pod: 1.5 in. tall.",
+            "features": "7-day supplement capacity\nOrganized compartments\nEasy access dispenser"
+          }
+        },
+        "pod_2": {
+          "type": "layer_card",
+          "settings": {
+            "number": "02",
+            "accent_color": "#7AAFC8",
+            "title": "Compact Pill Pod",
+            "description": "Designed for smaller daily supplements. Includes divider for two smaller pill sections. Small Pill pod: 0.75 in. tall.",
+            "features": "Compact capsule storage\nSealed container\nTravel-friendly size"
+          }
+        },
+        "pod_3": {
+          "type": "layer_card",
+          "settings": {
+            "number": "03",
+            "accent_color": "#A89CC4",
+            "title": "Powder Pod",
+            "description": "Stores powder servings such as creatine, electrolytes, or greens. Includes scoop and can be stacked with additional pods if needed. Powder pod: 2.5 in. tall.",
+            "features": "Multiple scoop capacity\nAirtight seal\nWide opening for filling"
+          }
+        }
+      },
+      "block_order": ["pod_1", "pod_2", "pod_3"],
+      "settings": {}
+    },
+    "waitlist": {
+      "type": "waitlist",
+      "settings": {}
+    }
+  },
+  "order": ["hero", "about", "layers", "waitlist"]
+}

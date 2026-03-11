@@ -1,0 +1,69 @@
+<div class="nav-overlay" id="nav-overlay"></div>
+<nav class="nav">
+  <a href="{{ routes.root_url }}" class="nav-logo">
+    {% if section.settings.logo != blank %}
+      <img src="{{ section.settings.logo | image_url: width: 120 }}" alt="{{ shop.name }}" class="nav-logo-img">
+    {% else %}
+      <span class="nav-logo-text">{{ shop.name }}</span>
+    {% endif %}
+  </a>
+
+  <ul class="nav-links" id="nav-links">
+    {% for link in linklists[section.settings.menu].links %}
+      <li>
+        <a href="{{ link.url }}"
+          {% if link.active %}class="nav-link-active"{% endif %}>
+          {{ link.title }}
+        </a>
+      </li>
+    {% endfor %}
+    {% if section.settings.cta_label != blank %}
+      <li>
+        <a href="{{ section.settings.cta_url }}" class="nav-cta">
+          {{ section.settings.cta_label }}
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Navigation menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA button label",
+      "default": "Make Your Stack"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header"
+    }
+  ]
+}
+{% endschema %}

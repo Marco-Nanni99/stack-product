@@ -1,0 +1,328 @@
+{{- 'stack-hero.css' | asset_url | stylesheet_tag -}}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+
+<section class="stack-hero-section">
+
+  {%- assign model_src = section.settings.model_url | default: '' -%}
+  {%- if model_src == '' -%}{%- assign model_src = 'stack-bottle.glb' | asset_url -%}{%- endif -%}
+  <canvas id="stack-hero-canvas" data-model="{{ model_src }}"></canvas>
+
+  <!-- Floating section labels — positions updated by JS -->
+  <div class="sh-label sh-label-right" id="sh-label-lid">
+    <div class="sh-label-content">
+      <div class="sh-label-title">Sealed Lid</div>
+    </div>
+    <span class="sh-label-dot"></span>
+  </div>
+
+  <div class="sh-label sh-label-left" id="sh-label-dessert">
+    <span class="sh-label-dot"></span>
+    <div class="sh-label-content">
+      <div class="sh-label-title">Top</div>
+    </div>
+  </div>
+
+  <div class="sh-label sh-label-right" id="sh-label-main">
+    <div class="sh-label-content">
+      <div class="sh-label-title">Mid</div>
+    </div>
+    <span class="sh-label-dot"></span>
+  </div>
+
+  <div class="sh-label sh-label-left" id="sh-label-snack">
+    <span class="sh-label-dot"></span>
+    <div class="sh-label-content">
+      <div class="sh-label-title">Bottom</div>
+    </div>
+  </div>
+
+  <!-- Hero copy — edit text directly here -->
+  <div class="sh-hero-copy">
+    <div class="sh-hero-eyebrow">Modular · Sealed · Fresh</div>
+    <h2 class="sh-hero-title">Built for<br><span>Consistency.</span></h2>
+    <p class="sh-hero-sub">Three compartments. One cylinder.<br>Everything you need, perfectly layered.</p>
+  </div>
+
+  <div class="sh-scroll-cue">
+    <div class="sh-scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+
+</section>
+
+<!-- GSAP (UMD) must load before the module script -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+<script type="module">
+// ── CDN imports via esm.sh (rewrites internal bare specifiers automatically) ──
+import * as THREE from 'https://esm.sh/three@0.183.2'
+import { GLTFLoader }      from 'https://esm.sh/three@0.183.2/examples/jsm/loaders/GLTFLoader'
+import { EffectComposer }  from 'https://esm.sh/three@0.183.2/examples/jsm/postprocessing/EffectComposer'
+import { RenderPass }      from 'https://esm.sh/three@0.183.2/examples/jsm/postprocessing/RenderPass'
+import { UnrealBloomPass } from 'https://esm.sh/three@0.183.2/examples/jsm/postprocessing/UnrealBloomPass'
+
+const gsap = window.gsap
+
+// ── Canvas & renderer ─────────────────────────────────────────────────────────
+const canvas   = document.getElementById('stack-hero-canvas')
+const modelUrl = canvas.dataset.model          // injected by Liquid via asset_url
+const isMobile = window.innerWidth < 768
+
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false })
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+renderer.setSize(window.innerWidth, window.innerHeight)
+renderer.toneMapping = THREE.ACESFilmicToneMapping
+renderer.toneMappingExposure = 1.1
+renderer.shadowMap.enabled = !isMobile
+renderer.shadowMap.type = THREE.PCFSoftShadowMap
+
+// ── Scene & camera ────────────────────────────────────────────────────────────
+const scene = new THREE.Scene()
+scene.background = new THREE.Color(0x2F4460)
+
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 50)
+camera.position.set(0, 0.4, 7)
+camera.lookAt(new THREE.Vector3(isMobile ? 0 : -1.2, 0, 0))
+
+// ── Lights — studio 3-point setup ────────────────────────────────────────────
+const ambient = new THREE.AmbientLight(0xffffff, 0.35)
+scene.add(ambient)
+
+const keyLight = new THREE.DirectionalLight(0xffffff, 4.5)
+keyLight.position.set(5, 8, 6)
+keyLight.castShadow = !isMobile
+keyLight.shadow.mapSize.set(2048, 2048)
+keyLight.shadow.camera.near = 1
+keyLight.shadow.camera.far = 30
+keyLight.shadow.camera.left = -5
+keyLight.shadow.camera.right = 5
+keyLight.shadow.camera.top = 6
+keyLight.shadow.camera.bottom = -4
+keyLight.shadow.bias = -0.001
+scene.add(keyLight)
+
+const fillLight = new THREE.DirectionalLight(0xd0eeff, 1.8)
+fillLight.position.set(-5, 2, 4)
+scene.add(fillLight)
+
+const rimTeal = new THREE.PointLight(0x8BB8C8, 7, 14)
+rimTeal.position.set(-3, 2, -4)
+scene.add(rimTeal)
+
+const accentLow = new THREE.PointLight(0x607090, 3, 10)
+accentLow.position.set(3, -4, 3)
+scene.add(accentLow)
+
+const topSpot = new THREE.PointLight(0xffffff, 8, 6)
+topSpot.position.set(0.5, 6, 2)
+scene.add(topSpot)
+
+// ── Floor (shadow catcher only) ───────────────────────────────────────────────
+const floor = new THREE.Mesh(
+  new THREE.CircleGeometry(9, 128),
+  new THREE.ShadowMaterial({ opacity: 0.55 })
+)
+floor.rotation.x = -Math.PI / 2
+floor.position.y = -2.4
+floor.receiveShadow = true
+scene.add(floor)
+
+// ── Post-processing (bloom) ───────────────────────────────────────────────────
+const composer = new EffectComposer(renderer)
+composer.addPass(new RenderPass(scene, camera))
+const bloom = new UnrealBloomPass(
+  new THREE.Vector2(window.innerWidth, window.innerHeight),
+  0.5, 0.5, 0.85
+)
+if (!isMobile) composer.addPass(bloom)
+
+// ── State ─────────────────────────────────────────────────────────────────────
+const raycaster = new THREE.Raycaster()
+const mouse     = new THREE.Vector2(9999, 9999)
+const clock     = new THREE.Clock()
+let isExploded  = false
+let sections    = []
+let allMeshes   = []
+let group       = null
+
+// ── Load GLB ──────────────────────────────────────────────────────────────────
+// Layer names must match the object names in the GLB (set in Blender)
+const LAYER_NAMES     = ['bottom', 'middle', 'top', 'lid']
+const EXPLODE_OFFSETS = [30, 10, -10, -30]
+
+new GLTFLoader().load(
+  modelUrl,
+  (gltf) => {
+    const model = gltf.scene
+    model.scale.setScalar(0.020)
+    model.rotation.x = THREE.MathUtils.degToRad(90)
+
+    const outer = new THREE.Group()
+    outer.rotation.z = THREE.MathUtils.degToRad(15)
+    outer.rotation.x = THREE.MathUtils.degToRad(-8)
+    outer.position.y = -2.2
+    outer.add(model)
+
+    LAYER_NAMES.forEach((name, i) => {
+      let found = null
+      model.traverse((child) => {
+        if (!found && child.name.toLowerCase() === name) found = child
+      })
+      if (!found) {
+        console.warn(`[STACK] Layer "${name}" not found in GLB.`)
+        return
+      }
+      found.userData.restZ         = found.position.z
+      found.userData.explodeOffset = EXPLODE_OFFSETS[i]
+      found.userData.layerName     = name
+      found.traverse((child) => {
+        if (child.isMesh) {
+          child.castShadow = true
+          child.userData.sectionRef = found
+        }
+      })
+      sections.push(found)
+    })
+
+    group = outer
+    scene.add(group)
+    group.traverse((child) => { if (child.isMesh) allMeshes.push(child) })
+
+    playExplodeIn(sections)
+    animate()
+  },
+  undefined,
+  (err) => console.error('[STACK] Failed to load GLB:', err)
+)
+
+// ── Animation helpers ─────────────────────────────────────────────────────────
+function playExplodeIn(secs) {
+  const mid = (secs.length - 1) / 2
+  secs.forEach((sec, i) => {
+    const { restZ } = sec.userData
+    sec.position.z = restZ + (i - mid) * 2.8
+    gsap.to(sec.position, { z: restZ, duration: 1.6, delay: 0.2 + i * 0.12, ease: 'power3.out' })
+  })
+}
+
+function hoverExplode(secs, active) {
+  secs.forEach((sec) => {
+    const { restZ, explodeOffset } = sec.userData
+    gsap.to(sec.position, {
+      z: active ? restZ + explodeOffset : restZ,
+      duration: active ? 0.55 : 0.45,
+      ease: active ? 'power2.out' : 'power2.inOut',
+    })
+  })
+}
+
+function updateLabels(secs) {
+  const LABEL_MAP = {
+    bottom: { id: 'sh-label-snack',   offset: { x: -140, y: 0 } },
+    middle: { id: 'sh-label-main',    offset: {  x: 140, y: 0 } },
+    top:    { id: 'sh-label-dessert', offset: { x: -140, y: 0 } },
+    lid:    { id: 'sh-label-lid',     offset: {  x: 140, y: 0 } },
+  }
+  const w = canvas.clientWidth
+  const h = canvas.clientHeight
+
+  secs.forEach((sec) => {
+    const cfg = LABEL_MAP[sec.userData.layerName]
+    if (!cfg) return
+    const el = document.getElementById(cfg.id)
+    if (!el) return
+    const vec = new THREE.Vector3()
+    new THREE.Box3().setFromObject(sec).getCenter(vec)
+    vec.project(camera)
+    el.style.left = ((vec.x * 0.5 + 0.5) * w + cfg.offset.x) + 'px'
+    el.style.top  = ((-vec.y * 0.5 + 0.5) * h + cfg.offset.y) + 'px'
+    el.classList.add('visible')
+  })
+}
+
+// ── Render loop ───────────────────────────────────────────────────────────────
+function animate() {
+  requestAnimationFrame(animate)
+  const delta = clock.getDelta()
+  if (!group) return
+
+  group.rotation.y += 0.004 * delta * 60
+
+  if (!isMobile) {
+    raycaster.setFromCamera(mouse, camera)
+    const hovering = raycaster.intersectObjects(allMeshes).length > 0
+    if (hovering && !isExploded)  { hoverExplode(sections, true);  isExploded = true  }
+    if (!hovering && isExploded)  { hoverExplode(sections, false); isExploded = false }
+  }
+
+  updateLabels(sections)
+  composer.render()
+}
+
+// ── Events ────────────────────────────────────────────────────────────────────
+canvas.addEventListener('mousemove', (e) => {
+  if (isMobile) return
+  mouse.x =  (e.clientX / window.innerWidth)  * 2 - 1
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1
+})
+
+canvas.addEventListener('mouseleave', () => {
+  if (isMobile) return
+  mouse.set(9999, 9999)
+  if (isExploded) { hoverExplode(sections, false); isExploded = false }
+})
+
+let tapStartX = 0, tapStartY = 0
+canvas.addEventListener('touchstart', (e) => {
+  tapStartX = e.touches[0].clientX
+  tapStartY = e.touches[0].clientY
+}, { passive: true })
+
+canvas.addEventListener('touchend', (e) => {
+  const dx = Math.abs(e.changedTouches[0].clientX - tapStartX)
+  const dy = Math.abs(e.changedTouches[0].clientY - tapStartY)
+  if (dx > 10 || dy > 10) return
+
+  const t = e.changedTouches[0]
+  const tapMouse = new THREE.Vector2(
+    (t.clientX / window.innerWidth)  * 2 - 1,
+    -(t.clientY / window.innerHeight) * 2 + 1
+  )
+  raycaster.setFromCamera(tapMouse, camera)
+  if (raycaster.intersectObjects(allMeshes).length === 0) return
+  isExploded = !isExploded
+  hoverExplode(sections, isExploded)
+}, { passive: true })
+
+window.addEventListener('resize', () => {
+  const w = window.innerWidth
+  const h = window.innerHeight
+  camera.aspect = w / h
+  camera.lookAt(new THREE.Vector3(w < 768 ? 0 : -1.2, 0, 0))
+  camera.updateProjectionMatrix()
+  renderer.setSize(w, h)
+  composer.setSize(w, h)
+})
+</script>
+
+{% schema %}
+{
+  "name": "Stack Hero",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "model_url",
+      "label": "3D Model URL",
+      "info": "Paste the full URL of stack-bottle.glb from Shopify Admin → Content → Files. Leave blank if the file is in the theme assets folder."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stack Hero"
+    }
+  ]
+}
+{% endschema %}

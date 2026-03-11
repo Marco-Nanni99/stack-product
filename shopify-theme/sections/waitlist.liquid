@@ -1,0 +1,86 @@
+<section id="contact" class="contact fade-in-section">
+  <div class="contact-inner">
+    {% if section.settings.eyebrow != blank %}
+      <div class="section-eyebrow">{{ section.settings.eyebrow }}</div>
+    {% endif %}
+    <h2>{{ section.settings.heading | newline_to_br }}</h2>
+    {% if section.settings.body != blank %}
+      <p>{{ section.settings.body }}</p>
+    {% endif %}
+
+    {% form 'customer', id: 'waitlist-form', class: 'contact-form' %}
+      {{ form.errors | default_errors }}
+      {% if form.posted_successfully? %}
+        <p class="form-success">{{ section.settings.success_message }}</p>
+      {% else %}
+        <input type="hidden" name="contact[tags]" value="waitlist,newsletter">
+        <input
+          type="email"
+          name="contact[email]"
+          placeholder="{{ section.settings.email_placeholder }}"
+          required
+        >
+        <button type="submit" class="btn">{{ section.settings.button_label }}</button>
+      {% endif %}
+    {% endform %}
+  </div>
+
+  <div class="contact-footer">
+    <span>{{ section.settings.footer_text }}</span>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Waitlist / Contact",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Get in touch"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Stay consistent\nwherever you go."
+    },
+    {
+      "type": "textarea",
+      "id": "body",
+      "label": "Body text",
+      "default": "Join the waitlist to be the first to access STACK when we launch and receive 10% off your first order."
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email placeholder",
+      "default": "your@email.com"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Join waitlist"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "You're on the list! We'll be in touch soon."
+    },
+    {
+      "type": "text",
+      "id": "footer_text",
+      "label": "Footer text",
+      "default": "© 2026 STACK. All rights reserved."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Waitlist / Contact"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,68 @@
+<section class="page-content">
+  <div class="page-inner">
+    <h1>Your cart</h1>
+
+    {% if cart.item_count == 0 %}
+      <p style="color: var(--muted); margin: 2rem 0;">Your cart is empty.</p>
+      <a href="{{ routes.root_url }}" class="btn">Continue shopping</a>
+    {% else %}
+      {% form 'cart', cart %}
+        <div class="cart-items">
+          {% for item in cart.items %}
+            <div class="cart-item">
+              {% if item.image %}
+                <img src="{{ item.image | image_url: width: 100 }}" alt="{{ item.title | escape }}" width="100" class="cart-item-img">
+              {% endif %}
+              <div class="cart-item-info">
+                <a href="{{ item.url }}" class="cart-item-title">{{ item.product_title }}</a>
+                {% unless item.variant.title == 'Default Title' %}
+                  <div class="cart-item-variant">{{ item.variant.title }}</div>
+                {% endunless %}
+                <div class="cart-item-price">{{ item.final_line_price | money }}</div>
+                <input
+                  type="number"
+                  name="updates[]"
+                  value="{{ item.quantity }}"
+                  min="0"
+                  class="product-qty-input"
+                  style="margin-top: 0.75rem;"
+                >
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="cart-footer">
+          <div class="cart-total">
+            <span>Total</span>
+            <strong>{{ cart.total_price | money }}</strong>
+          </div>
+          <button type="submit" name="checkout" class="btn" style="width: 100%; margin-top: 1.5rem;">
+            Checkout
+          </button>
+          <button type="submit" name="update" class="btn" style="width: 100%; margin-top: 0.75rem; background: transparent; color: var(--muted); border: 1px solid var(--border);">
+            Update cart
+          </button>
+        </div>
+      {% endform %}
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .cart-items { margin: 2.5rem 0; display: flex; flex-direction: column; gap: 2rem; }
+  .cart-item { display: flex; gap: 1.5rem; align-items: flex-start; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+  .cart-item-img { object-fit: cover; }
+  .cart-item-title { color: var(--text); text-decoration: none; font-weight: 600; }
+  .cart-item-variant { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+  .cart-item-price { font-size: 0.9rem; margin-top: 0.5rem; }
+  .cart-footer { max-width: 380px; margin-top: 2rem; }
+  .cart-total { display: flex; justify-content: space-between; font-size: 1.1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+</style>
+
+{% schema %}
+{
+  "name": "Cart",
+  "settings": []
+}
+{% endschema %}

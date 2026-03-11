@@ -1,0 +1,131 @@
+<section id="layers" class="layers fade-in-section">
+  <div class="layers-inner">
+    {% if section.settings.eyebrow != blank %}
+      <div class="section-eyebrow">{{ section.settings.eyebrow }}</div>
+    {% endif %}
+    <h2>{{ section.settings.heading | newline_to_br }}</h2>
+
+    <div class="layers-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'layer_card' %}
+          <div class="layer-card" {{ block.shopify_attributes }}>
+            <div class="layer-card-top">
+              <div class="layer-num">{{ block.settings.number }}</div>
+              <div class="layer-accent" style="--accent: {{ block.settings.accent_color }};"></div>
+            </div>
+            <h3>{{ block.settings.title }}</h3>
+            {% if block.settings.description != blank %}
+              <p>{{ block.settings.description }}</p>
+            {% endif %}
+            {% if block.settings.features != blank %}
+              <ul>
+                {% assign features = block.settings.features | newline_to_br | split: '<br />' %}
+                {% for feature in features %}
+                  {% assign feature_clean = feature | strip %}
+                  {% if feature_clean != blank %}
+                    <li>{{ feature_clean }}</li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Layers / Pods",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Every layer"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Built for every\npart of your meal."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "layer_card",
+      "name": "Pod card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Card number",
+          "default": "01"
+        },
+        {
+          "type": "color",
+          "id": "accent_color",
+          "label": "Accent dot color",
+          "default": "#8BB8C8"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Base Pill Pod"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Stores larger daily capsules and tablets."
+        },
+        {
+          "type": "textarea",
+          "id": "features",
+          "label": "Features (one per line)",
+          "default": "7-day supplement capacity\nOrganized compartments\nEasy access dispenser"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Layers / Pods",
+      "blocks": [
+        {
+          "type": "layer_card",
+          "settings": {
+            "number": "01",
+            "accent_color": "#8BB8C8",
+            "title": "Base Pill Pod",
+            "description": "Stores larger daily capsules and tablets. Divided into 3 sections with a dispensing mechanism for easy access. Large pill pod: 1.5 in. tall.",
+            "features": "7-day supplement capacity\nOrganized compartments\nEasy access dispenser"
+          }
+        },
+        {
+          "type": "layer_card",
+          "settings": {
+            "number": "02",
+            "accent_color": "#7AAFC8",
+            "title": "Compact Pill Pod",
+            "description": "Designed for smaller daily supplements. Includes divider for two smaller pill sections. Small Pill pod: 0.75 in. tall.",
+            "features": "Compact capsule storage\nSealed container\nTravel-friendly size"
+          }
+        },
+        {
+          "type": "layer_card",
+          "settings": {
+            "number": "03",
+            "accent_color": "#A89CC4",
+            "title": "Powder Pod",
+            "description": "Stores powder servings such as creatine, electrolytes, or greens. Includes scoop and can be stacked with additional pods if needed. Powder pod: 2.5 in. tall.",
+            "features": "Multiple scoop capacity\nAirtight seal\nWide opening for filling"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

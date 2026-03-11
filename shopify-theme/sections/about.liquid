@@ -1,0 +1,120 @@
+<section id="about" class="about fade-in-section">
+  <div class="about-inner">
+    <div class="about-text">
+      {% if section.settings.eyebrow != blank %}
+        <div class="section-eyebrow">{{ section.settings.eyebrow }}</div>
+      {% endif %}
+      <h2>{{ section.settings.heading | newline_to_br }}</h2>
+      {% if section.settings.body != blank %}
+        <p>{{ section.settings.body }}</p>
+      {% endif %}
+      {% if section.settings.button_label != blank %}
+        <a href="{{ section.settings.button_url }}" class="btn">{{ section.settings.button_label }}</a>
+      {% endif %}
+    </div>
+
+    <div class="about-stats">
+      {% for block in section.blocks %}
+        {% if block.type == 'stat' %}
+          <div class="stat" {{ block.shopify_attributes }}>
+            <div class="stat-num">{{ block.settings.value }}</div>
+            <div class="stat-label">{{ block.settings.label }}</div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "About the product"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Designed for the\nway you eat."
+    },
+    {
+      "type": "textarea",
+      "id": "body",
+      "label": "Body text",
+      "default": "STACK is a precision-engineered supplements container made of three airtight cylindrical modules that click together into a single elegant form. Each layer is thermally insulated and individually sealed."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Get early access"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button link",
+      "default": "#contact"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "3 Modular pods"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "For any needs"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About",
+      "blocks": [
+        {
+          "type": "stat",
+          "settings": {
+            "value": "Custom system",
+            "label": "Add or remove pods"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "value": "3 Modular pods",
+            "label": "For any needs"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "value": "TSA compliant",
+            "label": "Compact and organized for travel"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "value": "100% BPA-free",
+            "label": "Safe materials"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

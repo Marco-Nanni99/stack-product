@@ -1,0 +1,107 @@
+<section id="hero" class="hero">
+
+  <!-- Video background -->
+  {% if section.settings.video != blank %}
+    <video class="hero-video" autoplay muted loop playsinline>
+      {% for source in section.settings.video.sources %}
+        <source src="{{ source.url }}" type="{{ source.mime_type }}">
+      {% endfor %}
+    </video>
+  {% else %}
+    <div class="hero-placeholder"></div>
+  {% endif %}
+
+  <!-- Hero copy -->
+  <div class="hero-copy">
+    {% if section.settings.eyebrow != blank %}
+      <div class="hero-eyebrow">{{ section.settings.eyebrow }}</div>
+    {% endif %}
+    <h1 class="hero-title">
+      {{ section.settings.title | newline_to_br }}
+    </h1>
+    {% if section.settings.subtitle != blank %}
+      <p class="hero-sub">{{ section.settings.subtitle | newline_to_br }}</p>
+    {% endif %}
+    {% if section.settings.button_label != blank %}
+      <a href="{{ section.settings.button_url }}" class="btn hero-btn">
+        {{ section.settings.button_label }}
+      </a>
+    {% endif %}
+  </div>
+
+  {% if section.settings.show_scroll_cue %}
+    <div class="scroll-cue">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  {% endif %}
+
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Video"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Background video"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "MODULAR · SEALED · FRESH"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Heading",
+      "default": "BUILT FOR\nCONSISTENCY."
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subheading",
+      "default": "Three compartments. One cylinder.\nEverything you need, perfectly layered."
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scroll_cue",
+      "label": "Show scroll cue",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero"
+    }
+  ]
+}
+{% endschema %}
