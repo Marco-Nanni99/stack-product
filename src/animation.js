@@ -1,22 +1,20 @@
 import gsap from 'gsap'
 import * as THREE from 'three'
 
-const EXPLODE_OFFSET = 2.8  // units apart at start
+const LOAD_EXPLODE_OFFSET = 2.8   // burst distance on page load
 
 /**
- * Explode-in: sections start spread apart, then ease into resting position.
+ * Explode-in on page load: layers start spread apart, then ease into rest.
  */
 export function playExplodeIn(sections) {
-  sections.forEach((section, i) => {
-    const { restY } = section.userData
-    const startY = restY + (i - 1) * EXPLODE_OFFSET
+  const mid = (sections.length - 1) / 2
 
-    // Start position
-    section.position.y = startY
-    section.material?.forEach?.(m => { m.opacity = 0 })
+  sections.forEach((section, i) => {
+    const { restZ } = section.userData
+    section.position.z = restZ + (i - mid) * LOAD_EXPLODE_OFFSET
 
     gsap.to(section.position, {
-      y: restY,
+      z: restZ,
       duration: 1.6,
       delay: 0.2 + i * 0.12,
       ease: 'power3.out',
@@ -25,57 +23,55 @@ export function playExplodeIn(sections) {
 }
 
 /**
- * Idle slow rotation on the whole cylinder group.
- * Called in the render loop.
+ * Idle slow Y-rotation on the whole group — call every frame.
  */
 export function idleRotation(group, delta) {
   group.rotation.y += 0.004 * delta * 60
 }
 
 /**
- * Hover: float a section out along the cylinder axis.
- * @param {THREE.Group} section
- * @param {boolean} active
+ * Hover explode: spread all layers apart (active=true) or collapse (active=false).
  */
-export function hoverSection(section, active) {
-  const { restY } = section.userData
-  gsap.to(section.position, {
-    y: active ? restY + 0.22 : restY,
-    duration: 0.5,
-    ease: 'power2.out',
+export function hoverExplode(sections, active) {
+  sections.forEach((section) => {
+    const { restZ, explodeOffset } = section.userData
+
+    gsap.to(section.position, {
+      z: active ? restZ + explodeOffset : restZ,
+      duration: active ? 0.55 : 0.45,
+      ease: active ? 'power2.out' : 'power2.inOut',
+    })
   })
 }
 
 /**
- * Update floating HTML labels to follow 3D positions.
- * @param {THREE.Group[]} sections  — order: snack[0], main[1], dessert[2]
- * @param {THREE.Camera} camera
- * @param {HTMLElement} canvas
+ * Update floating HTML labels to follow their 3-D layer positions.
+ * Lid has no label; bottom→snack, middle→main, top→dessert.
  */
 export function updateLabels(sections, camera, canvas) {
-  const ids = ['label-snack', 'label-main', 'label-dessert']
-  const offsets = [
-    { x: 140, y: 0 },   // snack  → right
-    { x: -140, y: 0 },  // main   → left
-    { x: 140, y: 0 },   // dessert → right
-  ]
+  const LABEL_MAP = {
+    bottom: { id: 'label-snack',   offset: { x: -140, y: 0 } },
+    middle: { id: 'label-main',    offset: {  x: 140, y: 0 } },
+    top:    { id: 'label-dessert', offset: { x: -140, y: 0 } },
+    lid:    { id: 'label-lid',     offset: {  x: 140, y: 0 } },
+  }
 
   const w = canvas.clientWidth
   const h = canvas.clientHeight
 
-  sections.forEach((section, i) => {
-    const el = document.getElementById(ids[i])
+  sections.forEach((section) => {
+    const cfg = LABEL_MAP[section.userData.layerName]
+    if (!cfg) return  // lid — no label
+
+    const el = document.getElementById(cfg.id)
     if (!el) return
 
     const vec = new THREE.Vector3()
-    section.getWorldPosition(vec)
+    new THREE.Box3().setFromObject(section).getCenter(vec)
     vec.project(camera)
 
-    const screenX = (vec.x * 0.5 + 0.5) * w + offsets[i].x
-    const screenY = (-vec.y * 0.5 + 0.5) * h + offsets[i].y
-
-    el.style.left = screenX + 'px'
-    el.style.top = screenY + 'px'
+    el.style.left = ((vec.x * 0.5 + 0.5) * w + cfg.offset.x) + 'px'
+    el.style.top  = ((-vec.y * 0.5 + 0.5) * h + cfg.offset.y) + 'px'
     el.classList.add('visible')
   })
 }

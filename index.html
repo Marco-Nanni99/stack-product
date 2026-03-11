@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>STACK — Modular Food Container</title>
+  <title>STACK — Modular Supplement Container</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css" />
@@ -33,32 +33,35 @@
     <canvas id="three-canvas"></canvas>
 
     <!-- Floating section labels — positions updated by JS -->
-    <div class="label label-right" id="label-dessert">
+    <div class="label label-right" id="label-lid">
       <div class="label-content">
-        <div class="label-title">DESSERT</div>
-        <div class="label-sub">Sweet finish</div>
+        <div class="label-title">SEALED LID</div>
       </div>
       <span class="label-dot"></span>
     </div>
-    <div class="label label-left" id="label-main">
+    <div class="label label-left" id="label-dessert">
       <span class="label-dot"></span>
       <div class="label-content">
-        <div class="label-title">MAIN</div>
-        <div class="label-sub">The hearty core</div>
+        <div class="label-title">TOP</div>
       </div>
     </div>
-    <div class="label label-right" id="label-snack">
+    <div class="label label-right" id="label-main">
       <div class="label-content">
-        <div class="label-title">SNACK</div>
-        <div class="label-sub">Quick bites</div>
+        <div class="label-title">MID</div>
       </div>
       <span class="label-dot"></span>
+    </div>
+    <div class="label label-left" id="label-snack">
+      <span class="label-dot"></span>
+      <div class="label-content">
+        <div class="label-title">BOTTOM</div>
+      </div>
     </div>
 
     <!-- Hero copy -->
     <div class="hero-copy">
       <div class="hero-eyebrow">MODULAR · SEALED · FRESH</div>
-      <h1 class="hero-title">STACK<br><span>YOUR MEAL.</span></h1>
+      <h1 class="hero-title">BUILT FOR<br><span>CONSISTENCY.</span></h1>
       <p class="hero-sub">Three compartments. One cylinder.<br>Everything you need, perfectly layered.</p>
     </div>
 
@@ -74,26 +77,28 @@
       <div class="about-text">
         <div class="section-eyebrow">About the product</div>
         <h2>Designed for the<br>way you eat.</h2>
-        <p>STACK is a precision-engineered food container made of three airtight cylindrical modules that click together into a single elegant form. Each layer is thermally insulated and individually sealed — so your snack stays crispy, your main stays warm, and your dessert stays sweet.</p>
+        <p>STACK is a precision-engineered supplements container made of three airtight cylindrical modules that click together into a single elegant form. Each layer is thermally insulated and individually sealed.</p>
         <a href="#contact" class="btn">Get early access</a>
       </div>
       <div class="about-stats">
+        
         <div class="stat">
-          <div class="stat-num">3</div>
-          <div class="stat-label">Modular layers</div>
+          <div class="stat-num">Custom system</div>
+          <div class="stat-label">Add or remove pods</div>
         </div>
         <div class="stat">
-          <div class="stat-num">100%</div>
-          <div class="stat-label">Airtight seal</div>
+          <div class="stat-num">3 Modular pods</div>
+          <div class="stat-label">For any needs</div>
         </div>
         <div class="stat">
-          <div class="stat-num">BPA</div>
-          <div class="stat-label">Free materials</div>
+          <div class="stat-num">TSA compliant</div>
+          <div class="stat-label">Compact and organized for travel</div>
         </div>
         <div class="stat">
-          <div class="stat-num">6h</div>
-          <div class="stat-label">Temperature retention</div>
+          <div class="stat-num">100% BPA-free</div>
+          <div class="stat-label">Safe materials</div>
         </div>
+        
       </div>
     </div>
   </section>
@@ -110,12 +115,12 @@
             <div class="layer-num">01</div>
             <div class="layer-accent" style="--accent: #8BB8C8;"></div>
           </div>
-          <h3>Dessert</h3>
-          <p>The crown jewel. Fits a small pastry, fruit cups, yoghurt, or a protein ball. Sealed to keep moisture out and freshness in.</p>
+          <h3>Base Pill Pod</h3>
+          <p>Stores larger daily capsules and tablets. Divided into 3 sections with a dispensing mechanism for easy access. Large pill pod: 1.5 in. tall.
           <ul>
-            <li>Airtight twist-lock lid</li>
-            <li>200ml capacity</li>
-            <li>Transparent window</li>
+            <li>7-day supplement capacity</li>
+            <li>Organized compartments</li>
+            <li>Easy access dispenser</li>
           </ul>
         </div>
 
@@ -124,12 +129,12 @@
             <div class="layer-num">02</div>
             <div class="layer-accent" style="--accent: #7AAFC8;"></div>
           </div>
-          <h3>Main</h3>
-          <p>The powerhouse. Deep enough for a proper meal — rice, pasta, salad, or a packed sandwich. Double-walled for 6 hours of heat retention.</p>
+          <h3>Compact Pill Pod</h3>
+          <p>Designed for smaller daily supplements. Includes divider for two smaller pill sections. Small Pill pod: 0.75 in. tall</p>
           <ul>
-            <li>Double-walled insulation</li>
-            <li>500ml capacity</li>
-            <li>Microwave safe</li>
+            <li>Compact capsule storage</li>
+            <li>Sealed container</li>
+            <li>Travel-friendly size</li>
           </ul>
         </div>
 
@@ -138,12 +143,12 @@
             <div class="layer-num">03</div>
             <div class="layer-accent" style="--accent: #A89CC4;"></div>
           </div>
-          <h3>Snack</h3>
-          <p>The base. Perfect for nuts, crackers, dips, or chips. Keeps crunch intact. Doubles as the stable footing for the whole stack.</p>
+          <h3>Powder Pod</h3>
+          <p>Stores powder servings such as creatine, electrolytes, or greens. Includes scoop and can be stacked with additional pods if needed. Powder pod: 2.5 in. tall</p>
           <ul>
-            <li>Non-slip base</li>
-            <li>300ml capacity</li>
-            <li>Dishwasher safe</li>
+            <li>Multiple scoop capacity</li>
+            <li>Airtight seal</li>
+            <li>Wide opening for filling</li>
           </ul>
         </div>
 
@@ -155,8 +160,8 @@
   <section id="contact" class="contact">
     <div class="contact-inner">
       <div class="section-eyebrow">Get in touch</div>
-      <h2>Ready to<br>stack up?</h2>
-      <p>Join the waitlist and be the first to know when STACK ships.</p>
+      <h2>Stay consistent<br>wherever you go.</h2>
+      <p>Join the waitlist to be the first to access Pilr when we launch and receive 10% off your first order.</p>
       <form class="contact-form">
         <input type="email" placeholder="your@email.com" required />
         <button type="submit" class="btn">Join waitlist</button>

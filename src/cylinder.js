@@ -1,86 +1,70 @@
 import * as THREE from 'three'
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 
-const SECTION_RADIUS = 0.85
-const SECTION_HEIGHT = 0.95
-const RING_HEIGHT = 0.06
-const SEGMENTS = 64
+// Physical order bottom → top; drives explode direction
+const LAYER_NAMES = ['bottom', 'middle', 'top', 'lid']
 
-// Colors per section (bottom → top)
-const SECTION_DATA = [
-  { name: 'snack',   color: 0xA090C0, emissive: 0x8060b0, emissiveIntensity: 0.15 },
-  { name: 'main',    color: 0x8AABCC, emissive: 0x5090c0, emissiveIntensity: 0.15 },
-  { name: 'dessert', color: 0x70AAAA, emissive: 0x40a0a0, emissiveIntensity: 0.18 },
-]
+// Z offset (scene units) applied to each layer when exploded.
+// With group.rotation.x = +90°, local +Z = world -Y (down), so bottom gets
+// a positive offset to push it down and lid gets negative to push it up.
+const EXPLODE_OFFSETS = [30, 10, -10, -30]
 
-export function buildCylinder() {
-  const group = new THREE.Group()
-  const sections = []
+export function loadModel() {
+  return new Promise((resolve, reject) => {
+    const loader = new GLTFLoader()
 
-  SECTION_DATA.forEach((data, i) => {
-    const sectionGroup = new THREE.Group()
+    loader.load(
+      './models/stack-bottle.glb',
+      (gltf) => {
+        const group = gltf.scene
 
-    // Main body
-    const bodyGeo = new THREE.CylinderGeometry(
-      SECTION_RADIUS, SECTION_RADIUS, SECTION_HEIGHT, SEGMENTS
+        // Scale down from real-world units to scene units — tweak this value
+        group.scale.setScalar(0.020)
+
+        // Correct orientation: bottle is along Blender Y (→ Three.js Z), rotate to stand up
+        group.rotation.x = THREE.MathUtils.degToRad(90)
+
+        // Outer group handles the decorative tilt + idle Y rotation
+        const outer = new THREE.Group()
+        outer.rotation.z = THREE.MathUtils.degToRad(15)
+        outer.rotation.x = THREE.MathUtils.degToRad(-8)
+        outer.position.y = -2.2   // shift down — tweak this value
+        outer.add(group)
+
+        const sections = []
+
+        LAYER_NAMES.forEach((name, i) => {
+          let found = null
+          group.traverse((child) => {
+            if (!found && child.name.toLowerCase() === name) found = child
+          })
+
+          if (!found) {
+            console.warn(`[STACK] Layer "${name}" not found in GLB — check object names in Blender.`)
+            return
+          }
+
+          // restZ is the Object3D's actual local Z (the assembled rest position)
+          // If all Blender origins are at 0,0,0 this is 0 for all — that's correct.
+          // The explode offsets push each layer away from that rest position.
+          found.userData.restZ         = found.position.z
+          found.userData.explodeOffset = EXPLODE_OFFSETS[i]
+          found.userData.layerName     = name
+
+          found.traverse((child) => {
+            if (child.isMesh) {
+              child.castShadow = true
+              child.userData.sectionRef = found
+            }
+          })
+
+          sections.push(found)
+        })
+
+        resolve({ group: outer, sections })
+      },
+      undefined,
+      reject
     )
-    const bodyMat = new THREE.MeshStandardMaterial({
-      color: data.color,
-      emissive: data.emissive,
-      emissiveIntensity: data.emissiveIntensity,
-      metalness: 0.45,
-      roughness: 0.30,
-    })
-    const body = new THREE.Mesh(bodyGeo, bodyMat)
-    sectionGroup.add(body)
-
-    // Top ring (separator / connector)
-    const ringGeo = new THREE.CylinderGeometry(
-      SECTION_RADIUS + 0.02,
-      SECTION_RADIUS + 0.02,
-      RING_HEIGHT,
-      SEGMENTS
-    )
-    const ringMat = new THREE.MeshStandardMaterial({
-      color: 0x8090a0,
-      metalness: 0.90,
-      roughness: 0.12,
-    })
-    const ring = new THREE.Mesh(ringGeo, ringMat)
-    ring.position.y = (SECTION_HEIGHT + RING_HEIGHT) / 2
-    sectionGroup.add(ring)
-
-    // Bottom ring
-    const ringBottom = ring.clone()
-    ringBottom.position.y = -(SECTION_HEIGHT + RING_HEIGHT) / 2
-    sectionGroup.add(ringBottom)
-
-    // Rest Y position (stacked, rings included)
-    const restY = i * (SECTION_HEIGHT + RING_HEIGHT * 2)
-    sectionGroup.position.y = restY
-    sectionGroup.userData = { name: data.name, restY }
-
-    group.add(sectionGroup)
-    sections.push(sectionGroup)
   })
-
-  // Centre the whole group vertically
-  const totalH = SECTION_DATA.length * (SECTION_HEIGHT + RING_HEIGHT * 2)
-  group.position.y = -totalH / 2
-
-  // Tilt like the reference image
-  group.rotation.z = THREE.MathUtils.degToRad(15)
-  group.rotation.x = THREE.MathUtils.degToRad(-8)
-
-  return { group, sections }
-}
-
-/**
- * Given a section mesh's world position and the camera,
- * returns normalised device coordinates {x, y} in [−1, 1].
- */
-export function worldToNDC(object, camera) {
-  const vec = new THREE.Vector3()
-  object.getWorldPosition(vec)
-  vec.project(camera)
-  return { x: vec.x, y: vec.y }
 }
