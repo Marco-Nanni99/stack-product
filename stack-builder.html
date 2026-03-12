@@ -12,56 +12,103 @@
 <body class="builder-page">
 
   <!-- NAV -->
+  <div class="nav-overlay" id="nav-overlay"></div>
   <nav class="nav">
-    <a href="./index.html" class="nav-logo"><img src="images/logov3.png" alt="Pilr" class="nav-logo-img"></a>
-    <ul class="nav-links">
+    <a href="./index.html" class="nav-logo"><img src="images/logov3.png" alt="STACK" class="nav-logo-img"></a>
+    <ul class="nav-links" id="nav-links">
       <li><a href="./index.html">Home</a></li>
       <li><a href="./index.html#about">About</a></li>
       <li><a href="./index.html#layers">Layers</a></li>
       <li><a href="./index.html#contact">Contact</a></li>
       <li><a href="./stack-builder.html" class="nav-cta nav-cta--active">Make Your Stack</a></li>
     </ul>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
 
   <!-- BUILDER LAYOUT -->
   <div class="builder-layout">
 
     <!-- 3D CANVAS -->
-    <div class="builder-canvas-wrap" id="drop-target">
+    <div class="builder-canvas-wrap">
       <canvas id="builder-canvas"></canvas>
 
-      <!-- Slot indicators updated by JS -->
-      <div id="drop-zones"></div>
+      <!-- Loading indicator -->
+      <div class="builder-loading" id="builder-loading">
+        <div class="builder-loading-dot"></div>
+        <div class="builder-loading-dot"></div>
+        <div class="builder-loading-dot"></div>
+      </div>
 
-      <!-- Bottom-left info -->
-      <div class="builder-info">
-        <div class="builder-layer-count">
-          <span id="layer-count">3</span>
-          <span class="builder-layer-word"> layers</span>
+      <!-- Back button (top-left, visible only in pod detail view) -->
+      <button class="pod-back-btn" id="pod-back-btn" aria-label="Back to full stack">
+        ← Back to stack
+      </button>
+
+      <!-- Pod labels (positioned by JS each frame) -->
+      <div id="builder-labels" class="blabel-container"></div>
+
+      <!-- Pod detail panel (left side, visible only in detail view) -->
+      <div class="pod-detail-panel" id="pod-detail-panel">
+        <div class="pod-detail-name" id="pod-detail-name"></div>
+        <div class="pod-detail-desc" id="pod-detail-desc"></div>
+        <ul class="pod-detail-specs" id="pod-detail-specs"></ul>
+        <div class="pod-detail-examples-label">Common supplements</div>
+        <div class="pod-detail-examples" id="pod-detail-examples"></div>
+      </div>
+
+      <!-- Selected config info overlay (bottom-left) -->
+      <div class="builder-selected-info">
+        <div class="builder-selected-name" id="selected-config-name">—</div>
+        <div class="builder-selected-tagline" id="selected-config-desc">Select a stack from the menu</div>
+        <div class="builder-selected-pods" id="selected-config-pods"></div>
+        <div class="builder-common-stack-wrap">
+          <div class="builder-common-stack-label">Common snacks</div>
+          <div class="builder-common-stack-text" id="selected-config-common-stack"></div>
         </div>
-        <p class="builder-hint">Drag a layer from the panel to add it.<br>Click a layer in the stack to remove it.</p>
       </div>
     </div>
 
     <!-- RIGHT PANEL -->
     <aside class="builder-panel">
       <div class="builder-panel-head">
-        <div class="section-eyebrow">Layer library</div>
-        <h2>Build your<br>perfect stack.</h2>
-        <p>Drag any layer onto the stack.<br>Max <strong>5</strong> layers.</p>
+        <div class="section-eyebrow">Pre-built configurations</div>
+        <h2>Choose your<br>stack.</h2>
+        <p>Click any configuration to see it assembled in real time.</p>
       </div>
 
-      <div class="builder-panel-list" id="layer-options">
+      <div class="builder-panel-list" id="config-list">
         <!-- Populated by JS -->
       </div>
 
       <div class="builder-panel-foot">
-        <button id="add-to-cart-btn" class="btn" style="width:100%;text-align:center;margin-bottom:0.6rem" disabled>Loading…</button>
-        <button class="btn builder-reset" id="reset-btn">Reset stack</button>
+        <button id="add-to-cart-btn" class="btn" style="width:100%;text-align:center" disabled>
+          Loading…
+        </button>
       </div>
     </aside>
 
   </div>
+
+  <script>
+    // Hamburger menu (matches index.html pattern)
+    const hamburger = document.getElementById('nav-hamburger')
+    const navLinks  = document.getElementById('nav-links')
+    const overlay   = document.getElementById('nav-overlay')
+    function closeMenu() {
+      hamburger.classList.remove('open')
+      navLinks.classList.remove('open')
+      overlay.classList.remove('open')
+    }
+    hamburger.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open')
+      hamburger.classList.toggle('open', open)
+      overlay.classList.toggle('open', open)
+    })
+    overlay.addEventListener('click', closeMenu)
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu))
+  </script>
 
   <script type="module" src="/src/builder.js"></script>
   <script type="module" src="/src/shopify.js"></script>

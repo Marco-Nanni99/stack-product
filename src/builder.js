@@ -1,428 +1,652 @@
 import * as THREE from 'three'
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import gsap from 'gsap'
-import { LAYER_TYPES } from './layer-types.js'
 
-// ── Constants ──────────────────────────────────────────────────────────────────
-const RADIUS   = 0.85
-const RING_H   = 0.055
-const GAP      = 0.04
-const MAX_LAYERS = 5
+// ── Pre-made stack configurations ──────────────────────────
+// Each entry will eventually have its own GLB file.
+// For now all use the same placeholder GLB.
+const CONFIGS = [
+  {
+    id: 'classic',
+    name: 'Classic',
+    tagline: 'Your all-in-one daily stack',
+    pods: ['Base Pill Pod', 'Hybrid Pod', 'Powder Pod'],
+    commonStack: 'Vitamin D, Zinc, B12 → Fish Oil, Magnesium → Creatine',
+    accent: '#8BB8C8',
+    glb: './models/stack-bottle.glb',
+  },
+  {
+    id: 'powder-heavy',
+    name: 'Powder Heavy',
+    tagline: 'For those whose routine leans more on powders',
+    pods: ['Base Pill Pod', 'Powder Pod', 'Powder Pod'],
+    commonStack: 'Vitamin D, Zinc, Multivitamin → Greens Powder → Collagen or Pre-Workout',
+    accent: '#7AAFC8',
+    glb: './models/stack-bottle.glb',
+  },
+  {
+    id: 'capsule-loader',
+    name: 'Capsule Loader',
+    tagline: 'All capsules, no powders',
+    pods: ['Base Pill Pod', 'Hybrid Pod', 'Hybrid Pod'],
+    commonStack: 'B12, Zinc, Vitamin D → Fish Oil, CoQ10 → Magnesium, Turmeric',
+    accent: '#A89CC4',
+    glb: './models/stack-bottle.glb',
+  },
+  {
+    id: 'minimalist',
+    name: 'The Minimalist',
+    tagline: 'Just the essentials — light and compact',
+    pods: ['Base Pill Pod', 'Hybrid Pod'],
+    commonStack: 'Vitamin D, Zinc, Turmeric → Magnesium or Omega 3 or Electrolytes',
+    accent: '#A8C4A0',
+    glb: './models/stack-bottle.glb',
+  },
+  {
+    id: 'serious-traveler',
+    name: 'The Serious Traveler',
+    tagline: 'Skip the small stuff',
+    pods: ['Hybrid Pod', 'Powder Pod', 'Powder Pod'],
+    commonStack: 'Magnesium, Fish Oil, Turmeric → Creatine → Greens or Collagen',
+    accent: '#C4B89C',
+    glb: './models/stack-bottle.glb',
+  },
+  {
+    id: 'biohacker',
+    name: 'The Biohacker',
+    tagline: 'Maximum capacity',
+    pods: ['Base Pill Pod', 'Hybrid Pod', 'Hybrid Pod', 'Powder Pod'],
+    commonStack: 'NMN, Ashwagandha, B Complex → Fish Oil, CoQ10 or Creatine → Magnesium, Berberine or Lion\'s Mane → Creatine or Greens',
+    accent: '#C4A0B8',
+    glb: './models/stack-bottle.glb',
+  },
+]
 
-// ── Canvas / Renderer ──────────────────────────────────────────────────────────
+// ── Pod detail info ──────────────────────────────────────────
+const POD_INFO = {
+  'Base Pill Pod': {
+    desc: 'Carries a full week of small and medium-sized capsules — organized across 3 compartments for easy access.',
+    specs: ['Easy Dispense & Loading Mechanism', 'Height: 1 in.'],
+    examples: 'Vitamin D, Zinc, Multivitamins…',
+  },
+  'Hybrid Pod': {
+    desc: 'Organize a week\'s supply of larger pill supplements — or remove the divider for powder storage. Start with one. Stack as many as you need.',
+    specs: ['2 capsule types or 1 powder? You choose.', 'Height: 2 in.'],
+    examples: 'Fish Oil, Magnesium, Electrolytes, Creatine…',
+  },
+  'Powder Pod': {
+    desc: 'Store a full week\'s supply of your go-to powders. 1 or 10? Stack as many as you\'d like.',
+    specs: ['Includes 5g scooper', 'Height: 2.5 in.'],
+    examples: 'Pre-Workout, Collagen, Greens Powder…',
+  },
+}
+
+// ── Layer constants ──────────────────────────────────────────
+// With glbScene.rotation.x = +90°, local +Z = world -Y (down).
+// To send sections to sky (world +Y) we subtract from restZ.
+const LAYER_ORDER      = ['bottom', 'middle', 'top', 'lid']
+const CLICKABLE_LAYERS = ['bottom', 'middle', 'top']  // lid is a cap, not a pod
+const DROP_OFFSET      = 400   // GLB local units: ~8 world units off-screen
+const FLY_OFFSET       = 600   // GLB local units: sections fly off when disassembling
+// Label alternates right/left/right for bottom/middle/top
+const LABEL_SIDES      = ['right', 'left', 'right']
+
+// ── Renderer ────────────────────────────────────────────────
 const canvasEl = document.getElementById('builder-canvas')
 const wrap     = canvasEl.parentElement
+const isMobile = window.innerWidth < 768
 
 function cSize() { return { w: wrap.clientWidth, h: wrap.clientHeight } }
-
-const isMobile = window.innerWidth < 768
+let { w: CW, h: CH } = cSize()
 
 const renderer = new THREE.WebGLRenderer({ canvas: canvasEl, antialias: true })
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-renderer.toneMapping = THREE.ACESFilmicToneMapping
+renderer.toneMapping         = THREE.ACESFilmicToneMapping
 renderer.toneMappingExposure = 1.1
-renderer.shadowMap.enabled = !isMobile
-renderer.shadowMap.type = THREE.PCFSoftShadowMap
+renderer.shadowMap.enabled   = !isMobile
+renderer.shadowMap.type      = THREE.PCFSoftShadowMap
+renderer.setSize(CW, CH)
 
 const scene = new THREE.Scene()
 scene.background = new THREE.Color(0x2F4460)
 
-let { w: CW, h: CH } = cSize()
-renderer.setSize(CW, CH)
+// ── Camera with animated look-at target ─────────────────────
+// We GSAP-animate both camera.position and cameraTarget each frame.
+const CAMERA_REST_POS    = new THREE.Vector3(0, 0.4, 7)
+const CAMERA_REST_TARGET = new THREE.Vector3(isMobile ? 0 : -0.6, 0, 0)
 
 const camera = new THREE.PerspectiveCamera(40, CW / CH, 0.1, 50)
-camera.position.set(0, 0.5, 8)
+camera.position.copy(CAMERA_REST_POS)
 
-// ── Lights ─────────────────────────────────────────────────────────────────────
-scene.add(new THREE.AmbientLight(0xffffff, 0.38))
+// Mutable look-at target (GSAP animates this vector directly)
+const cameraTarget = CAMERA_REST_TARGET.clone()
 
-const key = new THREE.DirectionalLight(0xffffff, 4.0)
-key.position.set(4, 8, 5)
+// ── Lights (matching main.js) ────────────────────────────────
+scene.add(new THREE.AmbientLight(0xffffff, 0.35))
+
+const key = new THREE.DirectionalLight(0xffffff, 4.5)
+key.position.set(5, 8, 6)
 key.castShadow = !isMobile
 key.shadow.mapSize.set(1024, 1024)
-key.shadow.camera.left = key.shadow.camera.bottom = -5
-key.shadow.camera.right = key.shadow.camera.top  =  5
-key.shadow.camera.near  = 1
-key.shadow.camera.far   = 30
 key.shadow.bias = -0.001
 scene.add(key)
 
-const fill = new THREE.DirectionalLight(0xd0eeff, 1.6)
+const fill = new THREE.DirectionalLight(0xd0eeff, 1.8)
 fill.position.set(-5, 2, 4)
 scene.add(fill)
 
-const rim = new THREE.PointLight(0x8BB8C8, 6, 14)
+const rim = new THREE.PointLight(0x8BB8C8, 7, 14)
 rim.position.set(-3, 2, -4)
 scene.add(rim)
 
-const topSpot = new THREE.PointLight(0xffffff, 6, 6)
+const accentLow = new THREE.PointLight(0x607090, 3, 10)
+accentLow.position.set(3, -4, 3)
+scene.add(accentLow)
+
+const topSpot = new THREE.PointLight(0xffffff, 8, 8)
 topSpot.position.set(0.5, 6, 2)
 scene.add(topSpot)
 
-// ── Shadow floor ───────────────────────────────────────────────────────────────
-const floorMesh = new THREE.Mesh(
-  new THREE.CircleGeometry(8, 64),
-  new THREE.ShadowMaterial({ opacity: 0.5 })
+// Shadow-only floor
+const floor = new THREE.Mesh(
+  new THREE.CircleGeometry(9, 64),
+  new THREE.ShadowMaterial({ opacity: 0.55 })
 )
-floorMesh.rotation.x = -Math.PI / 2
-floorMesh.receiveShadow = true
-scene.add(floorMesh)
+floor.rotation.x = -Math.PI / 2
+floor.position.y = -2.4
+floor.receiveShadow = true
+scene.add(floor)
 
-// ── Stack group (tilted like hero) ─────────────────────────────────────────────
-const stackGroup = new THREE.Group()
-stackGroup.rotation.z = THREE.MathUtils.degToRad(10)
-stackGroup.rotation.x = THREE.MathUtils.degToRad(-6)
-scene.add(stackGroup)
+// ── Outer group: decorative tilt + idle Y rotation ──────────
+const OUTER_REST_ROT_Z = THREE.MathUtils.degToRad(15)
+const OUTER_REST_ROT_X = THREE.MathUtils.degToRad(-8)
+const OUTER_REST_POS_Y = -2.2
 
-// ── Stack state ────────────────────────────────────────────────────────────────
-let stackLayers = [
-  LAYER_TYPES[0], // main
-  LAYER_TYPES[1], // duo
-  LAYER_TYPES[0], // main
-]
-const meshGroups = []   // THREE.Group per layer, same index as stackLayers
+const outerGroup = new THREE.Group()
+outerGroup.rotation.z = OUTER_REST_ROT_Z
+outerGroup.rotation.x = OUTER_REST_ROT_X
+outerGroup.position.y = OUTER_REST_POS_Y
+scene.add(outerGroup)
 
-// ── Geometry helpers ───────────────────────────────────────────────────────────
-function totalHeight() {
-  return stackLayers.reduce((s, lt) => s + lt.height + RING_H * 2 + GAP, 0)
-}
+// ── Model state ─────────────────────────────────────────────
+let sections      = []   // [{mesh: Object3D, restZ: number}]
+let modelLoaded   = false
 
-function layerCenterY(i) {
-  let y = -totalHeight() / 2 + RING_H
-  for (let k = 0; k < i; k++) y += stackLayers[k].height + RING_H * 2 + GAP
-  return y + stackLayers[i].height / 2
-}
+// ── Label state ──────────────────────────────────────────────
+let labelEls      = []   // DOM elements, one per clickable section
+let labelAnchors  = []   // Vector3 in outerGroup local space, cached after load
 
-function layerBottomY() { return -totalHeight() / 2 }
+// ── Interaction state ────────────────────────────────────────
+let idleActive    = true   // whether the idle Y rotation is running
+let inDetailView  = false  // whether we're in pod detail view
+let transitioning = false  // locked during enter/exit animations
 
-// ── Texture ────────────────────────────────────────────────────────────────────
-function makeTopTexture(compartments, accentHex) {
-  const S = 256, cx = S / 2, cy = S / 2, r = S / 2 - 4
-  const c = document.createElement('canvas')
-  c.width = c.height = S
-  const ctx = c.getContext('2d')
+// ── GLB loader ───────────────────────────────────────────────
+const loader = new GLTFLoader()
 
-  ctx.beginPath()
-  ctx.arc(cx, cy, r, 0, Math.PI * 2)
-  ctx.fillStyle = '#1F2A38'
-  ctx.fill()
+function loadGLB(url, onReady) {
+  loader.load(url, (gltf) => {
+    const glbScene = gltf.scene
+    glbScene.scale.setScalar(0.020)
+    glbScene.rotation.x = THREE.MathUtils.degToRad(90)
+    outerGroup.add(glbScene)
 
-  if (compartments > 1) {
-    ctx.save()
-    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.clip()
-    ctx.strokeStyle = accentHex
-    ctx.lineWidth = 5
-    ctx.globalAlpha = 0.45
-
-    if (compartments === 2) {
-      ctx.beginPath(); ctx.moveTo(cx, 4); ctx.lineTo(cx, S - 4); ctx.stroke()
-    } else if (compartments === 4) {
-      ctx.beginPath(); ctx.moveTo(cx, 4); ctx.lineTo(cx, S - 4); ctx.stroke()
-      ctx.beginPath(); ctx.moveTo(4, cy); ctx.lineTo(S - 4, cy); ctx.stroke()
-    }
-    ctx.restore()
-  }
-
-  // Subtle edge ring
-  ctx.beginPath()
-  ctx.arc(cx, cy, r - 2, 0, Math.PI * 2)
-  ctx.strokeStyle = 'rgba(255,255,255,0.1)'
-  ctx.lineWidth = 2
-  ctx.stroke()
-
-  return new THREE.CanvasTexture(c)
-}
-
-// ── Mesh factory ───────────────────────────────────────────────────────────────
-function createLayerMesh(lt) {
-  const g = new THREE.Group()
-  g.userData.layerType = lt
-
-  const sideMat = new THREE.MeshStandardMaterial({
-    color: lt.color,
-    emissive: lt.emissive,
-    emissiveIntensity: lt.emissiveIntensity,
-    metalness: 0.45,
-    roughness: 0.30,
-  })
-  const topMat = new THREE.MeshStandardMaterial({
-    map: makeTopTexture(lt.compartments, lt.accentCss),
-    metalness: 0.5,
-    roughness: 0.35,
-  })
-
-  // CylinderGeometry groups: 0=side, 1=top cap, 2=bottom cap
-  const body = new THREE.Mesh(
-    new THREE.CylinderGeometry(RADIUS, RADIUS, lt.height, 64),
-    [sideMat, topMat, sideMat]
-  )
-  body.castShadow = true
-  g.add(body)
-
-  const ringMat = new THREE.MeshStandardMaterial({ color: 0x8090a0, metalness: 0.90, roughness: 0.12 })
-  const ringGeo = new THREE.CylinderGeometry(RADIUS + 0.025, RADIUS + 0.025, RING_H, 64)
-  const rt = new THREE.Mesh(ringGeo, ringMat)
-  rt.position.y = (lt.height + RING_H) / 2
-  rt.castShadow = true
-  const rb = rt.clone()
-  rb.position.y = -(lt.height + RING_H) / 2
-  g.add(rt, rb)
-
-  return g
-}
-
-// ── Stack management ───────────────────────────────────────────────────────────
-function animateAll() {
-  meshGroups.forEach((mg, i) => {
-    gsap.to(mg.position, { y: layerCenterY(i), duration: 0.55, ease: 'power3.out' })
-  })
-  gsap.to(floorMesh.position, { y: layerBottomY() - 0.12, duration: 0.5, ease: 'power2.out' })
-  updateUI()
-}
-
-function insertLayer(lt, index) {
-  if (stackLayers.length >= MAX_LAYERS) return
-  index = Math.max(0, Math.min(index, stackLayers.length))
-
-  stackLayers.splice(index, 0, lt)
-  const mg = createLayerMesh(lt)
-  mg.position.y = layerCenterY(index) + 4.5  // drop in from above
-  stackGroup.add(mg)
-  meshGroups.splice(index, 0, mg)
-
-  // Fly in, then settle all to new positions
-  gsap.to(mg.position, { y: layerCenterY(index), duration: 0.65, ease: 'power3.out' })
-  meshGroups.forEach((m, i) => {
-    if (i === index) return
-    gsap.to(m.position, { y: layerCenterY(i), duration: 0.5, ease: 'power2.out' })
-  })
-  gsap.to(floorMesh.position, { y: layerBottomY() - 0.12, duration: 0.5 })
-  updateUI()
-}
-
-function removeLayer(index) {
-  if (stackLayers.length <= 1) return
-  const mg = meshGroups[index]
-  stackLayers.splice(index, 1)
-  meshGroups.splice(index, 1)
-
-  gsap.to(mg.position, {
-    y: mg.position.y + 3.5,
-    duration: 0.4, ease: 'power2.in',
-    onComplete: () => stackGroup.remove(mg),
-  })
-  animateAll()
-}
-
-function initStack() {
-  stackLayers.forEach((lt, i) => {
-    const mg = createLayerMesh(lt)
-    mg.position.y = layerCenterY(i) + 4.5
-    stackGroup.add(mg)
-    meshGroups.push(mg)
-    gsap.to(mg.position, { y: layerCenterY(i), duration: 0.8, delay: 0.1 + i * 0.12, ease: 'power3.out' })
-  })
-  floorMesh.position.y = layerBottomY() - 0.12
-  updateUI()
-}
-
-function resetStack() {
-  meshGroups.forEach(mg => {
-    gsap.to(mg.position, { y: mg.position.y + 5, duration: 0.35,
-      onComplete: () => stackGroup.remove(mg) })
-  })
-  meshGroups.length = 0
-  stackLayers = [LAYER_TYPES[0], LAYER_TYPES[1], LAYER_TYPES[0]]
-  setTimeout(() => {
-    stackLayers.forEach((lt, i) => {
-      const mg = createLayerMesh(lt)
-      mg.position.y = layerCenterY(i) + 4.5
-      stackGroup.add(mg)
-      meshGroups.push(mg)
+    sections = []
+    LAYER_ORDER.forEach(name => {
+      let found = null
+      glbScene.traverse(child => {
+        if (!found && child.name.toLowerCase() === name) found = child
+      })
+      if (!found) {
+        console.warn(`[STACK Builder] Layer "${name}" not found in GLB.`)
+        return
+      }
+      found.traverse(m => { if (m.isMesh) m.castShadow = true })
+      sections.push({ mesh: found, restZ: found.position.z })
     })
-    animateAll()
-  }, 380)
+
+    modelLoaded = true
+    document.getElementById('builder-loading')?.classList.add('hidden')
+    computeLabelAnchors()
+    if (onReady) onReady()
+  })
 }
 
-// ── UI updates ─────────────────────────────────────────────────────────────────
-function updateUI() {
-  document.getElementById('layer-count').textContent = stackLayers.length
-  updateDropZones()
-}
-
-// ── Drop zones ─────────────────────────────────────────────────────────────────
-function slotWorldY(slotIndex) {
-  if (stackLayers.length === 0) return 0
-  if (slotIndex === 0) return layerBottomY() - 0.2
-  if (slotIndex === stackLayers.length) {
-    return layerCenterY(stackLayers.length - 1)
-         + stackLayers[stackLayers.length - 1].height / 2
-         + RING_H + 0.2
-  }
-  const below = layerCenterY(slotIndex - 1) + stackLayers[slotIndex - 1].height / 2 + RING_H
-  const above = layerCenterY(slotIndex) - stackLayers[slotIndex].height / 2 - RING_H
-  return (below + above) / 2
-}
-
-function worldToScreen(localY) {
-  const pt = new THREE.Vector3(0, localY, 0)
-  stackGroup.localToWorld(pt)
-  pt.project(camera)
-  const { w, h } = cSize()
-  return { x: (pt.x * 0.5 + 0.5) * w, y: (-pt.y * 0.5 + 0.5) * h }
-}
-
-function updateDropZones() {
-  const container = document.getElementById('drop-zones')
+// ── Label system ────────────────────────────────────────────
+function initLabels(cfg) {
+  const container = document.getElementById('builder-labels')
+  if (!container) return
   container.innerHTML = ''
-  const numSlots = stackLayers.length + 1
-  for (let i = 0; i < numSlots; i++) {
-    const { x, y } = worldToScreen(slotWorldY(i))
-    const div = document.createElement('div')
-    div.className = 'drop-zone'
-    div.dataset.slot = i
-    div.style.left = x + 'px'
-    div.style.top  = y + 'px'
-    container.appendChild(div)
-  }
-}
+  labelEls = []
 
-// ── Drag and drop ──────────────────────────────────────────────────────────────
-let draggedType  = null
-let activeSlot   = -1
-
-function nearestSlot(clientY) {
-  const zones = document.querySelectorAll('.drop-zone')
-  let best = 0, minDist = Infinity
-  zones.forEach((z, i) => {
-    const rect = z.getBoundingClientRect()
-    const dist = Math.abs(clientY - (rect.top + rect.height / 2))
-    if (dist < minDist) { minDist = dist; best = i }
-  })
-  return best
-}
-
-function setActiveSlot(index) {
-  document.querySelectorAll('.drop-zone').forEach((z, i) =>
-    z.classList.toggle('active', i === index))
-  activeSlot = index
-}
-
-function showZones(visible) {
-  const c = document.getElementById('drop-zones')
-  c.style.opacity = visible ? '1' : '0'
-}
-
-function populatePanel() {
-  const container = document.getElementById('layer-options')
-  LAYER_TYPES.forEach(lt => {
-    const card = document.createElement('div')
-    card.className = 'layer-option-card'
-    card.dataset.typeId = lt.id
-    card.innerHTML = `
-      <div class="layer-card-icon">
-        <svg viewBox="0 0 40 40" fill="none" color="${lt.accentCss}">${lt.compartmentSvg}</svg>
+  CLICKABLE_LAYERS.forEach((_, i) => {
+    const side = LABEL_SIDES[i]
+    const name = cfg.pods[i] ?? ''
+    const el   = document.createElement('div')
+    el.className = `blabel blabel-${side}`
+    el.innerHTML = `
+      <div class="blabel-dot"></div>
+      <div class="blabel-line"></div>
+      <div class="blabel-text">
+        <span class="blabel-name">${name}</span>
+        <button class="blabel-explore">View inside</button>
       </div>
-      <div class="layer-card-info">
-        <div class="layer-card-name" style="color:${lt.accentCss}">${lt.label}</div>
-        <div class="layer-card-badge">${lt.sublabel}</div>
-        <div class="layer-card-meta">${lt.heightLabel}</div>
-      </div>
-      <div class="layer-card-drag">⠿</div>
     `
+    el.querySelector('.blabel-explore').addEventListener('click', (e) => {
+      e.stopPropagation()
+      enterDetailView(i)
+    })
+    container.appendChild(el)
+    labelEls.push(el)
+  })
+}
 
-    if (isMobile) {
-      // Tap to add on top of stack
-      card.addEventListener('click', () => insertLayer(lt, stackLayers.length))
-    } else {
-      card.draggable = true
-      card.addEventListener('dragstart', () => {
-        draggedType = lt
-        card.classList.add('dragging')
-        showZones(true)
-      })
-      card.addEventListener('dragend', () => {
-        draggedType = null
-        card.classList.remove('dragging')
-        showZones(false)
-        setActiveSlot(-1)
-      })
-    }
+// Cache each section's bounding-box center in outerGroup local space.
+// Called once after the GLB loads. Uses the same temp-identity trick.
+function computeLabelAnchors() {
+  const rx = outerGroup.rotation.x, ry = outerGroup.rotation.y
+  const rz = outerGroup.rotation.z, py = outerGroup.position.y
 
-    container.appendChild(card)
+  outerGroup.rotation.set(0, 0, 0)
+  outerGroup.position.y = 0
+  outerGroup.updateMatrixWorld(true)
+
+  labelAnchors = sections.slice(0, 3).map(s => {
+    const box = new THREE.Box3()
+    s.mesh.traverse(child => { if (child.isMesh) box.expandByObject(child) })
+    const center = new THREE.Vector3()
+    box.getCenter(center)
+    return outerGroup.worldToLocal(center) // store in outerGroup local space
   })
 
-  if (isMobile) {
-    const hint = document.querySelector('.builder-hint')
-    if (hint) hint.innerHTML = 'Tap a layer below to add it.<br>Tap a layer in the stack to remove it.'
+  outerGroup.rotation.x = rx; outerGroup.rotation.y = ry
+  outerGroup.rotation.z = rz; outerGroup.position.y = py
+  outerGroup.updateMatrixWorld(true)
+}
+
+// Project each cached anchor to screen space and reposition the label element.
+function updateLabels() {
+  if (!labelEls.length || !labelAnchors.length) return
+  const rect = canvasEl.getBoundingClientRect()
+  const hidden = inDetailView || transitioning
+
+  labelEls.forEach((el, i) => {
+    if (hidden) { el.classList.remove('visible'); return }
+    const anchor = labelAnchors[i]
+    if (!anchor) return
+
+    const worldPos = anchor.clone()
+    outerGroup.localToWorld(worldPos)
+    const ndc = worldPos.clone().project(camera)
+
+    // Cull if behind camera
+    if (ndc.z > 1) { el.classList.remove('visible'); return }
+
+    el.style.left = ((ndc.x *  0.5 + 0.5) * rect.width)  + 'px'
+    el.style.top  = ((ndc.y * -0.5 + 0.5) * rect.height) + 'px'
+    el.classList.add('visible')
+  })
+}
+
+function setLabelNames(cfg) {
+  labelEls.forEach((el, i) => {
+    const nameEl = el.querySelector('.blabel-name')
+    if (nameEl) nameEl.textContent = cfg.pods[i] ?? ''
+  })
+}
+
+// ── Drop animation (config selection) ───────────────────────
+// Sections start from sky (restZ - DROP_OFFSET) and fall into place.
+function playDrop() {
+  if (!sections.length) return
+  sections.forEach(s => gsap.killTweensOf(s.mesh.position))
+  sections.forEach(s => { s.mesh.position.z = s.restZ - DROP_OFFSET })
+
+  const tl = gsap.timeline()
+  sections.forEach((s, i) => {
+    tl.to(s.mesh.position, {
+      z: s.restZ,
+      duration: 0.72,
+      ease: 'power3.out',
+    }, i * 0.18)
+  })
+}
+
+// ── Pod detail view ──────────────────────────────────────────
+// Computes the world-space bounding box of a section as it will sit after
+// outerGroup settles to identity. Returns {center, camPos} so the camera
+// is perfectly framed over the section's actual geometry, not just its origin.
+// All done synchronously before the next render — no visual glitch.
+function getSectionDetailSetup(sectionIndex) {
+  const rx = outerGroup.rotation.x
+  const ry = outerGroup.rotation.y
+  const rz = outerGroup.rotation.z
+  const py = outerGroup.position.y
+
+  outerGroup.rotation.set(0, 0, 0)
+  outerGroup.position.y = 0
+  outerGroup.updateMatrixWorld(true)
+
+  // Build bounding box from all meshes in this section
+  const box = new THREE.Box3()
+  sections[sectionIndex].mesh.traverse(child => {
+    if (child.isMesh) box.expandByObject(child)
+  })
+
+  const center = new THREE.Vector3()
+  const size   = new THREE.Vector3()
+  box.getCenter(center)
+  box.getSize(size)
+
+  // Camera height: far enough to see the full diameter with FOV=40° + 30% margin
+  // tan(20°) ≈ 0.364; constraining axis is whichever is larger (X or Z)
+  const halfSpan = Math.max(size.x, size.z) / 2
+  const height   = Math.max((halfSpan / Math.tan(THREE.MathUtils.degToRad(20))) * 1.4, 3.5)
+  const camPos   = new THREE.Vector3(center.x, center.y + height, center.z + 0.05)
+
+  outerGroup.rotation.x = rx
+  outerGroup.rotation.y = ry
+  outerGroup.rotation.z = rz
+  outerGroup.position.y = py
+  outerGroup.updateMatrixWorld(true)
+
+  return { center, camPos }
+}
+
+function enterDetailView(sectionIndex) {
+  if (inDetailView || transitioning || !modelLoaded) return
+  transitioning = true
+
+  // Stop idle rotation
+  idleActive = false
+  // Snap rotation.y to a clean value so the top-down view is canonical
+  gsap.to(outerGroup.rotation, { y: 0, duration: 0.4, ease: 'power2.out' })
+
+  // Fly non-selected sections off (below selected fly down, above fly up)
+  // local +Z = world -Y (down); local -Z = world +Y (up)
+  sections.forEach((s, i) => {
+    if (i === sectionIndex) return
+    const dir = i < sectionIndex ? FLY_OFFSET : -FLY_OFFSET
+    gsap.to(s.mesh.position, {
+      z: s.restZ + dir,
+      duration: 0.55,
+      ease: 'power2.in',
+      delay: 0.05,
+    })
+  })
+
+  // Remove tilt + center outerGroup so camera can look straight down
+  gsap.to(outerGroup.rotation, {
+    x: 0,
+    z: 0,
+    duration: 0.85,
+    ease: 'power2.inOut',
+  })
+  gsap.to(outerGroup.position, {
+    y: 0,
+    duration: 0.85,
+    ease: 'power2.inOut',
+  })
+
+  // Compute bounding-box center and appropriate camera height for this section.
+  const { center: podCenter, camPos: detailCamPos } = getSectionDetailSetup(sectionIndex)
+  const detailCamTarget = podCenter.clone()
+
+  // Sweep camera above the pod
+  gsap.to(camera.position, {
+    x: detailCamPos.x,
+    y: detailCamPos.y,
+    z: detailCamPos.z,
+    duration: 1.05,
+    ease: 'power2.inOut',
+  })
+  gsap.to(cameraTarget, {
+    x: detailCamTarget.x,
+    y: detailCamTarget.y,
+    z: detailCamTarget.z,
+    duration: 1.05,
+    ease: 'power2.inOut',
+    onComplete: () => {
+      transitioning = false
+      inDetailView  = true
+    },
+  })
+
+  // Show back button
+  document.getElementById('pod-back-btn')?.classList.add('visible')
+  // Hide selected-config info overlay so it doesn't clutter the top-down view
+  document.querySelector('.builder-selected-info')?.classList.add('hidden')
+  // On mobile: slide the config panel away to give the 3D view full height
+  document.querySelector('.builder-layout')?.classList.add('detail-active')
+
+  // Show pod detail panel
+  const cfg    = CONFIGS.find(c => c.id === activeConfigId)
+  const podName = cfg?.pods[sectionIndex] ?? CLICKABLE_LAYERS[sectionIndex]
+  showPodPanel(podName)
+}
+
+function exitDetailView() {
+  if (!inDetailView || transitioning) return
+  transitioning = true
+  inDetailView  = false
+
+  // Hide back button immediately
+  document.getElementById('pod-back-btn')?.classList.remove('visible')
+  document.querySelector('.builder-selected-info')?.classList.remove('hidden')
+  document.querySelector('.builder-layout')?.classList.remove('detail-active')
+  hidePodPanel()
+
+  // Restore camera
+  gsap.to(camera.position, {
+    x: CAMERA_REST_POS.x,
+    y: CAMERA_REST_POS.y,
+    z: CAMERA_REST_POS.z,
+    duration: 1.0,
+    ease: 'power2.inOut',
+  })
+  gsap.to(cameraTarget, {
+    x: CAMERA_REST_TARGET.x,
+    y: CAMERA_REST_TARGET.y,
+    z: CAMERA_REST_TARGET.z,
+    duration: 1.0,
+    ease: 'power2.inOut',
+    onComplete: () => {
+      idleActive    = true
+      transitioning = false
+    },
+  })
+
+  // Restore outerGroup tilt
+  gsap.to(outerGroup.rotation, {
+    x: OUTER_REST_ROT_X,
+    z: OUTER_REST_ROT_Z,
+    duration: 0.9,
+    ease: 'power2.inOut',
+  })
+  gsap.to(outerGroup.position, {
+    y: OUTER_REST_POS_Y,
+    duration: 0.9,
+    ease: 'power2.inOut',
+  })
+
+  // Fly all sections back to rest (reassemble)
+  sections.forEach((s, i) => {
+    gsap.to(s.mesh.position, {
+      z: s.restZ,
+      duration: 0.7,
+      ease: 'power3.out',
+      delay: 0.25 + i * 0.08,
+    })
+  })
+}
+
+// ── Pod detail panel ─────────────────────────────────────────
+function showPodPanel(podName) {
+  const info = POD_INFO[podName]
+  const panel = document.getElementById('pod-detail-panel')
+  if (!panel) return
+
+  document.getElementById('pod-detail-name').textContent = podName
+  document.getElementById('pod-detail-desc').textContent = info?.desc ?? ''
+  const specsList = document.getElementById('pod-detail-specs')
+  specsList.innerHTML = (info?.specs ?? []).map(s => `<li>${s}</li>`).join('')
+  document.getElementById('pod-detail-examples').textContent = info?.examples ?? ''
+
+  panel.classList.add('visible')
+}
+
+function hidePodPanel() {
+  document.getElementById('pod-detail-panel')?.classList.remove('visible')
+}
+
+// ── Config selection ─────────────────────────────────────────
+let activeConfigId = null
+
+function updateOverlay(cfg) {
+  const nameEl   = document.getElementById('selected-config-name')
+  const descEl   = document.getElementById('selected-config-desc')
+  const podsEl   = document.getElementById('selected-config-pods')
+  const stackEl  = document.getElementById('selected-config-common-stack')
+  if (nameEl) nameEl.textContent = cfg.name
+  if (descEl) descEl.textContent = cfg.tagline
+  if (podsEl) podsEl.innerHTML = cfg.pods
+    .map(p => `<span class="pod-tag">${p}</span>`)
+    .join('')
+  if (stackEl) stackEl.textContent = cfg.commonStack || ''
+}
+
+function selectConfig(cfg, cardEl) {
+  if (cfg.id === activeConfigId && !inDetailView) return
+  // If in detail view, exit first then replay
+  if (inDetailView) exitDetailView()
+  activeConfigId = cfg.id
+
+  document.querySelectorAll('.config-card').forEach(c => c.classList.remove('active'))
+  cardEl.classList.add('active')
+
+  updateOverlay(cfg)
+  setLabelNames(cfg)
+
+  if (modelLoaded) {
+    const delay = inDetailView ? 800 : 0
+    setTimeout(() => playDrop(), delay)
   }
 }
 
-const dropTarget = document.getElementById('drop-target')
+// ── Populate panel ───────────────────────────────────────────
+function populatePanel() {
+  const list = document.getElementById('config-list')
+  if (!list) return
 
-dropTarget.addEventListener('dragover', (e) => {
-  e.preventDefault()
-  if (!draggedType) return
-  setActiveSlot(nearestSlot(e.clientY))
-})
+  CONFIGS.forEach((cfg, i) => {
+    const card = document.createElement('div')
+    card.className = 'config-card' + (i === 0 ? ' active' : '')
+    card.dataset.id = cfg.id
+    card.innerHTML = `
+      <div class="config-card-accent" style="background:${cfg.accent}"></div>
+      <div class="config-card-body">
+        <div class="config-card-name">${cfg.name}</div>
+        <div class="config-card-tagline">${cfg.tagline}</div>
+        <div class="config-card-count">${cfg.pods.length} pods</div>
+      </div>
+      <div class="config-card-arrow">→</div>
+    `
+    card.addEventListener('click', () => selectConfig(cfg, card))
+    list.appendChild(card)
+  })
 
-dropTarget.addEventListener('dragleave', (e) => {
-  if (!dropTarget.contains(e.relatedTarget)) setActiveSlot(-1)
-})
+  activeConfigId = CONFIGS[0].id
+  updateOverlay(CONFIGS[0])
+}
 
-dropTarget.addEventListener('drop', (e) => {
-  e.preventDefault()
-  if (!draggedType || activeSlot < 0) return
-  insertLayer(draggedType, activeSlot)
-  showZones(false)
-  setActiveSlot(-1)
-})
-
-// ── Click a layer in the 3D scene to remove it ─────────────────────────────────
+// ── Raycaster: click → enter detail / hover → cursor ────────
 const raycaster = new THREE.Raycaster()
 const mouse     = new THREE.Vector2()
 
+function getClickableMeshes() {
+  const result = []
+  sections.forEach((s, i) => {
+    if (!CLICKABLE_LAYERS.includes(LAYER_ORDER[i])) return
+    s.mesh.traverse(m => {
+      if (m.isMesh) result.push({ mesh: m, index: i })
+    })
+  })
+  return result
+}
+
 canvasEl.addEventListener('click', (e) => {
-  if (draggedType) return   // ignore stray clicks during drag
+  if (inDetailView || transitioning || !modelLoaded) return
   const rect = canvasEl.getBoundingClientRect()
   mouse.x =  ((e.clientX - rect.left) / rect.width)  * 2 - 1
   mouse.y = -((e.clientY - rect.top)  / rect.height) * 2 + 1
   raycaster.setFromCamera(mouse, camera)
 
-  const allMeshes = []
-  meshGroups.forEach((mg, gi) => {
-    mg.traverse(child => {
-      if (child.isMesh) { child.userData.groupIndex = gi; allMeshes.push(child) }
-    })
-  })
-
-  const hits = raycaster.intersectObjects(allMeshes)
+  const candidates = getClickableMeshes()
+  const hits = raycaster.intersectObjects(candidates.map(c => c.mesh))
   if (hits.length > 0) {
-    const gi = hits[0].object.userData.groupIndex
-    if (gi !== undefined) removeLayer(gi)
+    const hitMesh = hits[0].object
+    const found   = candidates.find(c => c.mesh === hitMesh)
+    if (found) enterDetailView(found.index)
   }
 })
 
-// ── Render loop ────────────────────────────────────────────────────────────────
+canvasEl.addEventListener('mousemove', (e) => {
+  if (inDetailView || transitioning || !modelLoaded) {
+    canvasEl.style.cursor = 'default'
+    return
+  }
+  const rect = canvasEl.getBoundingClientRect()
+  mouse.x =  ((e.clientX - rect.left) / rect.width)  * 2 - 1
+  mouse.y = -((e.clientY - rect.top)  / rect.height) * 2 + 1
+  raycaster.setFromCamera(mouse, camera)
+
+  const candidates = getClickableMeshes()
+  const hits = raycaster.intersectObjects(candidates.map(c => c.mesh))
+  canvasEl.style.cursor = hits.length > 0 ? 'pointer' : 'default'
+})
+
+// Touch: treat tap as click on mobile
+canvasEl.addEventListener('touchend', (e) => {
+  if (inDetailView || transitioning || !modelLoaded) return
+  const touch = e.changedTouches[0]
+  const rect  = canvasEl.getBoundingClientRect()
+  mouse.x =  ((touch.clientX - rect.left) / rect.width)  * 2 - 1
+  mouse.y = -((touch.clientY - rect.top)  / rect.height) * 2 + 1
+  raycaster.setFromCamera(mouse, camera)
+
+  const candidates = getClickableMeshes()
+  const hits = raycaster.intersectObjects(candidates.map(c => c.mesh))
+  if (hits.length > 0) {
+    const hitMesh = hits[0].object
+    const found   = candidates.find(c => c.mesh === hitMesh)
+    if (found) enterDetailView(found.index)
+  }
+}, { passive: true })
+
+// Back button
+document.getElementById('pod-back-btn')?.addEventListener('click', exitDetailView)
+
+// ── Render loop ──────────────────────────────────────────────
 const clock = new THREE.Clock()
 function animate() {
   requestAnimationFrame(animate)
   const delta = clock.getDelta()
-  stackGroup.rotation.y += 0.004 * delta * 60
+  if (idleActive) outerGroup.rotation.y += 0.004 * delta * 60
+  camera.lookAt(cameraTarget)
+  updateLabels()
   renderer.render(scene, camera)
 }
 
-// ── Resize ─────────────────────────────────────────────────────────────────────
+// ── Resize ───────────────────────────────────────────────────
 new ResizeObserver(() => {
   const { w, h } = cSize()
   camera.aspect = w / h
   camera.updateProjectionMatrix()
   renderer.setSize(w, h)
-  updateDropZones()
 }).observe(wrap)
 
-// ── Init ───────────────────────────────────────────────────────────────────────
+// ── Init ─────────────────────────────────────────────────────
 populatePanel()
-initStack()
+initLabels(CONFIGS[0])
 animate()
-showZones(false)
-document.getElementById('reset-btn').addEventListener('click', resetStack)
+loadGLB(CONFIGS[0].glb, () => playDrop())

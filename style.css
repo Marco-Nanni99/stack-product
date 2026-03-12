@@ -35,6 +35,13 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem 3rem;
+  background: #1A2E48;
+  transform: translateY(0);
+  transition: transform 0.35s ease;
+}
+
+.nav.nav--hidden {
+  transform: translateY(-100%);
 }
 
 .nav-logo {
@@ -324,7 +331,7 @@ section h2 {
 /* ── LAYERS ──────────────────────────── */
 .layers {
   padding: 8rem 6%;
-  background: var(--surface);
+  background: #223757;
   border-top: 1px solid var(--border);
 }
 

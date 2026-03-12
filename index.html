@@ -75,7 +75,7 @@
   <section id="about" class="about">
     <div class="about-inner">
       <div class="about-text">
-        <div class="section-eyebrow">About the product</div>
+        <div class="section-eyebrow">About pilr</div>
         <h2>A better way to<br>travel with your supplements.</h2>
         <p>Staying consistent shouldn't require full-size bottles, ziploc bags, or unnecessary containers. Pilr packs a full week's supply of your daily supplement stack into one seamless system. Designed to effortlessly move with you and keep your routine on track, no matter where you are.</p>
         <a href="#contact" class="btn">Get early access</a>
@@ -168,7 +168,7 @@
       </form>
     </div>
     <div class="contact-footer">
-      <span>© 2026 STACK. All rights reserved.</span>
+      <span>© 2026 pilr. All rights reserved.</span>
     </div>
   </section>
 
@@ -187,6 +187,20 @@
     hamburger.addEventListener('click', toggleMenu)
     overlay.addEventListener('click', closeMenu)
     navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu))
+
+    // Hide nav on scroll down, reveal on scroll up
+    const nav = document.querySelector('.nav')
+    let lastY = 0
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY
+      if (y > lastY && y > 80) {
+        nav.classList.add('nav--hidden')
+        closeMenu()
+      } else {
+        nav.classList.remove('nav--hidden')
+      }
+      lastY = y
+    }, { passive: true })
   </script>
 </body>
 </html>
