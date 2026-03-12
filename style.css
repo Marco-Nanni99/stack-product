@@ -1,7 +1,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #2F4460;
+  --bg: #1A2E48;
   --surface: #1F2A38;
   --border: rgba(244,244,244,0.10);
   --text: #F4F4F4;
@@ -119,6 +119,7 @@ body {
 .label-right .label-dot { background: var(--accent-teal); box-shadow: 0 0 8px var(--accent-teal); }
 .label-left  .label-dot { background: var(--accent-blue);  box-shadow: 0 0 8px var(--accent-blue); }
 #label-snack  .label-dot { background: var(--accent-purple); box-shadow: 0 0 8px var(--accent-purple); }
+#label-dessert .label-dot { background: #8BC8A0; box-shadow: 0 0 8px #8BC8A0; }
 
 .label-title {
   font-size: 0.7rem;
@@ -158,8 +159,8 @@ body {
 }
 
 .hero-title span {
-  color: #2F4460;
-  -webkit-text-stroke: 2px rgba(244,244,244,0.45);
+  color: #1A2E48;
+  -webkit-text-stroke: 2px rgba(244,244,244,0.85);
   paint-order: stroke fill;
 }
 
@@ -225,6 +226,7 @@ section h2 {
 .about {
   padding: 8rem 6%;
   border-top: 1px solid var(--border);
+  background: #1A2E48;
 }
 
 .about-inner {
@@ -299,22 +301,24 @@ section h2 {
   gap: 2.5rem;
 }
 
+.stat {
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
 .stat-num {
-  font-size: 2.8rem;
-  font-weight: 900;
-  letter-spacing: -0.03em;
+  font-size: 1.76rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   line-height: 1;
   margin-bottom: 0.4rem;
-  background: linear-gradient(135deg, var(--text) 0%, rgba(244,244,244,0.5) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text);
 }
 
 .stat-label {
-  font-size: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.75;
   color: var(--muted);
-  letter-spacing: 0.05em;
 }
 
 /* ── LAYERS ──────────────────────────── */
@@ -338,7 +342,7 @@ section h2 {
 }
 
 .layer-card {
-  background: var(--bg);
+  background: #1A2E48;
   border: 1px solid var(--border);
   padding: 2.5rem 2rem;
   transition: border-color 0.3s, transform 0.3s;
@@ -543,7 +547,7 @@ section h2 {
 
   /* Stats grid — scale down so both columns fit */
   .about-stats { gap: 1.75rem 1rem; }
-  .stat-num { font-size: 1.8rem; }
+  .stat-num { font-size: 1.3rem; }
 
   /* Contact form stacks vertically */
   .contact-form { flex-direction: column; }
