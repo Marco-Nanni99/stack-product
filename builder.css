@@ -24,6 +24,7 @@ body.builder-page {
   height: calc(100vh - 72px);
   margin-top: 72px;
   overflow: hidden;
+  position: relative;
 }
 
 /* ── Canvas area ──────────────────────────────────────────── */
@@ -488,6 +489,11 @@ body.builder-page {
     min-height: 0;
   }
 
+  /* In detail view: canvas takes ~55% so the pod info panel has room below */
+  .builder-layout.detail-active .builder-canvas-wrap {
+    flex: 0 0 55%;
+  }
+
   /* Hide the bottom-left overlay on mobile — too cramped */
   .builder-selected-info { display: none; }
 
@@ -569,20 +575,34 @@ body.builder-page {
     padding: 0.6rem 1.25rem;
   }
 
-  /* Pod detail panel: anchored to bottom of canvas on mobile */
+  /* Pod detail panel: block section below canvas on mobile */
   .pod-detail-panel {
-    top: auto;
-    bottom: 1.25rem;
-    left: 1rem;
-    right: 1rem;
-    width: auto;
-    transform: translateY(12px);
-    max-height: 42%;
-    overflow-y: auto;
+    position: relative;
+    top: auto; left: auto; right: auto; bottom: auto;
+    width: 100%;
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
+    background: var(--surface);
+    border: none;
+    border-top: 1px solid var(--border);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    padding: 1.25rem 1.5rem 1.5rem;
+    max-height: none;
+    overflow-y: visible;
+    /* hidden until detail view — slide up from below */
+    display: none;
+    flex-shrink: 0;
+    transition: none;
+  }
+
+  .builder-layout.detail-active .pod-detail-panel {
+    display: block;
   }
 
   .pod-detail-panel.visible {
-    transform: translateY(0);
+    transform: none;
   }
 }
 

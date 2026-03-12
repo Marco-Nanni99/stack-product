@@ -49,15 +49,6 @@
       <!-- Pod labels (positioned by JS each frame) -->
       <div id="builder-labels" class="blabel-container"></div>
 
-      <!-- Pod detail panel (left side, visible only in detail view) -->
-      <div class="pod-detail-panel" id="pod-detail-panel">
-        <div class="pod-detail-name" id="pod-detail-name"></div>
-        <div class="pod-detail-desc" id="pod-detail-desc"></div>
-        <ul class="pod-detail-specs" id="pod-detail-specs"></ul>
-        <div class="pod-detail-examples-label">Common supplements</div>
-        <div class="pod-detail-examples" id="pod-detail-examples"></div>
-      </div>
-
       <!-- Selected config info overlay (bottom-left) -->
       <div class="builder-selected-info">
         <div class="builder-selected-name" id="selected-config-name">—</div>
@@ -68,6 +59,15 @@
           <div class="builder-common-stack-text" id="selected-config-common-stack"></div>
         </div>
       </div>
+    </div>
+
+    <!-- Pod detail panel (desktop: absolute overlay left of canvas; mobile: section below canvas) -->
+    <div class="pod-detail-panel" id="pod-detail-panel">
+      <div class="pod-detail-name" id="pod-detail-name"></div>
+      <div class="pod-detail-desc" id="pod-detail-desc"></div>
+      <ul class="pod-detail-specs" id="pod-detail-specs"></ul>
+      <div class="pod-detail-examples-label">Common supplements</div>
+      <div class="pod-detail-examples" id="pod-detail-examples"></div>
     </div>
 
     <!-- RIGHT PANEL -->
