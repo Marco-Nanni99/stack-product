@@ -569,15 +569,15 @@ body.builder-page {
     padding: 0.6rem 1.25rem;
   }
 
-  /* Pod detail panel: sits below the back button inside the canvas */
+  /* Pod detail panel: anchored to bottom of canvas on mobile */
   .pod-detail-panel {
-    top: 4.5rem;
+    top: auto;
+    bottom: 1.25rem;
     left: 1rem;
     right: 1rem;
-    bottom: auto;
     width: auto;
-    transform: translateY(-8px);
-    max-height: calc(100% - 5.5rem);
+    transform: translateY(12px);
+    max-height: 42%;
     overflow-y: auto;
   }
 
