@@ -1,7 +1,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #1A2E48;
+  --bg: #1A2E48;        /* nav, 1A2E48 about, layers, body fallback */
   --surface: #1F2A38;
   --border: rgba(244,244,244,0.10);
   --text: #F4F4F4;
@@ -35,7 +35,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem 3rem;
-  background: #1A2E48;
+  background: var(--bg);
   transform: translateY(0);
   transition: transform 0.35s ease;
 }
@@ -233,7 +233,7 @@ section h2 {
 .about {
   padding: 8rem 6%;
   border-top: 1px solid var(--border);
-  background: #1A2E48;
+  background: var(--bg);
 }
 
 .about-inner {
