@@ -7,7 +7,7 @@ import { playExplodeIn, idleRotation, updateLabels, hoverExplode } from './anima
 
 // ── Renderer ──────────────────────────────────────────────────────────────────
 const canvas = document.getElementById('three-canvas')
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false })
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true })
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.toneMapping = THREE.ACESFilmicToneMapping

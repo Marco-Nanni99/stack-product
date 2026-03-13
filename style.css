@@ -542,8 +542,11 @@ section h2 {
   .nav-hamburger.open span:nth-child(2) { opacity: 0; }
   .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-  /* Hide floating 3D labels — too cramped on small screens */
-  .label { display: none; }
+  /* Compact floating 3D labels for mobile */
+  .label { display: flex; }
+  .label-title { font-size: 0.58rem; letter-spacing: 0.12em; }
+  .label-sub { display: none; }
+  .label-dot { width: 5px; height: 5px; }
 
   /* Hero copy: tighten for narrow viewport */
   .hero-copy { left: 5%; bottom: 8%; right: 5%; }

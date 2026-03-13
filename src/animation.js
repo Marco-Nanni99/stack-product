@@ -49,11 +49,13 @@ export function hoverExplode(sections, active) {
  * Lid has no label; bottom→snack, middle→main, top→dessert.
  */
 export function updateLabels(sections, camera, canvas) {
+  const mobile = window.innerWidth < 768
+  const ox = mobile ? 82 : 140
   const LABEL_MAP = {
-    bottom: { id: 'label-snack',   offset: { x: -140, y: 0 } },
-    middle: { id: 'label-main',    offset: {  x: 140, y: 0 } },
-    top:    { id: 'label-dessert', offset: { x: -140, y: 0 } },
-    lid:    { id: 'label-lid',     offset: {  x: 140, y: 0 } },
+    bottom: { id: 'label-snack',   offset: { x: -ox, y: 0 } },
+    middle: { id: 'label-main',    offset: {  x: ox, y: 0 } },
+    top:    { id: 'label-dessert', offset: { x: -ox, y: 0 } },
+    lid:    { id: 'label-lid',     offset: {  x: ox, y: 0 } },
   }
 
   const w = canvas.clientWidth
