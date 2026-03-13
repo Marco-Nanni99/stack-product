@@ -108,7 +108,7 @@ renderer.shadowMap.type      = THREE.PCFSoftShadowMap
 renderer.setSize(CW, CH)
 
 const scene = new THREE.Scene()
-scene.background = new THREE.Color(0x2F4460)
+scene.background = new THREE.Color(0x1A2E48)
 
 // ── Camera with animated look-at target ─────────────────────
 // We GSAP-animate both camera.position and cameraTarget each frame.

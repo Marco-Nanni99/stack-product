@@ -331,7 +331,7 @@ section h2 {
 /* ── LAYERS ──────────────────────────── */
 .layers {
   padding: 8rem 6%;
-  background: #223757;
+  background: #1A2E48;
   border-top: 1px solid var(--border);
 }
 
@@ -349,7 +349,7 @@ section h2 {
 }
 
 .layer-card {
-  background: #1A2E48;
+  background: #223757;
   border: 1px solid var(--border);
   padding: 2.5rem 2rem;
   transition: border-color 0.3s, transform 0.3s;

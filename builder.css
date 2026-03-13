@@ -349,7 +349,7 @@ body.builder-page {
 .builder-panel {
   width: 320px;
   flex-shrink: 0;
-  background: var(--surface);
+  background: #223757;
   border-left: 1px solid var(--border);
   display: flex;
   flex-direction: column;
