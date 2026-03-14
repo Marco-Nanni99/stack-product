@@ -10,39 +10,39 @@
   <canvas id="stack-hero-canvas" data-model="{{ model_src }}"></canvas>
 
   <!-- Floating section labels — positions updated by JS -->
-  <div class="sh-label sh-label-right" id="sh-label-lid">
+  <div class="sh-label sh-label-left" id="sh-label-lid">
+    <span class="sh-label-dot"></span>
     <div class="sh-label-content">
-      <div class="sh-label-title">Sealed Lid</div>
+      <div class="sh-label-title">Multi-Pod Lid</div>
+    </div>
+  </div>
+
+  <div class="sh-label sh-label-right" id="sh-label-dessert">
+    <div class="sh-label-content">
+      <div class="sh-label-title">Powder Pod</div>
     </div>
     <span class="sh-label-dot"></span>
   </div>
 
-  <div class="sh-label sh-label-left" id="sh-label-dessert">
+  <div class="sh-label sh-label-left" id="sh-label-main">
     <span class="sh-label-dot"></span>
     <div class="sh-label-content">
-      <div class="sh-label-title">Top</div>
+      <div class="sh-label-title">Hybrid Pod</div>
     </div>
   </div>
 
-  <div class="sh-label sh-label-right" id="sh-label-main">
+  <div class="sh-label sh-label-right" id="sh-label-snack">
     <div class="sh-label-content">
-      <div class="sh-label-title">Mid</div>
+      <div class="sh-label-title">Pill Pod</div>
     </div>
     <span class="sh-label-dot"></span>
-  </div>
-
-  <div class="sh-label sh-label-left" id="sh-label-snack">
-    <span class="sh-label-dot"></span>
-    <div class="sh-label-content">
-      <div class="sh-label-title">Bottom</div>
-    </div>
   </div>
 
   <!-- Hero copy — edit text directly here -->
   <div class="sh-hero-copy">
-    <div class="sh-hero-eyebrow">Modular · Sealed · Fresh</div>
-    <h2 class="sh-hero-title">Built for<br><span>Consistency.</span></h2>
-    <p class="sh-hero-sub">Three compartments. One cylinder.<br>Everything you need, perfectly layered.</p>
+    <div class="sh-hero-eyebrow">Pack · Stack · Go</div>
+    <h2 class="sh-hero-title"><span>Built For</span><br>Consistency</h2>
+    <p class="sh-hero-sub">Three Pods. One System.<br>A modern solution for organizing your daily supplements — wherever life takes you.</p>
   </div>
 
   <div class="sh-scroll-cue">
@@ -80,7 +80,7 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
 // ── Scene & camera ────────────────────────────────────────────────────────────
 const scene = new THREE.Scene()
-scene.background = new THREE.Color(0x2F4460)
+scene.background = new THREE.Color(0x1A2E48)
 
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 50)
 camera.position.set(0, 0.4, 7)

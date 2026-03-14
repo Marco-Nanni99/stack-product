@@ -6,7 +6,7 @@
 */
 
 .stack-hero-section {
-  --sh-bg:            #2F4460;
+  --sh-bg:            #1A2E48;
   --sh-text:          #F4F4F4;
   --sh-muted:         rgba(230, 230, 230, 0.60);
   --sh-accent-teal:   #8BB8C8;
@@ -54,9 +54,10 @@
   flex-shrink: 0;
 }
 
-.sh-label-right .sh-label-dot { background: var(--sh-accent-teal);  box-shadow: 0 0 8px var(--sh-accent-teal); }
-.sh-label-left  .sh-label-dot { background: var(--sh-accent-blue);   box-shadow: 0 0 8px var(--sh-accent-blue); }
-#sh-label-snack .sh-label-dot { background: var(--sh-accent-purple); box-shadow: 0 0 8px var(--sh-accent-purple); }
+.sh-label-right  .sh-label-dot { background: var(--sh-accent-teal);   box-shadow: 0 0 8px var(--sh-accent-teal); }
+.sh-label-left   .sh-label-dot { background: var(--sh-accent-blue);   box-shadow: 0 0 8px var(--sh-accent-blue); }
+#sh-label-snack  .sh-label-dot { background: var(--sh-accent-purple); box-shadow: 0 0 8px var(--sh-accent-purple); }
+#sh-label-dessert .sh-label-dot { background: #8BC8A0;                box-shadow: 0 0 8px #8BC8A0; }
 
 .sh-label-content { display: flex; flex-direction: column; }
 
@@ -95,8 +96,8 @@
 }
 
 .sh-hero-title span {
-  color: #2F4460;
-  -webkit-text-stroke: 2px rgba(244, 244, 244, 0.45);
+  color: #2b394d;
+  -webkit-text-stroke: 2px rgba(244, 244, 244, 0.85);
   paint-order: stroke fill;
 }
 

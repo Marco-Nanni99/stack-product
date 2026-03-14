@@ -1,0 +1,58 @@
+{{- 'stack-waitlist.css' | asset_url | stylesheet_tag -}}
+
+<section class="stack-waitlist-section">
+  <div class="sw-inner">
+    <div class="sw-eyebrow">Early Access</div>
+    <h2 class="sw-heading">Stay consistent,<br>wherever life takes you.</h2>
+    <p class="sw-body">Be the first to know when pilr is available and receive 10% off your first order.</p>
+    <form class="sw-form" id="sw-waitlist-form">
+      <input class="sw-input" type="email" placeholder="your@email.com" required />
+      <button class="sw-btn" type="submit">{{ section.settings.button_label }}</button>
+    </form>
+  </div>
+  <div class="sw-footer">
+    <span>{{ section.settings.footer_text }}</span>
+  </div>
+</section>
+
+<script>
+  (function () {
+    const form = document.getElementById('sw-waitlist-form')
+    if (!form) return
+    form.addEventListener('submit', function (e) {
+      e.preventDefault()
+      const email = form.querySelector('input[type="email"]').value
+      const btn   = form.querySelector('button[type="submit"]')
+      btn.textContent = 'You\'re on the list!'
+      btn.disabled = true
+      form.querySelector('input').disabled = true
+      // TODO: wire up to Klaviyo / Shopify customer form / your endpoint
+    })
+  })()
+</script>
+
+{% schema %}
+{
+  "name": "Stack Waitlist",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Notify"
+    },
+    {
+      "type": "text",
+      "id": "footer_text",
+      "label": "Footer text",
+      "default": "© 2026 pilr. All rights reserved."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stack Waitlist"
+    }
+  ]
+}
+{% endschema %}

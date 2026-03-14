@@ -1,0 +1,117 @@
+/* ── Stack Layers Section ───────────────────────────────────────────────────── */
+.stack-layers-section {
+  --sl-bg: #1A2E48;
+  --sl-text: #F4F4F4;
+  --sl-muted: #a0aabb;
+  --sl-surface: #1f2d40;
+  --sl-border: rgba(255,255,255,0.08);
+  background: var(--sl-bg);
+  color: var(--sl-text);
+  padding: 100px 24px;
+  font-family: 'Inter', sans-serif;
+}
+
+.sl-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.sl-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sl-muted);
+  margin-bottom: 16px;
+}
+
+.sl-heading {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0 0 56px;
+}
+
+/* ── Grid ── */
+.sl-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 860px) {
+  .sl-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Card ── */
+.sl-card {
+  background: var(--sl-surface);
+  border: 1px solid var(--sl-border);
+  border-radius: 16px;
+  padding: 32px 28px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: border-color 0.25s;
+}
+
+.sl-card:hover {
+  border-color: rgba(255,255,255,0.18);
+}
+
+.sl-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sl-num {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--sl-muted);
+}
+
+.sl-accent {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent, #8BB8C8);
+  opacity: 0.85;
+}
+
+.sl-card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.sl-card-body {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--sl-muted);
+  margin: 0;
+}
+
+.sl-card-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sl-card-list li {
+  font-size: 0.82rem;
+  color: var(--sl-muted);
+  padding-left: 14px;
+  position: relative;
+}
+
+.sl-card-list li::before {
+  content: '–';
+  position: absolute;
+  left: 0;
+  color: var(--sl-muted);
+}

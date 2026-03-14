@@ -1,0 +1,586 @@
+{{- 'stack-builder.css' | asset_url | stylesheet_tag -}}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+
+<div class="stack-builder-section">
+  <div class="sb-layout" id="sb-layout">
+
+    <!-- 3D Canvas -->
+    <div class="sb-canvas-wrap">
+      {%- assign model_src = section.settings.model_url | default: '' -%}
+      {%- if model_src == '' -%}{%- assign model_src = 'stack-bottle.glb' | asset_url -%}{%- endif -%}
+      <canvas id="sb-canvas" data-model="{{ model_src }}"></canvas>
+
+      <!-- Loading indicator -->
+      <div class="sb-loading" id="sb-loading">
+        <div class="sb-loading-dot"></div>
+        <div class="sb-loading-dot"></div>
+        <div class="sb-loading-dot"></div>
+      </div>
+
+      <!-- Back button (visible only in pod detail view) -->
+      <button class="sb-back-btn" id="sb-back-btn" aria-label="Back to full stack">← Back to stack</button>
+
+      <!-- Floating pod labels -->
+      <div id="sb-label-container" class="sb-label-container"></div>
+
+      <!-- Selected config info (bottom-left) -->
+      <div class="sb-selected-info" id="sb-selected-info">
+        <div class="sb-selected-name" id="sb-config-name">—</div>
+        <div class="sb-selected-tagline" id="sb-config-desc">Select a stack from the menu</div>
+        <div class="sb-selected-pods" id="sb-config-pods"></div>
+        <div class="sb-common-stack-wrap">
+          <div class="sb-common-stack-label">Common supplements</div>
+          <div class="sb-common-stack-text" id="sb-config-common"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pod detail panel (desktop: left overlay; mobile: section below canvas) -->
+    <div class="sb-pod-detail" id="sb-pod-detail">
+      <div class="sb-pod-detail-name" id="sb-pod-name"></div>
+      <div class="sb-pod-detail-desc" id="sb-pod-desc"></div>
+      <ul class="sb-pod-detail-specs" id="sb-pod-specs"></ul>
+      <div class="sb-pod-detail-examples-label">Common supplements</div>
+      <div class="sb-pod-detail-examples" id="sb-pod-examples"></div>
+    </div>
+
+    <!-- Right panel -->
+    <aside class="sb-panel">
+      <div class="sb-panel-head">
+        <div class="sb-panel-eyebrow">Popular Pilr Builds</div>
+        <h2>Choose your stack</h2>
+        <p>Click through the builds to find the stack that keeps your routine consistent anywhere</p>
+      </div>
+
+      <div class="sb-panel-list" id="sb-config-list">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="sb-panel-foot">
+        <button id="sb-cta-btn" class="sb-cta-btn" disabled>Loading…</button>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<!-- GSAP (UMD) must load before the module script -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+<script type="module">
+// ── CDN imports ───────────────────────────────────────────────────────────────
+import * as THREE    from 'https://esm.sh/three@0.183.2'
+import { GLTFLoader } from 'https://esm.sh/three@0.183.2/examples/jsm/loaders/GLTFLoader'
+
+const gsap = window.gsap
+
+// ── Add body class to lock scroll ─────────────────────────────────────────────
+document.body.classList.add('has-stack-builder')
+
+// ── Configurations ────────────────────────────────────────────────────────────
+const CONFIGS = [
+  {
+    id: 'classic',
+    name: 'Classic',
+    tagline: 'Your all-in-one daily stack',
+    pods: ['Base Pill Pod', 'Hybrid Pod', 'Powder Pod'],
+    commonStack: 'Vitamin D, Zinc, B12 → Fish Oil, Magnesium → Creatine',
+    accent: '#8BB8C8',
+  },
+  {
+    id: 'powder-heavy',
+    name: 'Powder Heavy',
+    tagline: 'For those whose routine leans more on powders',
+    pods: ['Base Pill Pod', 'Powder Pod', 'Powder Pod'],
+    commonStack: 'Vitamin D, Zinc, Multivitamin → Greens Powder → Collagen or Pre-Workout',
+    accent: '#7AAFC8',
+  },
+  {
+    id: 'capsule-loader',
+    name: 'Capsule Loader',
+    tagline: 'All capsules, no powders',
+    pods: ['Base Pill Pod', 'Hybrid Pod', 'Hybrid Pod'],
+    commonStack: 'B12, Zinc, Vitamin D → Fish Oil, CoQ10 → Magnesium, Turmeric',
+    accent: '#A89CC4',
+  },
+  {
+    id: 'minimalist',
+    name: 'Minimalist',
+    tagline: 'Just the essentials — light and compact',
+    pods: ['Base Pill Pod', 'Hybrid Pod'],
+    commonStack: 'Vitamin D, Zinc, Turmeric → Magnesium or Omega 3 or Electrolytes',
+    accent: '#A8C4A0',
+  },
+  {
+    id: 'serious-traveler',
+    name: 'Serious Traveler',
+    tagline: 'Skip the small stuff',
+    pods: ['Hybrid Pod', 'Powder Pod', 'Powder Pod'],
+    commonStack: 'Magnesium, Fish Oil, Turmeric → Creatine → Greens or Collagen',
+    accent: '#C4B89C',
+  },
+  {
+    id: 'biohacker',
+    name: 'Biohacker',
+    tagline: 'Maximum capacity',
+    pods: ['Base Pill Pod', 'Hybrid Pod', 'Hybrid Pod', 'Powder Pod'],
+    commonStack: "NMN, Ashwagandha, B Complex → Fish Oil, CoQ10 → Magnesium, Berberine → Creatine or Greens",
+    accent: '#C4A0B8',
+  },
+]
+
+const POD_INFO = {
+  'Base Pill Pod': {
+    desc: 'Carries a full week of small and medium-sized capsules — organized across 3 compartments for easy access.',
+    specs: ['Easy Dispense & Loading Mechanism', 'Height: 1 in.'],
+    examples: 'Vitamin D, Zinc, Multivitamins…',
+  },
+  'Hybrid Pod': {
+    desc: "Organize a week's supply of larger pill supplements — or remove the divider for powder storage.",
+    specs: ['2 capsule types or 1 powder? You choose.', 'Height: 2 in.'],
+    examples: 'Fish Oil, Magnesium, Electrolytes, Creatine…',
+  },
+  'Powder Pod': {
+    desc: "Store a full week's supply of your go-to powders. 1 or 10? Stack as many as you'd like.",
+    specs: ['Includes 5g scooper', 'Height: 2.5 in.'],
+    examples: 'Pre-Workout, Collagen, Greens Powder…',
+  },
+}
+
+// ── Constants ─────────────────────────────────────────────────────────────────
+const LAYER_ORDER      = ['bottom', 'middle', 'top', 'lid']
+const CLICKABLE_LAYERS = ['bottom', 'middle', 'top']
+const LABEL_SIDES      = ['right', 'left', 'right']
+const DROP_OFFSET      = 400
+const FLY_OFFSET       = 600
+
+// ── Renderer ──────────────────────────────────────────────────────────────────
+const canvasEl = document.getElementById('sb-canvas')
+const modelUrl = canvasEl.dataset.model
+const wrap     = canvasEl.parentElement
+const isMobile = window.innerWidth < 768
+
+function cSize() { return { w: wrap.clientWidth, h: wrap.clientHeight } }
+let { w: CW, h: CH } = cSize()
+
+const renderer = new THREE.WebGLRenderer({ canvas: canvasEl, antialias: true })
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+renderer.toneMapping         = THREE.ACESFilmicToneMapping
+renderer.toneMappingExposure = 1.1
+renderer.shadowMap.enabled   = !isMobile
+renderer.shadowMap.type      = THREE.PCFSoftShadowMap
+renderer.setSize(CW, CH)
+
+const scene = new THREE.Scene()
+scene.background = new THREE.Color(0x1A2E48)
+
+// ── Camera ────────────────────────────────────────────────────────────────────
+const CAMERA_REST_POS    = new THREE.Vector3(0, 0.4, 7)
+const CAMERA_REST_TARGET = new THREE.Vector3(isMobile ? 0 : -0.6, 0, 0)
+const camera = new THREE.PerspectiveCamera(40, CW / CH, 0.1, 50)
+camera.position.copy(CAMERA_REST_POS)
+const cameraTarget = CAMERA_REST_TARGET.clone()
+
+// ── Lights ────────────────────────────────────────────────────────────────────
+scene.add(new THREE.AmbientLight(0xffffff, 0.35))
+const key = new THREE.DirectionalLight(0xffffff, 4.5)
+key.position.set(5, 8, 6); key.castShadow = !isMobile
+key.shadow.mapSize.set(1024, 1024); key.shadow.bias = -0.001
+scene.add(key)
+const fill = new THREE.DirectionalLight(0xd0eeff, 1.8)
+fill.position.set(-5, 2, 4); scene.add(fill)
+const rim = new THREE.PointLight(0x8BB8C8, 7, 14)
+rim.position.set(-3, 2, -4); scene.add(rim)
+const accentLow = new THREE.PointLight(0x607090, 3, 10)
+accentLow.position.set(3, -4, 3); scene.add(accentLow)
+const topSpot = new THREE.PointLight(0xffffff, 8, 8)
+topSpot.position.set(0.5, 6, 2); scene.add(topSpot)
+
+const floor = new THREE.Mesh(
+  new THREE.CircleGeometry(9, 64),
+  new THREE.ShadowMaterial({ opacity: 0.55 })
+)
+floor.rotation.x = -Math.PI / 2
+floor.position.y = -2.4
+floor.receiveShadow = true
+scene.add(floor)
+
+// ── Outer group ───────────────────────────────────────────────────────────────
+const OUTER_REST_ROT_Z = THREE.MathUtils.degToRad(15)
+const OUTER_REST_ROT_X = THREE.MathUtils.degToRad(-8)
+const OUTER_REST_POS_Y = -2.2
+const outerGroup = new THREE.Group()
+outerGroup.rotation.z = OUTER_REST_ROT_Z
+outerGroup.rotation.x = OUTER_REST_ROT_X
+outerGroup.position.y = OUTER_REST_POS_Y
+scene.add(outerGroup)
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let sections      = []
+let modelLoaded   = false
+let labelEls      = []
+let labelAnchors  = []
+let idleActive    = true
+let inDetailView  = false
+let transitioning = false
+let activeConfigId = null
+
+// ── Load GLB ──────────────────────────────────────────────────────────────────
+new GLTFLoader().load(
+  modelUrl,
+  (gltf) => {
+    const glbScene = gltf.scene
+    glbScene.scale.setScalar(0.020)
+    glbScene.rotation.x = THREE.MathUtils.degToRad(90)
+    outerGroup.add(glbScene)
+
+    sections = []
+    LAYER_ORDER.forEach(name => {
+      let found = null
+      glbScene.traverse(child => { if (!found && child.name.toLowerCase() === name) found = child })
+      if (!found) { console.warn(`[STACK Builder] Layer "${name}" not found.`); return }
+      found.traverse(m => { if (m.isMesh) m.castShadow = true })
+      sections.push({ mesh: found, restZ: found.position.z })
+    })
+
+    modelLoaded = true
+    document.getElementById('sb-loading')?.classList.add('hidden')
+    computeLabelAnchors()
+    playDrop()
+
+    // Enable CTA button
+    const ctaBtn = document.getElementById('sb-cta-btn')
+    if (ctaBtn) { ctaBtn.disabled = false; ctaBtn.textContent = 'Add to Cart' }
+  },
+  undefined,
+  (err) => console.error('[STACK Builder] Failed to load GLB:', err)
+)
+
+// ── Label system ──────────────────────────────────────────────────────────────
+function initLabels(cfg) {
+  const container = document.getElementById('sb-label-container')
+  if (!container) return
+  container.innerHTML = ''
+  labelEls = []
+  CLICKABLE_LAYERS.forEach((_, i) => {
+    const side = LABEL_SIDES[i]
+    const name = cfg.pods[i] ?? ''
+    const el   = document.createElement('div')
+    el.className = `sb-label sb-label-${side}`
+    el.innerHTML = `
+      <div class="sb-label-dot"></div>
+      <div class="sb-label-line"></div>
+      <div class="sb-label-text">
+        <span class="sb-label-name">${name}</span>
+        <button class="sb-label-explore">View inside</button>
+      </div>
+    `
+    el.querySelector('.sb-label-explore').addEventListener('click', (e) => {
+      e.stopPropagation()
+      enterDetailView(i)
+    })
+    container.appendChild(el)
+    labelEls.push(el)
+  })
+}
+
+function computeLabelAnchors() {
+  const rx = outerGroup.rotation.x, ry = outerGroup.rotation.y
+  const rz = outerGroup.rotation.z, py = outerGroup.position.y
+  outerGroup.rotation.set(0, 0, 0)
+  outerGroup.position.y = 0
+  outerGroup.updateMatrixWorld(true)
+  labelAnchors = sections.slice(0, 3).map(s => {
+    const box = new THREE.Box3()
+    s.mesh.traverse(child => { if (child.isMesh) box.expandByObject(child) })
+    const center = new THREE.Vector3()
+    box.getCenter(center)
+    return outerGroup.worldToLocal(center)
+  })
+  outerGroup.rotation.x = rx; outerGroup.rotation.y = ry
+  outerGroup.rotation.z = rz; outerGroup.position.y = py
+  outerGroup.updateMatrixWorld(true)
+}
+
+function updateLabels() {
+  if (!labelEls.length || !labelAnchors.length) return
+  const rect   = canvasEl.getBoundingClientRect()
+  const hidden = inDetailView || transitioning
+  labelEls.forEach((el, i) => {
+    if (hidden) { el.classList.remove('visible'); return }
+    const anchor = labelAnchors[i]
+    if (!anchor) return
+    const worldPos = anchor.clone()
+    outerGroup.localToWorld(worldPos)
+    const ndc = worldPos.clone().project(camera)
+    if (ndc.z > 1) { el.classList.remove('visible'); return }
+    el.style.left = ((ndc.x *  0.5 + 0.5) * rect.width)  + 'px'
+    el.style.top  = ((ndc.y * -0.5 + 0.5) * rect.height) + 'px'
+    el.classList.add('visible')
+  })
+}
+
+function setLabelNames(cfg) {
+  labelEls.forEach((el, i) => {
+    const nameEl = el.querySelector('.sb-label-name')
+    if (nameEl) nameEl.textContent = cfg.pods[i] ?? ''
+  })
+}
+
+// ── Drop animation ────────────────────────────────────────────────────────────
+function playDrop() {
+  if (!sections.length) return
+  sections.forEach(s => gsap.killTweensOf(s.mesh.position))
+  sections.forEach(s => { s.mesh.position.z = s.restZ - DROP_OFFSET })
+  const tl = gsap.timeline()
+  sections.forEach((s, i) => {
+    tl.to(s.mesh.position, { z: s.restZ, duration: 0.72, ease: 'power3.out' }, i * 0.18)
+  })
+}
+
+// ── Pod detail view ───────────────────────────────────────────────────────────
+function getSectionDetailSetup(idx) {
+  const rx = outerGroup.rotation.x, ry = outerGroup.rotation.y
+  const rz = outerGroup.rotation.z, py = outerGroup.position.y
+  outerGroup.rotation.set(0, 0, 0)
+  outerGroup.position.y = 0
+  outerGroup.updateMatrixWorld(true)
+
+  const box = new THREE.Box3()
+  sections[idx].mesh.traverse(child => { if (child.isMesh) box.expandByObject(child) })
+  const center = new THREE.Vector3()
+  const size   = new THREE.Vector3()
+  box.getCenter(center); box.getSize(size)
+  const halfSpan = Math.max(size.x, size.z) / 2
+  const height   = Math.max((halfSpan / Math.tan(THREE.MathUtils.degToRad(20))) * 1.4, 3.5)
+  const camPos   = new THREE.Vector3(center.x, center.y + height, center.z + 0.05)
+
+  outerGroup.rotation.x = rx; outerGroup.rotation.y = ry
+  outerGroup.rotation.z = rz; outerGroup.position.y = py
+  outerGroup.updateMatrixWorld(true)
+  return { center, camPos }
+}
+
+function enterDetailView(idx) {
+  if (inDetailView || transitioning || !modelLoaded) return
+  transitioning = true
+  idleActive = false
+  gsap.to(outerGroup.rotation, { y: 0, duration: 0.4, ease: 'power2.out' })
+
+  // Fly other sections off-screen
+  sections.forEach((s, i) => {
+    if (i === idx) return
+    const dir = i < idx ? FLY_OFFSET : -FLY_OFFSET
+    gsap.to(s.mesh.position, { z: s.restZ + dir, duration: 0.55, ease: 'power2.in', delay: 0.05 })
+  })
+
+  // Flatten tilt
+  gsap.to(outerGroup.rotation, { x: 0, z: 0, duration: 0.85, ease: 'power2.inOut' })
+  gsap.to(outerGroup.position, { y: 0, duration: 0.85, ease: 'power2.inOut' })
+
+  // Animate camera to top-down view
+  const { center, camPos } = getSectionDetailSetup(idx)
+  gsap.to(camera.position, { x: camPos.x, y: camPos.y, z: camPos.z, duration: 1.05, ease: 'power2.inOut' })
+  gsap.to(cameraTarget, {
+    x: center.x, y: center.y, z: center.z,
+    duration: 1.05, ease: 'power2.inOut',
+    onComplete: () => { transitioning = false; inDetailView = true },
+  })
+
+  document.getElementById('sb-back-btn')?.classList.add('visible')
+  document.getElementById('sb-selected-info')?.classList.add('hidden')
+  document.getElementById('sb-layout')?.classList.add('sb-detail-active')
+
+  const cfg = CONFIGS.find(c => c.id === activeConfigId)
+  showPodPanel(cfg?.pods[idx] ?? CLICKABLE_LAYERS[idx])
+}
+
+function exitDetailView() {
+  if (!inDetailView || transitioning) return
+  transitioning = true
+  inDetailView  = false
+
+  document.getElementById('sb-back-btn')?.classList.remove('visible')
+  document.getElementById('sb-selected-info')?.classList.remove('hidden')
+  document.getElementById('sb-layout')?.classList.remove('sb-detail-active')
+  hidePodPanel()
+
+  // Restore camera
+  gsap.to(camera.position, { x: CAMERA_REST_POS.x, y: CAMERA_REST_POS.y, z: CAMERA_REST_POS.z, duration: 1.0, ease: 'power2.inOut' })
+  gsap.to(cameraTarget, {
+    x: CAMERA_REST_TARGET.x, y: CAMERA_REST_TARGET.y, z: CAMERA_REST_TARGET.z,
+    duration: 1.0, ease: 'power2.inOut',
+    onComplete: () => { idleActive = true; transitioning = false },
+  })
+
+  // Restore tilt
+  gsap.to(outerGroup.rotation, { x: OUTER_REST_ROT_X, z: OUTER_REST_ROT_Z, duration: 0.9, ease: 'power2.inOut' })
+  gsap.to(outerGroup.position, { y: OUTER_REST_POS_Y, duration: 0.9, ease: 'power2.inOut' })
+
+  // Reassemble
+  sections.forEach((s, i) => {
+    gsap.to(s.mesh.position, { z: s.restZ, duration: 0.7, ease: 'power3.out', delay: 0.25 + i * 0.08 })
+  })
+}
+
+// ── Pod detail panel ──────────────────────────────────────────────────────────
+function showPodPanel(podName) {
+  const info  = POD_INFO[podName]
+  const panel = document.getElementById('sb-pod-detail')
+  if (!panel) return
+  document.getElementById('sb-pod-name').textContent = podName
+  document.getElementById('sb-pod-desc').textContent = info?.desc ?? ''
+  document.getElementById('sb-pod-specs').innerHTML  = (info?.specs ?? []).map(s => `<li>${s}</li>`).join('')
+  document.getElementById('sb-pod-examples').textContent = info?.examples ?? ''
+  panel.classList.add('visible')
+}
+function hidePodPanel() {
+  document.getElementById('sb-pod-detail')?.classList.remove('visible')
+}
+
+// ── Config selection ──────────────────────────────────────────────────────────
+function updateOverlay(cfg) {
+  const el = (id) => document.getElementById(id)
+  el('sb-config-name').textContent  = cfg.name
+  el('sb-config-desc').textContent  = cfg.tagline
+  el('sb-config-pods').innerHTML    = cfg.pods.map(p => `<span class="sb-pod-tag">${p}</span>`).join('')
+  el('sb-config-common').textContent = cfg.commonStack || ''
+}
+
+function selectConfig(cfg, cardEl) {
+  if (cfg.id === activeConfigId && !inDetailView) return
+  if (inDetailView) exitDetailView()
+  activeConfigId = cfg.id
+  document.querySelectorAll('.sb-config-card').forEach(c => c.classList.remove('active'))
+  cardEl.classList.add('active')
+  updateOverlay(cfg)
+  setLabelNames(cfg)
+  if (modelLoaded) {
+    const delay = inDetailView ? 800 : 0
+    setTimeout(() => playDrop(), delay)
+  }
+}
+
+// ── Populate panel ────────────────────────────────────────────────────────────
+function populatePanel() {
+  const list = document.getElementById('sb-config-list')
+  if (!list) return
+  CONFIGS.forEach((cfg, i) => {
+    const card = document.createElement('div')
+    card.className = 'sb-config-card' + (i === 0 ? ' active' : '')
+    card.innerHTML = `
+      <div class="sb-card-accent" style="background:${cfg.accent}"></div>
+      <div class="sb-card-body">
+        <div class="sb-card-name">${cfg.name}</div>
+        <div class="sb-card-tagline">${cfg.tagline}</div>
+        <div class="sb-card-count">${cfg.pods.length} pods</div>
+      </div>
+      <div class="sb-card-arrow">→</div>
+    `
+    card.addEventListener('click', () => selectConfig(cfg, card))
+    list.appendChild(card)
+  })
+  activeConfigId = CONFIGS[0].id
+  updateOverlay(CONFIGS[0])
+}
+
+// ── Raycaster ─────────────────────────────────────────────────────────────────
+const raycaster = new THREE.Raycaster()
+const mouse     = new THREE.Vector2()
+
+function getClickableMeshes() {
+  const result = []
+  sections.forEach((s, i) => {
+    if (!CLICKABLE_LAYERS.includes(LAYER_ORDER[i])) return
+    s.mesh.traverse(m => { if (m.isMesh) result.push({ mesh: m, index: i }) })
+  })
+  return result
+}
+
+canvasEl.addEventListener('click', (e) => {
+  if (inDetailView || transitioning || !modelLoaded) return
+  const rect = canvasEl.getBoundingClientRect()
+  mouse.x =  ((e.clientX - rect.left) / rect.width)  * 2 - 1
+  mouse.y = -((e.clientY - rect.top)  / rect.height) * 2 + 1
+  raycaster.setFromCamera(mouse, camera)
+  const candidates = getClickableMeshes()
+  const hits = raycaster.intersectObjects(candidates.map(c => c.mesh))
+  if (hits.length > 0) {
+    const found = candidates.find(c => c.mesh === hits[0].object)
+    if (found) enterDetailView(found.index)
+  }
+})
+
+canvasEl.addEventListener('mousemove', (e) => {
+  if (inDetailView || transitioning || !modelLoaded) { canvasEl.style.cursor = 'default'; return }
+  const rect = canvasEl.getBoundingClientRect()
+  mouse.x =  ((e.clientX - rect.left) / rect.width)  * 2 - 1
+  mouse.y = -((e.clientY - rect.top)  / rect.height) * 2 + 1
+  raycaster.setFromCamera(mouse, camera)
+  const hits = raycaster.intersectObjects(getClickableMeshes().map(c => c.mesh))
+  canvasEl.style.cursor = hits.length > 0 ? 'pointer' : 'default'
+})
+
+canvasEl.addEventListener('touchend', (e) => {
+  if (inDetailView || transitioning || !modelLoaded) return
+  const touch = e.changedTouches[0]
+  const rect  = canvasEl.getBoundingClientRect()
+  mouse.x =  ((touch.clientX - rect.left) / rect.width)  * 2 - 1
+  mouse.y = -((touch.clientY - rect.top)  / rect.height) * 2 + 1
+  raycaster.setFromCamera(mouse, camera)
+  const candidates = getClickableMeshes()
+  const hits = raycaster.intersectObjects(candidates.map(c => c.mesh))
+  if (hits.length > 0) {
+    const found = candidates.find(c => c.mesh === hits[0].object)
+    if (found) enterDetailView(found.index)
+  }
+}, { passive: true })
+
+document.getElementById('sb-back-btn')?.addEventListener('click', exitDetailView)
+
+// ── Render loop ───────────────────────────────────────────────────────────────
+const clock = new THREE.Clock()
+function animate() {
+  requestAnimationFrame(animate)
+  const delta = clock.getDelta()
+  if (idleActive) outerGroup.rotation.y += 0.004 * delta * 60
+  camera.lookAt(cameraTarget)
+  updateLabels()
+  renderer.render(scene, camera)
+}
+
+// ── Resize ────────────────────────────────────────────────────────────────────
+new ResizeObserver(() => {
+  const { w, h } = cSize()
+  camera.aspect = w / h
+  camera.updateProjectionMatrix()
+  renderer.setSize(w, h)
+}).observe(wrap)
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+populatePanel()
+initLabels(CONFIGS[0])
+animate()
+</script>
+
+{% schema %}
+{
+  "name": "Stack Builder",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "model_url",
+      "label": "3D Model URL",
+      "info": "Paste the full URL of stack-bottle.glb from Shopify Admin → Content → Files. Leave blank if the file is in the theme assets folder."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stack Builder"
+    }
+  ]
+}
+{% endschema %}

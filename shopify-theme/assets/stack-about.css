@@ -1,0 +1,114 @@
+/*
+  stack-about.css
+  Scoped styles for the Stack About Shopify section.
+  All classes are prefixed with .sa- to avoid conflicts with the theme.
+  Upload this file to your Shopify theme's assets/ folder.
+*/
+
+.stack-about-section {
+  --sa-bg:           #1A2E48;
+  --sa-surface:      #1F2A38;
+  --sa-border:       rgba(244, 244, 244, 0.10);
+  --sa-text:         #F4F4F4;
+  --sa-muted:        rgba(230, 230, 230, 0.60);
+  --sa-accent-teal:  #8BB8C8;
+
+  padding: 8rem 6%;
+  background: var(--sa-bg);
+  border-top: 1px solid var(--sa-border);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: var(--sa-text);
+}
+
+.sa-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+}
+
+/* ── Left: text block ─────────────────── */
+.sa-eyebrow {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sa-accent-teal);
+  margin-bottom: 1rem;
+}
+
+.sa-heading {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0 0 1.5rem;
+  color: var(--sa-text);
+}
+
+.sa-body {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--sa-muted);
+  margin-bottom: 2.5rem;
+  max-width: 460px;
+}
+
+.sa-btn {
+  display: inline-block;
+  padding: 0.85rem 2rem;
+  background: var(--sa-text);
+  color: var(--sa-surface);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+
+.sa-btn:hover { background: #E6E6E6; }
+
+/* ── Right: stats grid ────────────────── */
+.sa-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+}
+
+.sa-stat {
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--sa-border);
+}
+
+.sa-stat-num {
+  font-size: 1.76rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+  color: var(--sa-text);
+}
+
+.sa-stat-label {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--sa-muted);
+}
+
+/* ── Responsive ───────────────────────── */
+@media (max-width: 900px) {
+  .sa-inner { grid-template-columns: 1fr; gap: 3rem; }
+}
+
+@media (max-width: 600px) {
+  .stack-about-section { padding: 5rem 5%; }
+  .sa-stats { gap: 1.75rem 1rem; }
+  .sa-stat-num { font-size: 1.3rem; }
+}

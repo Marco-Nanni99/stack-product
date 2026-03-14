@@ -35,7 +35,7 @@ const CONFIGS = [
   },
   {
     id: 'minimalist',
-    name: 'The Minimalist',
+    name: 'Minimalist',
     tagline: 'Just the essentials — light and compact',
     pods: ['Base Pill Pod', 'Hybrid Pod'],
     commonStack: 'Vitamin D, Zinc, Turmeric → Magnesium or Omega 3 or Electrolytes',
@@ -44,7 +44,7 @@ const CONFIGS = [
   },
   {
     id: 'serious-traveler',
-    name: 'The Serious Traveler',
+    name: 'Serious Traveler',
     tagline: 'Skip the small stuff',
     pods: ['Hybrid Pod', 'Powder Pod', 'Powder Pod'],
     commonStack: 'Magnesium, Fish Oil, Turmeric → Creatine → Greens or Collagen',
@@ -53,7 +53,7 @@ const CONFIGS = [
   },
   {
     id: 'biohacker',
-    name: 'The Biohacker',
+    name: 'Biohacker',
     tagline: 'Maximum capacity',
     pods: ['Base Pill Pod', 'Hybrid Pod', 'Hybrid Pod', 'Powder Pod'],
     commonStack: 'NMN, Ashwagandha, B Complex → Fish Oil, CoQ10 or Creatine → Magnesium, Berberine or Lion\'s Mane → Creatine or Greens',

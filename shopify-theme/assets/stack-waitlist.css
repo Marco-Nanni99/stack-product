@@ -1,0 +1,108 @@
+/* ── Stack Waitlist Section ─────────────────────────────────────────────────── */
+.stack-waitlist-section {
+  --sw-bg: #131e2c;
+  --sw-text: #F4F4F4;
+  --sw-muted: #a0aabb;
+  --sw-border: rgba(255,255,255,0.1);
+  --sw-accent: #8BB8C8;
+  background: var(--sw-bg);
+  color: var(--sw-text);
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sw-inner {
+  max-width: 640px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 100px 24px 60px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.sw-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sw-muted);
+}
+
+.sw-heading {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.sw-body {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--sw-muted);
+  margin: 0;
+  max-width: 480px;
+}
+
+/* ── Form ── */
+.sw-form {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  max-width: 420px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.sw-input {
+  flex: 1 1 220px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--sw-border);
+  border-radius: 8px;
+  padding: 14px 18px;
+  color: var(--sw-text);
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.sw-input:focus {
+  border-color: var(--sw-accent);
+}
+
+.sw-input::placeholder {
+  color: var(--sw-muted);
+}
+
+.sw-btn {
+  background: var(--sw-text);
+  color: var(--sw-bg);
+  border: none;
+  border-radius: 8px;
+  padding: 14px 28px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: inherit;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+}
+
+.sw-btn:hover { opacity: 0.85; }
+.sw-btn:disabled { opacity: 0.5; cursor: default; }
+
+/* ── Footer ── */
+.sw-footer {
+  width: 100%;
+  padding: 24px;
+  text-align: center;
+  border-top: 1px solid var(--sw-border);
+  font-size: 0.8rem;
+  color: var(--sw-muted);
+}
