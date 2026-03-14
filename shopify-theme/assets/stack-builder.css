@@ -5,12 +5,6 @@
   Upload this file to your Shopify theme's assets/ folder.
 */
 
-/* Body override: prevent page scroll when builder is present */
-body.has-stack-builder {
-  overflow: hidden;
-  height: 100vh;
-}
-
 /* ── Section wrapper ──────────────────── */
 .stack-builder-section {
   --sb-bg:          #1A2E48;
@@ -23,9 +17,8 @@ body.has-stack-builder {
 
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: calc(100vh - var(--header-height, 90px));
   overflow: hidden;
-  padding-top: var(--header-height, 72px);
   font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   color: var(--sb-text);
@@ -452,7 +445,7 @@ body.has-stack-builder {
 
 /* ── Mobile ──────────────────────────── */
 @media (max-width: 768px) {
-  .stack-builder-section { padding-top: var(--header-height, 60px); }
+  .stack-builder-section { height: calc(100vh - var(--header-height, 60px)); }
 
   .sb-layout { flex-direction: column; }
 
