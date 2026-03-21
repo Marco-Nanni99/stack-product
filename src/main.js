@@ -10,8 +10,7 @@ const canvas = document.getElementById('three-canvas')
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true })
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.setSize(window.innerWidth, window.innerHeight)
-renderer.toneMapping = THREE.ACESFilmicToneMapping
-renderer.toneMappingExposure = 1.1
+renderer.toneMapping = THREE.NoToneMapping
 
 const isMobile = window.innerWidth < 768
 renderer.shadowMap.enabled = !isMobile
@@ -19,18 +18,19 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
 // ── Scene & Camera ────────────────────────────────────────────────────────────
 const scene = new THREE.Scene()
-scene.background = new THREE.Color(0x2b394d) // ← hero background — change this value
+scene.background = new THREE.Color(0x1A2E48)
 
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 50)
 camera.position.set(0, 0.4, 7)
 camera.lookAt(new THREE.Vector3(isMobile ? 0 : -1.2, 0, 0))
 
 // ── Lights — studio 3-point setup ─────────────────────────────────────────────
-const ambient = new THREE.AmbientLight(0xffffff, 0.35)
+// Low ambient so dark sides of product stay dark vs background
+const ambient = new THREE.AmbientLight(0xffffff, 0.18)
 scene.add(ambient)
 
-// KEY — strong white from upper-right-front
-const keyLight = new THREE.DirectionalLight(0xffffff, 4.5)
+// KEY — bright from upper-right-front, casts hard directional shadow
+const keyLight = new THREE.DirectionalLight(0xffffff, 6.5)
 keyLight.position.set(5, 8, 6)
 keyLight.castShadow = !isMobile
 keyLight.shadow.mapSize.set(2048, 2048)
@@ -43,13 +43,13 @@ keyLight.shadow.camera.bottom = -4
 keyLight.shadow.bias = -0.001
 scene.add(keyLight)
 
-// FILL — cool-white from the left
-const fillLight = new THREE.DirectionalLight(0xd0eeff, 1.8)
+// FILL — subtle cool fill from the left, kept weak so contrast is preserved
+const fillLight = new THREE.DirectionalLight(0xd0eeff, 0.8)
 fillLight.position.set(-5, 2, 4)
 scene.add(fillLight)
 
-// RIM — muted teal from behind-left
-const rimTeal = new THREE.PointLight(0x8BB8C8, 7, 14)
+// RIM — strong teal edge light from behind-left to separate product from background
+const rimTeal = new THREE.PointLight(0x8BB8C8, 14, 14)
 rimTeal.position.set(-3, 2, -4)
 scene.add(rimTeal)
 
@@ -59,14 +59,14 @@ accentLow.position.set(3, -4, 3)
 scene.add(accentLow)
 
 // TOP SPOT — tight white above for a hot-spot on the lid
-const topSpot = new THREE.PointLight(0xffffff, 8, 6)
+const topSpot = new THREE.PointLight(0xffffff, 10, 6)
 topSpot.position.set(0.5, 6, 2)
 scene.add(topSpot)
 
 // ── Floor (shadow only) ───────────────────────────────────────────────────────
 const floor = new THREE.Mesh(
   new THREE.CircleGeometry(9, 128),
-  new THREE.ShadowMaterial({ opacity: 0.55 })
+  new THREE.ShadowMaterial({ opacity: 0.80 })
 )
 floor.rotation.x = -Math.PI / 2
 floor.position.y = -2.4

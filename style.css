@@ -100,12 +100,13 @@ body {
   height: 100% !important;
 }
 
+
 /* Floating labels */
 .label {
   position: absolute;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0;
   opacity: 0;
   transition: opacity 0.4s;
   pointer-events: none;
@@ -128,17 +129,50 @@ body {
 #label-snack  .label-dot { background: var(--accent-purple); box-shadow: 0 0 8px var(--accent-purple); }
 #label-dessert .label-dot { background: #8BC8A0; box-shadow: 0 0 8px #8BC8A0; }
 
+.label-line {
+  display: block;
+  width: 36px;
+  height: 1px;
+  background: rgba(244,244,244,0.25);
+  flex-shrink: 0;
+}
+
+.label-content {
+  padding: 0 10px;
+  border-left: 1px solid rgba(244,244,244,0.15);
+}
+
+.label-right .label-content {
+  border-left: none;
+  border-right: 1px solid rgba(244,244,244,0.15);
+  padding: 0 10px;
+  text-align: right;
+}
+
 .label-title {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   color: var(--text);
 }
 
-.label-sub {
-  font-size: 0.65rem;
+.label-details {
+  list-style: none;
+  margin-top: 0.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+}
+
+.label-details li {
+  font-size: 0.58rem;
   color: var(--muted);
-  margin-top: 0.1rem;
+  letter-spacing: 0.04em;
+}
+
+.label-right .label-details li::after {
+  content: ' —';
+  opacity: 0.4;
 }
 
 /* Hero copy */
@@ -545,8 +579,9 @@ section h2 {
   /* Compact floating 3D labels for mobile */
   .label { display: flex; }
   .label-title { font-size: 0.58rem; letter-spacing: 0.12em; }
-  .label-sub { display: none; }
+  .label-details { display: none; }
   .label-dot { width: 5px; height: 5px; }
+  .label-line { width: 20px; }
 
   /* Hero copy: tighten for narrow viewport */
   .hero-copy { left: 5%; bottom: 8%; right: 5%; }
