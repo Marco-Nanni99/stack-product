@@ -16,7 +16,7 @@
     <a href="#hero" class="nav-logo"><img src="images/logov3.png" alt="Pilr" class="nav-logo-img"></a>
     <ul class="nav-links" id="nav-links">
       <li><a href="#hero">Home</a></li>
-      <li><a href="#about">About</a></li>
+      <li><a href="./about.html">About</a></li>
       <li><a href="#layers">Layers</a></li>
       <li><a href="#contact">Contact</a></li>
       <li><a href="./stack-builder.html" class="nav-cta">Make Your Stack</a></li>
@@ -195,6 +195,33 @@
     </div>
   </section>
 
+  <!-- DISCOUNT POPUP -->
+  <div class="popup-overlay" id="popup-overlay" role="dialog" aria-modal="true" aria-label="Early access offer">
+    <div class="popup-card">
+      <button class="popup-close" id="popup-close" aria-label="Close">&#x2715;</button>
+
+      <div class="popup-side popup-side-left">
+        <img src="./images/about_images/sec2.png" alt="" />
+      </div>
+
+      <div class="popup-content">
+        <img src="./images/logov3.png" alt="Pilr" class="popup-logo" />
+        <div class="popup-eyebrow">Early Access Offer</div>
+        <h2 class="popup-headline">You've Got<br><strong>10% Off</strong></h2>
+        <p class="popup-sub">Sign up to receive 10% off when we launch — be the first to know.</p>
+        <form class="popup-form" id="popup-form">
+          <input type="email" placeholder="your@email.com" required />
+          <button type="submit" class="btn">Notify Me</button>
+        </form>
+        <button class="popup-skip" id="popup-skip">No thanks</button>
+      </div>
+
+      <div class="popup-side popup-side-right">
+        <img src="./images/about_images/sec3.png" alt="" />
+      </div>
+    </div>
+  </div>
+
   <script type="module" src="/src/main.js"></script>
   <script type="module" src="/src/shopify.js"></script>
 
@@ -210,6 +237,33 @@
     hamburger.addEventListener('click', toggleMenu)
     overlay.addEventListener('click', closeMenu)
     navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu))
+
+    // Discount popup — show after 30s, once per session
+    ;(function() {
+      if (sessionStorage.getItem('popup_seen')) return
+      const popupOverlay = document.getElementById('popup-overlay')
+      const popupClose   = document.getElementById('popup-close')
+      const popupSkip    = document.getElementById('popup-skip')
+      const popupForm    = document.getElementById('popup-form')
+
+      function showPopup() {
+        popupOverlay.classList.add('visible')
+        sessionStorage.setItem('popup_seen', '1')
+      }
+      function hidePopup() {
+        popupOverlay.classList.remove('visible')
+      }
+
+      setTimeout(showPopup, 30000)
+      popupClose.addEventListener('click', hidePopup)
+      popupSkip.addEventListener('click', hidePopup)
+      popupOverlay.addEventListener('click', e => { if (e.target === popupOverlay) hidePopup() })
+      popupForm.addEventListener('submit', e => {
+        e.preventDefault()
+        popupForm.innerHTML = '<p class="popup-thanks">You\'re on the list. Talk soon.</p>'
+        setTimeout(hidePopup, 2200)
+      })
+    })()
 
     // Hide nav on scroll down, reveal on scroll up
     const nav = document.querySelector('.nav')

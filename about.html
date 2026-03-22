@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>About — Pilr</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+  <style>
+    /* ── ABOUT PAGE ── */
+    .about-page {
+      padding-top: 120px;
+      padding-bottom: 6rem;
+    }
+
+    .about-page-hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem 5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .about-page-hero .section-eyebrow {
+      margin-bottom: 1.5rem;
+    }
+
+    .about-page-hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      color: var(--text);
+    }
+
+    .about-page-hero p {
+      font-size: 1.1rem;
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 600px;
+    }
+
+    /* ── STORY SECTIONS ── */
+    .story-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .story-section:last-child {
+      border-bottom: none;
+    }
+
+    .story-section-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .story-section-inner.text-only {
+      grid-template-columns: 1fr;
+      max-width: 620px;
+    }
+
+    .story-section-inner.img-right .story-text { order: 1; }
+    .story-section-inner.img-right .story-img  { order: 2; }
+
+    .story-section-inner.img-left .story-text  { order: 2; }
+    .story-section-inner.img-left .story-img   { order: 1; }
+
+    .story-num {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-teal);
+      margin-bottom: 1rem;
+    }
+
+    .story-text h2 {
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      margin-bottom: 1.25rem;
+      color: var(--text);
+    }
+
+    .story-text p {
+      font-size: 0.975rem;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    .story-text p + p {
+      margin-top: 1rem;
+    }
+
+    .story-img {
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .story-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ── CLOSING SIGNATURE ── */
+    .story-signature {
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--text);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .story-section-inner {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+
+      .story-section-inner.img-right .story-text,
+      .story-section-inner.img-left .story-text { order: 1; }
+      .story-section-inner.img-right .story-img,
+      .story-section-inner.img-left .story-img  { order: 2; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <div class="nav-overlay" id="nav-overlay"></div>
+  <nav class="nav">
+    <a href="./index.html" class="nav-logo"><img src="images/logov3.png" alt="Pilr" class="nav-logo-img"></a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="./index.html">Home</a></li>
+      <li><a href="./about.html">About</a></li>
+      <li><a href="./index.html#layers">Layers</a></li>
+      <li><a href="./index.html#contact">Contact</a></li>
+      <li><a href="./stack-builder.html" class="nav-cta">Make Your Stack</a></li>
+    </ul>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- PAGE -->
+  <main class="about-page">
+
+    <!-- INTRO -->
+    <div class="about-page-hero">
+      <div class="section-eyebrow">Our Story</div>
+      <h1>Built from a routine.<br>Designed for the real world.</h1>
+      <p>Two friends, one shared problem — and a system built to solve it.</p>
+    </div>
+
+    <!-- 01 — The Starting Point -->
+    <section class="story-section">
+      <div class="story-section-inner text-only">
+        <div class="story-text">
+          <div class="story-num">01 — The Starting Point</div>
+          <h2>We lived the same way.</h2>
+          <p>We met at UCLA and became close for one reason: we lived the same way. Same major, same schedule, same interests, same routine — to the gym, to class, to everything. Routine wasn't something we forced. It was just who we were.</p>
+          <p>Supplements became a serious part of that. Not because we were chasing extremes, but because we understood what consistency actually builds over time and the science fascinated us.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 — The Break in Routine -->
+    <section class="story-section">
+      <div class="story-section-inner img-right">
+        <div class="story-text">
+          <div class="story-num">02 — The Break in Routine</div>
+          <h2>Travel broke it every time.</h2>
+          <p>Upon graduating and starting to work corporate jobs we both realized that travel broke it every time. Powders didn't fit in pill containers. Ziploc bags spilled. Cheap organizers cracked. We realized we had the same problem. Most of the time, we just gave up — and starting over is never as easy as it sounds.</p>
+          <p>Nothing existed for the way we actually lived. It was either ziplocs, a Monday-through-Sunday undersized pill case from the drugstore, carrying full-size tubs that took up half a bag, or just skipping it altogether. Everything was a workaround. Nothing was a system.</p>
+        </div>
+        <div class="story-img">
+          <img src="./images/about_images/sec2.png" alt="The problem with travel and supplements" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 — Designing the System -->
+    <section class="story-section">
+      <div class="story-section-inner img-left">
+        <div class="story-img">
+          <img src="./images/about_images/sec3.png" alt="Designing Pilr" />
+        </div>
+        <div class="story-text">
+          <div class="story-num">03 — Designing the System</div>
+          <h2>So we built one.</h2>
+          <p>Something that could handle pills and powders together. Something modular — because some people carry creatine and that's it, and some people carry ten things. Something that fits your routine, not a generic version of it.</p>
+          <p>Nine prototypes in, we stopped trying to improve what already existed and started designing around how people actually live. The result is three pods, each with a purpose — and a system that finally makes consistency portable.</p>
+          <p>We didn't cut corners on materials either. Tritan for the pods — BPA-free, food-safe, built to last. An aluminum shell that feels like it belongs on a bathroom counter or in a gym bag, not in a dollar bin. This isn't something you replace. It's something you keep.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 — The Standard -->
+    <section class="story-section">
+      <div class="story-section-inner text-only">
+        <div class="story-text">
+          <div class="story-num">04 — The Standard</div>
+          <h2>Consistency is what drives results.</h2>
+          <p>Everyone who takes their health seriously knows this. The problem was never the routine — it was that nothing was built to protect it.</p>
+          <p>Pilr is. No matter where you are.</p>
+          <p class="story-signature">— Andrea &amp; Justin</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- DISCOUNT POPUP -->
+  <div class="popup-overlay" id="popup-overlay" role="dialog" aria-modal="true" aria-label="Early access offer">
+    <div class="popup-card">
+      <button class="popup-close" id="popup-close" aria-label="Close">&#x2715;</button>
+
+      <div class="popup-side popup-side-left">
+        <img src="./images/about_images/sec2.png" alt="" />
+      </div>
+
+      <div class="popup-content">
+        <img src="./images/logov3.png" alt="Pilr" class="popup-logo" />
+        <div class="popup-eyebrow">Early Access Offer</div>
+        <h2 class="popup-headline">You've Got<br><strong>10% Off</strong></h2>
+        <p class="popup-sub">Sign up to receive 10% off when we launch — be the first to know.</p>
+        <form class="popup-form" id="popup-form">
+          <input type="email" placeholder="your@email.com" required />
+          <button type="submit" class="btn">Notify Me</button>
+        </form>
+        <button class="popup-skip" id="popup-skip">No thanks</button>
+      </div>
+
+      <div class="popup-side popup-side-right">
+        <img src="./images/about_images/sec3.png" alt="" />
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="contact-footer" style="padding: 2rem 3rem;">
+    <span>© 2026 pilr. All rights reserved.</span>
+  </div>
+
+  <script>
+    const hamburger = document.getElementById('nav-hamburger')
+    const navLinks  = document.getElementById('nav-links')
+    const overlay   = document.getElementById('nav-overlay')
+
+    function openMenu()  { hamburger.classList.add('open'); navLinks.classList.add('open'); overlay.classList.add('open') }
+    function closeMenu() { hamburger.classList.remove('open'); navLinks.classList.remove('open'); overlay.classList.remove('open') }
+    function toggleMenu() { navLinks.classList.contains('open') ? closeMenu() : openMenu() }
+
+    hamburger.addEventListener('click', toggleMenu)
+    overlay.addEventListener('click', closeMenu)
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu))
+
+    // Discount popup — show after 30s, once per session
+    ;(function() {
+      if (sessionStorage.getItem('popup_seen')) return
+      const popupOverlay = document.getElementById('popup-overlay')
+      const popupClose   = document.getElementById('popup-close')
+      const popupSkip    = document.getElementById('popup-skip')
+      const popupForm    = document.getElementById('popup-form')
+
+      function showPopup() { popupOverlay.classList.add('visible'); sessionStorage.setItem('popup_seen', '1') }
+      function hidePopup() { popupOverlay.classList.remove('visible') }
+
+      setTimeout(showPopup, 30000)
+      popupClose.addEventListener('click', hidePopup)
+      popupSkip.addEventListener('click', hidePopup)
+      popupOverlay.addEventListener('click', e => { if (e.target === popupOverlay) hidePopup() })
+      popupForm.addEventListener('submit', e => {
+        e.preventDefault()
+        popupForm.innerHTML = '<p class="popup-thanks">You\'re on the list. Talk soon.</p>'
+        setTimeout(hidePopup, 2200)
+      })
+    })()
+
+    const nav = document.querySelector('.nav')
+    let lastY = 0
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY
+      if (y > lastY && y > 80) {
+        nav.classList.add('nav--hidden')
+        closeMenu()
+      } else {
+        nav.classList.remove('nav--hidden')
+      }
+      lastY = y
+    }, { passive: true })
+  </script>
+
+</body>
+</html>
