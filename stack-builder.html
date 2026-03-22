@@ -18,7 +18,6 @@
     <ul class="nav-links" id="nav-links">
       <li><a href="./index.html">Home</a></li>
       <li><a href="./index.html#about">About</a></li>
-      <li><a href="./index.html#layers">Layers</a></li>
       <li><a href="./index.html#contact">Contact</a></li>
       <li><a href="./stack-builder.html" class="nav-cta nav-cta--active">Make Your Stack</a></li>
     </ul>
@@ -49,15 +48,16 @@
       <!-- Pod labels (positioned by JS each frame) -->
       <div id="builder-labels" class="blabel-container"></div>
 
-      <!-- Selected config info overlay (bottom-left) -->
-      <div class="builder-selected-info">
-        <div class="builder-selected-name" id="selected-config-name">—</div>
-        <div class="builder-selected-tagline" id="selected-config-desc">Select a stack from the menu</div>
-        <div class="builder-selected-pods" id="selected-config-pods"></div>
-        <div class="builder-common-stack-wrap">
-          <div class="builder-common-stack-label">Common snacks</div>
-          <div class="builder-common-stack-text" id="selected-config-common-stack"></div>
-        </div>
+    </div>
+
+    <!-- Selected config info (desktop: bottom-left overlay on canvas; mobile: block between canvas and panel) -->
+    <div class="builder-selected-info">
+      <div class="builder-selected-name" id="selected-config-name">—</div>
+      <div class="builder-selected-tagline" id="selected-config-desc">Select a stack from the menu</div>
+      <div class="builder-selected-pods" id="selected-config-pods"></div>
+      <div class="builder-common-stack-wrap">
+        <div class="builder-common-stack-label">Common snacks</div>
+        <div class="builder-common-stack-text" id="selected-config-common-stack"></div>
       </div>
     </div>
 

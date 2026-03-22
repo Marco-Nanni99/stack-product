@@ -113,7 +113,7 @@ scene.background = new THREE.Color(0x1A2E48)
 // ── Camera with animated look-at target ─────────────────────
 // We GSAP-animate both camera.position and cameraTarget each frame.
 const CAMERA_REST_POS    = new THREE.Vector3(0, 0.4, 7)
-const CAMERA_REST_TARGET = new THREE.Vector3(isMobile ? 0 : -0.6, 0, 0)
+const CAMERA_REST_TARGET = new THREE.Vector3(isMobile ? 0.6 : -0.6, 0, 0)
 
 const camera = new THREE.PerspectiveCamera(40, CW / CH, 0.1, 50)
 camera.position.copy(CAMERA_REST_POS)
@@ -160,7 +160,7 @@ scene.add(floor)
 // ── Outer group: decorative tilt + idle Y rotation ──────────
 const OUTER_REST_ROT_Z = THREE.MathUtils.degToRad(15)
 const OUTER_REST_ROT_X = THREE.MathUtils.degToRad(-8)
-const OUTER_REST_POS_Y = -2.2
+const OUTER_REST_POS_Y = isMobile ? -1.5 : -2.2
 
 const outerGroup = new THREE.Group()
 outerGroup.rotation.z = OUTER_REST_ROT_Z

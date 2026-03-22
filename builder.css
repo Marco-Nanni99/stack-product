@@ -25,6 +25,7 @@ body.builder-page {
   margin-top: 72px;
   overflow: hidden;
   position: relative;
+  position: relative;
 }
 
 /* ── Canvas area ──────────────────────────────────────────── */
@@ -494,8 +495,18 @@ body.builder-page {
     flex: 0 0 55%;
   }
 
-  /* Hide the bottom-left overlay on mobile — too cramped */
-  .builder-selected-info { display: none; }
+  /* Show selected info as a block section above the canvas on mobile */
+  .builder-selected-info {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    pointer-events: auto;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    order: -1;
+  }
+  .builder-selected-info.hidden { display: none; }
 
   /* Bottom panel: horizontal scroll drawer */
   .builder-panel {

@@ -28,7 +28,7 @@ export function loadModel() {
         const outer = new THREE.Group()
         outer.rotation.z = THREE.MathUtils.degToRad(15)
         outer.rotation.x = THREE.MathUtils.degToRad(-8)
-        outer.position.y = -2.2   // shift down — tweak this value
+        outer.position.y = -1.45   // shift down — tweak this value
         outer.add(group)
 
         const sections = []
