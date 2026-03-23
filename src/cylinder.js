@@ -9,7 +9,7 @@ const LAYER_NAMES = ['bottom', 'middle', 'top', 'lid']
 // a positive offset to push it down and lid gets negative to push it up.
 const EXPLODE_OFFSETS = [30, 10, -10, -30]
 
-export function loadModel() {
+export function loadModel(isMobile = false) {
   return new Promise((resolve, reject) => {
     const loader = new GLTFLoader()
 
@@ -19,7 +19,7 @@ export function loadModel() {
         const group = gltf.scene
 
         // Scale down from real-world units to scene units — tweak this value
-        group.scale.setScalar(0.020)
+        group.scale.setScalar(isMobile ? 0.017 : 0.020)
 
         // Correct orientation: bottle is along Blender Y (→ Three.js Z), rotate to stand up
         group.rotation.x = THREE.MathUtils.degToRad(90)
@@ -28,7 +28,7 @@ export function loadModel() {
         const outer = new THREE.Group()
         outer.rotation.z = THREE.MathUtils.degToRad(15)
         outer.rotation.x = THREE.MathUtils.degToRad(-8)
-        outer.position.y = -1.45   // shift down — tweak this value
+        outer.position.y = isMobile ? -0.6 : -1.45   // shift down — tweak this value
         outer.add(group)
 
         const sections = []

@@ -15,7 +15,7 @@
     }
 
     .about-page-hero {
-      max-width: 900px;
+      max-width: 1100px;
       margin: 0 auto;
       padding: 0 2rem 5rem;
       border-bottom: 1px solid var(--border);
@@ -257,10 +257,21 @@
     </div>
   </div>
 
-  <!-- FOOTER -->
-  <div class="contact-footer" style="padding: 2rem 3rem;">
-    <span>© 2026 pilr. All rights reserved.</span>
-  </div>
+  <!-- CTA / CONTACT -->
+  <section id="contact" class="contact">
+    <div class="contact-inner">
+      <div class="section-eyebrow">Early Access</div>
+      <h2>Stay consistent,<br>wherever life takes you.</h2>
+      <p>Be the first to know when pilr is available and receive 10% off your first order.</p>
+      <form class="contact-form" id="waitlist-form">
+        <input type="email" placeholder="your@email.com" required />
+        <button type="submit" class="btn">Notify</button>
+      </form>
+    </div>
+    <div class="contact-footer">
+      <span>© 2026 pilr. All rights reserved.</span>
+    </div>
+  </section>
 
   <script>
     const hamburger = document.getElementById('nav-hamburger')
@@ -286,7 +297,7 @@
       function showPopup() { popupOverlay.classList.add('visible'); sessionStorage.setItem('popup_seen', '1') }
       function hidePopup() { popupOverlay.classList.remove('visible') }
 
-      setTimeout(showPopup, 30000)
+      setTimeout(showPopup, 6000)
       popupClose.addEventListener('click', hidePopup)
       popupSkip.addEventListener('click', hidePopup)
       popupOverlay.addEventListener('click', e => { if (e.target === popupOverlay) hidePopup() })
@@ -296,6 +307,15 @@
         setTimeout(hidePopup, 2200)
       })
     })()
+
+    // Waitlist form
+    const waitlistForm = document.getElementById('waitlist-form')
+    if (waitlistForm) {
+      waitlistForm.addEventListener('submit', e => {
+        e.preventDefault()
+        waitlistForm.innerHTML = '<p style="color:var(--text);font-size:1rem;">You\'re on the list. Talk soon.</p>'
+      })
+    }
 
     const nav = document.querySelector('.nav')
     let lastY = 0

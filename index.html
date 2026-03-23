@@ -253,7 +253,7 @@
         popupOverlay.classList.remove('visible')
       }
 
-      setTimeout(showPopup, 30000)
+      setTimeout(showPopup, 6000)
       popupClose.addEventListener('click', hidePopup)
       popupSkip.addEventListener('click', hidePopup)
       popupOverlay.addEventListener('click', e => { if (e.target === popupOverlay) hidePopup() })

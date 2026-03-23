@@ -95,7 +95,7 @@ let group       = null
 const clock     = new THREE.Clock()
 
 // ── Load GLB ──────────────────────────────────────────────────────────────────
-loadModel()
+loadModel(isMobile)
   .then(({ group: g, sections: s }) => {
     group    = g
     sections = s
