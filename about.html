@@ -248,6 +248,12 @@
           <input type="email" placeholder="your@email.com" required />
           <button type="submit" class="btn">Notify Me</button>
         </form>
+        <div class="popup-consent-row">
+          <input type="checkbox" id="popup-consent" name="popup-consent" />
+          <label for="popup-consent">I agree to receive marketing emails and accept the <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</label>
+        </div>
+        <div class="popup-consent-error" id="popup-consent-error">Please accept the Privacy Policy to continue.</div>
+        <p class="popup-consent-disclosure">We collect your email to manage our mailing list and send promotions if you opt in. See our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a> and <a href="./terms-of-service.html" target="_blank">Terms of Service</a>.</p>
         <button class="popup-skip" id="popup-skip">No thanks</button>
       </div>
 
@@ -267,11 +273,24 @@
         <input type="email" placeholder="your@email.com" required />
         <button type="submit" class="btn">Notify</button>
       </form>
-    </div>
-    <div class="contact-footer">
-      <span>© 2026 pilr. All rights reserved.</span>
+      <div class="consent-checkbox-row">
+        <input type="checkbox" id="waitlist-consent" name="waitlist-consent" />
+        <label for="waitlist-consent">I agree to receive marketing emails and accept the <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</label>
+      </div>
+      <div class="consent-error" id="waitlist-consent-error">Please accept the Privacy Policy to continue.</div>
+      <p class="consent-disclosure">We collect your email and related submission data to manage the mailing list, send updates, and send promotions or discounts if you opt in. See our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a> and <a href="./terms-of-service.html" target="_blank">Terms of Service</a>.</p>
     </div>
   </section>
+
+  <!-- SITE FOOTER -->
+  <footer class="site-footer">
+    <span class="site-footer-copy">© 2026 PILR. All rights reserved.</span>
+    <nav class="site-footer-links" aria-label="Legal">
+      <a href="./privacy-policy.html">Privacy Policy</a>
+      <a href="./terms-of-service.html">Terms of Service</a>
+      <a href="mailto:support@pilrsystems.com">Contact</a>
+    </nav>
+  </footer>
 
   <script>
     const hamburger = document.getElementById('nav-hamburger')
@@ -286,13 +305,53 @@
     overlay.addEventListener('click', closeMenu)
     navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu))
 
-    // Discount popup — show after 30s, once per session
+    // ── Consent logging helper ─────────────────────────────────────
+    function logConsent(email, source) {
+      const record = {
+        email,
+        consent_given: true,
+        timestamp: new Date().toISOString(),
+        page_url: window.location.href,
+        privacy_policy_version: '2026-03-24',
+        terms_version: '2026-03-24',
+        source,
+      }
+      const existing = JSON.parse(localStorage.getItem('pilr_consent_log') || '[]')
+      existing.push(record)
+      localStorage.setItem('pilr_consent_log', JSON.stringify(existing))
+    }
+
+    // ── Waitlist form ──────────────────────────────────────────────
+    const waitlistForm    = document.getElementById('waitlist-form')
+    const waitlistConsent = document.getElementById('waitlist-consent')
+    const waitlistError   = document.getElementById('waitlist-consent-error')
+
+    waitlistForm.addEventListener('submit', e => {
+      e.preventDefault()
+      if (!waitlistConsent.checked) {
+        waitlistError.classList.add('visible')
+        waitlistConsent.focus()
+        return
+      }
+      waitlistError.classList.remove('visible')
+      const email = waitlistForm.querySelector('input[type="email"]').value.trim()
+      logConsent(email, 'about_waitlist')
+      waitlistForm.innerHTML = '<p class="form-success">You\'re on the list. Talk soon.</p>'
+    })
+
+    waitlistConsent.addEventListener('change', () => {
+      if (waitlistConsent.checked) waitlistError.classList.remove('visible')
+    })
+
+    // ── Discount popup ─────────────────────────────────────────────
     ;(function() {
       if (sessionStorage.getItem('popup_seen')) return
-      const popupOverlay = document.getElementById('popup-overlay')
-      const popupClose   = document.getElementById('popup-close')
-      const popupSkip    = document.getElementById('popup-skip')
-      const popupForm    = document.getElementById('popup-form')
+      const popupOverlay  = document.getElementById('popup-overlay')
+      const popupClose    = document.getElementById('popup-close')
+      const popupSkip     = document.getElementById('popup-skip')
+      const popupForm     = document.getElementById('popup-form')
+      const popupConsent  = document.getElementById('popup-consent')
+      const popupConsentErr = document.getElementById('popup-consent-error')
 
       function showPopup() { popupOverlay.classList.add('visible'); sessionStorage.setItem('popup_seen', '1') }
       function hidePopup() { popupOverlay.classList.remove('visible') }
@@ -301,21 +360,25 @@
       popupClose.addEventListener('click', hidePopup)
       popupSkip.addEventListener('click', hidePopup)
       popupOverlay.addEventListener('click', e => { if (e.target === popupOverlay) hidePopup() })
+
+      popupConsent.addEventListener('change', () => {
+        if (popupConsent.checked) popupConsentErr.classList.remove('visible')
+      })
+
       popupForm.addEventListener('submit', e => {
         e.preventDefault()
+        if (!popupConsent.checked) {
+          popupConsentErr.classList.add('visible')
+          popupConsent.focus()
+          return
+        }
+        popupConsentErr.classList.remove('visible')
+        const email = popupForm.querySelector('input[type="email"]').value.trim()
+        logConsent(email, 'discount_popup')
         popupForm.innerHTML = '<p class="popup-thanks">You\'re on the list. Talk soon.</p>'
         setTimeout(hidePopup, 2200)
       })
     })()
-
-    // Waitlist form
-    const waitlistForm = document.getElementById('waitlist-form')
-    if (waitlistForm) {
-      waitlistForm.addEventListener('submit', e => {
-        e.preventDefault()
-        waitlistForm.innerHTML = '<p style="color:var(--text);font-size:1rem;">You\'re on the list. Talk soon.</p>'
-      })
-    }
 
     const nav = document.querySelector('.nav')
     let lastY = 0

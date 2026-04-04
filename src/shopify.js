@@ -3,9 +3,9 @@
    Config: fill in the three values below
 ──────────────────────────────────────────────── */
 
-const SHOPIFY_DOMAIN   = 'salty-gecko-2.myshopify.com';
-const STOREFRONT_TOKEN = '1d234d3d010616b094a6da0a625d4181';
-const PRODUCT_HANDLE   = 'tshort';
+const SHOPIFY_DOMAIN   = 'pilr-2.myshopify.com';
+const STOREFRONT_TOKEN = '9396df79576b2d44b767b40cdd0ebe8d';
+const PRODUCT_HANDLE   = 'pilr-go';
 
 const API_URL      = `https://${SHOPIFY_DOMAIN}/api/2024-01/graphql.json`;
 const CART_ID_KEY  = 'stack_cart_id';
@@ -122,6 +122,8 @@ function formatMoney({ amount, currencyCode }) {
 
 /* ── Cart drawer ──────────────────────────── */
 function injectCartDrawer() {
+  const privacyUrl = './privacy-policy.html';
+  const tosUrl     = './terms-of-service.html';
   const html = `
     <div id="cart-overlay" class="cart-overlay"></div>
     <aside id="cart-drawer" class="cart-drawer" aria-hidden="true">
@@ -137,13 +139,39 @@ function injectCartDrawer() {
           <span>Subtotal</span>
           <strong id="cart-subtotal-amount">—</strong>
         </div>
-        <a id="cart-checkout-btn" href="#" class="btn cart-checkout-btn">Checkout</a>
+        <div class="cart-tos-row">
+          <input type="checkbox" id="cart-tos-checkbox" name="cart-tos" />
+          <label for="cart-tos-checkbox">I accept the <a href="${tosUrl}" target="_blank" rel="noopener noreferrer">Terms of Service</a>.</label>
+        </div>
+        <div class="cart-tos-error" id="cart-tos-error">Please accept the Terms of Service to continue.</div>
+        <button id="cart-checkout-btn" class="btn cart-checkout-btn">Checkout</button>
+        <p class="cart-legal-row"><a href="${privacyUrl}" target="_blank" rel="noopener noreferrer">Privacy Policy</a> &nbsp;·&nbsp; <a href="${tosUrl}" target="_blank" rel="noopener noreferrer">Terms of Service</a></p>
       </div>
     </aside>`;
   document.body.insertAdjacentHTML('beforeend', html);
 
   document.getElementById('cart-overlay').addEventListener('click', closeCartDrawer);
   document.getElementById('cart-close').addEventListener('click', closeCartDrawer);
+
+  // TOS gate — block checkout until checkbox is checked
+  const tosCheckbox = document.getElementById('cart-tos-checkbox');
+  const tosError    = document.getElementById('cart-tos-error');
+  const checkoutBtn = document.getElementById('cart-checkout-btn');
+
+  tosCheckbox.addEventListener('change', () => {
+    if (tosCheckbox.checked) tosError.classList.remove('visible');
+  });
+
+  checkoutBtn.addEventListener('click', () => {
+    if (!tosCheckbox.checked) {
+      tosError.classList.add('visible');
+      tosCheckbox.focus();
+      return;
+    }
+    tosError.classList.remove('visible');
+    const url = checkoutBtn.dataset.checkoutUrl;
+    if (url && url !== '#') window.location.href = url;
+  });
 }
 
 function openCartDrawer() {
@@ -160,18 +188,18 @@ function closeCartDrawer() {
 }
 
 function renderCartDrawer(cart) {
-  const body       = document.getElementById('cart-drawer-body');
-  const subtotal   = document.getElementById('cart-subtotal-amount');
+  const body        = document.getElementById('cart-drawer-body');
+  const subtotal    = document.getElementById('cart-subtotal-amount');
   const checkoutBtn = document.getElementById('cart-checkout-btn');
 
   if (!cart || cart.totalQuantity === 0) {
     body.innerHTML = '<p class="cart-empty">Your cart is empty.</p>';
     subtotal.textContent = '—';
-    checkoutBtn.href = '#';
+    checkoutBtn.dataset.checkoutUrl = '#';
     return;
   }
 
-  checkoutBtn.href = cart.checkoutUrl;
+  checkoutBtn.dataset.checkoutUrl = cart.checkoutUrl;
 
   subtotal.textContent = formatMoney(cart.cost.subtotalAmount);
 
