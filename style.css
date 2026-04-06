@@ -263,6 +263,96 @@ section h2 {
   margin-bottom: 1.5rem;
 }
 
+/* ── LIFESTYLE ───────────────────────── */
+.lifestyle {
+  border-top: 1px solid var(--border);
+}
+
+.lifestyle-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.lifestyle-text-col {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  padding: 2.5rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.lifestyle-text-col h2 {
+  font-size: clamp(1.4rem, 2vw, 2rem);
+  margin-bottom: 0.75rem;
+}
+
+.lifestyle-text-col .section-eyebrow {
+  margin-bottom: 0.5rem;
+}
+
+.lifestyle-text-col p {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--muted);
+  margin-bottom: 0.9rem;
+  max-width: 420px;
+}
+
+.lifestyle-list {
+  list-style: none;
+  margin-bottom: 1rem;
+}
+
+.lifestyle-list li {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0.2rem 0;
+}
+
+.lifestyle-list li::before {
+  content: '·';
+  margin-right: 0.6rem;
+  color: var(--accent-teal);
+}
+
+.lifestyle-main-img {
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+}
+
+.lifestyle-main-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.lifestyle-corner-img {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 170px;
+  height: 170px;
+  overflow: hidden;
+}
+
+.lifestyle-corner-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.lifestyle-text-col .btn {
+  align-self: flex-start;
+}
+
 /* ── ABOUT ───────────────────────────── */
 .about {
   padding: 8rem 6%;
@@ -538,6 +628,16 @@ section h2 {
   .about-inner { grid-template-columns: 1fr; gap: 3rem; }
   .layers-grid { grid-template-columns: 1fr; }
   .hero-copy { left: 5%; bottom: 12%; }
+
+  .lifestyle-row {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .lifestyle-row--text-left .lifestyle-main-img { order: -1; }
+  .lifestyle-main-img { aspect-ratio: 16 / 9; height: auto; }
+  .lifestyle-text-col { aspect-ratio: unset; padding: 2.5rem 6%; }
+  .lifestyle-text-col h2 { font-size: clamp(1.5rem, 5vw, 2rem); margin-bottom: 0.6rem; }
+  .lifestyle-corner-img { width: 120px; height: 120px; }
 }
 
 @media (max-width: 600px) {
@@ -772,19 +872,34 @@ section h2 {
   box-shadow: 0 32px 80px rgba(0,0,0,0.45);
 }
 
-/* Side image panels */
-.popup-side {
-  width: 200px;
-  flex-shrink: 0;
-  overflow: hidden;
-  background: #152842;
+/* SVG decorations */
+.popup-deco {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-end;
 }
 
-.popup-side img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.7;
+.popup-deco-left {
+  left: 0;
+}
+
+.popup-deco-left img {
+  height: 90%;
+  width: auto;
+  display: block;
+}
+
+.popup-deco-right {
+  right: -30px;
+}
+
+.popup-deco-right img {
+  height: 82%;
+  width: auto;
+  display: block;
 }
 
 /* Center content */
@@ -901,11 +1016,28 @@ section h2 {
 
 /* Responsive */
 @media (max-width: 700px) {
-  .popup-side { display: none; }
+  .popup-deco { display: none; }
   .popup-content { padding: 2.5rem 1.75rem; }
   .popup-form { flex-direction: column; }
   .popup-form .btn { width: 100%; }
 }
+
+/* ── SIGNUP LEGAL LINE ──────────────────── */
+.signup-legal {
+  font-size: 0.68rem;
+  line-height: 1.5;
+  color: var(--muted);
+  margin-top: 0.75rem;
+  opacity: 0.75;
+}
+
+.signup-legal a {
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.signup-legal a:hover { color: var(--text); }
 
 /* ── CONSENT / LEGAL FORM ELEMENTS ─────── */
 .consent-disclosure {

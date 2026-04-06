@@ -93,6 +93,53 @@
     </div>
   </section>
 
+  <!-- LIFESTYLE -->
+  <section class="lifestyle">
+
+    <!-- Row 1: text left, image right -->
+    <div class="lifestyle-row lifestyle-row--text-left">
+      <div class="lifestyle-text-col">
+        <div class="section-eyebrow">On The Go</div>
+        <h2>Any powder.<br>On the go.</h2>
+        <p>Leakproof, travel-ready storage built for a week's worth of your daily powders. No mess, no wasted space, no friction.</p>
+        <ul class="lifestyle-list">
+          <li>Stackable</li>
+          <li>Leakproof</li>
+          <li>TSA-Approved</li>
+        </ul>
+        <a href="#contact" class="btn">Get Early Access</a>
+        <div class="lifestyle-corner-img">
+          <img src="images/lifestyle_section/top_text_right_corner.svg" alt="" />
+        </div>
+      </div>
+      <div class="lifestyle-main-img">
+        <img src="images/lifestyle_section/top_right.png" alt="STACK powder pod in use" />
+      </div>
+    </div>
+
+    <!-- Row 2: image left, text right -->
+    <div class="lifestyle-row lifestyle-row--text-right">
+      <div class="lifestyle-main-img">
+        <img src="images/lifestyle_section/bottom_left.png" alt="STACK pill pods on the go" />
+      </div>
+      <div class="lifestyle-text-col">
+        <div class="section-eyebrow">Pills</div>
+        <h2>Every capsule.<br>Any place.</h2>
+        <p>Easy-access pill storage on the go, designed to keep your pills accessible no matter where you are.</p>
+        <ul class="lifestyle-list">
+          <li>Quick Access</li>
+          <li>Airtight</li>
+          <li>TSA-Approved</li>
+        </ul>
+        <a href="#contact" class="btn">Get Early Access</a>
+        <div class="lifestyle-corner-img">
+          <img src="images/lifestyle_section/bottom_text_right_corner.svg" alt="" />
+        </div>
+      </div>
+    </div>
+
+  </section>
+
   <!-- ABOUT -->
   <section id="about" class="about">
     <div class="about-inner">
@@ -188,12 +235,7 @@
         <input type="email" placeholder="your@email.com" required />
         <button type="submit" class="btn">Notify</button>
       </form>
-      <div class="consent-checkbox-row">
-        <input type="checkbox" id="waitlist-consent" name="waitlist-consent" />
-        <label for="waitlist-consent">I agree to receive marketing emails and accept the <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</label>
-      </div>
-      <div class="consent-error" id="waitlist-consent-error">Please accept the Privacy Policy to continue.</div>
-      <p class="consent-disclosure">We collect your email and related submission data to manage the mailing list, send updates, and send promotions or discounts if you opt in. See our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a> and <a href="./terms-of-service.html" target="_blank">Terms of Service</a>.</p>
+      <p class="signup-legal">By signing up, you agree to our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</p>
     </div>
   </section>
 
@@ -212,30 +254,25 @@
     <div class="popup-card">
       <button class="popup-close" id="popup-close" aria-label="Close">&#x2715;</button>
 
-      <div class="popup-side popup-side-left">
-        <img src="./images/pop_up/left.jpeg" alt="" />
+      <div class="popup-deco popup-deco-left">
+        <img src="./images/pop_up/left.svg" alt="" />
       </div>
 
       <div class="popup-content">
         <img src="./images/logov3.png" alt="Pilr" class="popup-logo" />
         <div class="popup-eyebrow">Early Access Offer</div>
         <h2 class="popup-headline">You've Got<br><strong>10% Off</strong></h2>
-        <p class="popup-sub">Sign up to receive 10% off when we launch — be the first to know.</p>
+        <p class="popup-sub">Sign up to get early access and 10% off your first order.</p>
         <form class="popup-form" id="popup-form">
           <input type="email" placeholder="your@email.com" required />
           <button type="submit" class="btn">Notify Me</button>
         </form>
-        <div class="popup-consent-row">
-          <input type="checkbox" id="popup-consent" name="popup-consent" />
-          <label for="popup-consent">I agree to receive marketing emails and accept the <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</label>
-        </div>
-        <div class="popup-consent-error" id="popup-consent-error">Please accept the Privacy Policy to continue.</div>
-        <p class="popup-consent-disclosure">We collect your email to manage our mailing list and send promotions if you opt in. See our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a> and <a href="./terms-of-service.html" target="_blank">Terms of Service</a>.</p>
+        <p class="signup-legal">By signing up, you agree to our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</p>
         <button class="popup-skip" id="popup-skip">No thanks</button>
       </div>
 
-      <div class="popup-side popup-side-right">
-        <img src="./images/pop_up/right.png" alt="" />
+      <div class="popup-deco popup-deco-right">
+        <img src="./images/pop_up/right.svg" alt="" />
       </div>
     </div>
   </div>
@@ -275,25 +312,13 @@
     }
 
     // ── Waitlist form ──────────────────────────────────────────────
-    const waitlistForm    = document.getElementById('waitlist-form')
-    const waitlistConsent = document.getElementById('waitlist-consent')
-    const waitlistError   = document.getElementById('waitlist-consent-error')
+    const waitlistForm = document.getElementById('waitlist-form')
 
     waitlistForm.addEventListener('submit', e => {
       e.preventDefault()
-      if (!waitlistConsent.checked) {
-        waitlistError.classList.add('visible')
-        waitlistConsent.focus()
-        return
-      }
-      waitlistError.classList.remove('visible')
       const email = waitlistForm.querySelector('input[type="email"]').value.trim()
       logConsent(email, 'homepage_waitlist')
       waitlistForm.innerHTML = '<p class="form-success">You\'re on the list. Talk soon.</p>'
-    })
-
-    waitlistConsent.addEventListener('change', () => {
-      if (waitlistConsent.checked) waitlistError.classList.remove('visible')
     })
 
     // ── Discount popup ─────────────────────────────────────────────
@@ -303,9 +328,6 @@
       const popupClose    = document.getElementById('popup-close')
       const popupSkip     = document.getElementById('popup-skip')
       const popupForm     = document.getElementById('popup-form')
-      const popupConsent  = document.getElementById('popup-consent')
-      const popupConsentErr = document.getElementById('popup-consent-error')
-
       function showPopup() {
         popupOverlay.classList.add('visible')
         sessionStorage.setItem('popup_seen', '1')
@@ -319,18 +341,8 @@
       popupSkip.addEventListener('click', hidePopup)
       popupOverlay.addEventListener('click', e => { if (e.target === popupOverlay) hidePopup() })
 
-      popupConsent.addEventListener('change', () => {
-        if (popupConsent.checked) popupConsentErr.classList.remove('visible')
-      })
-
       popupForm.addEventListener('submit', e => {
         e.preventDefault()
-        if (!popupConsent.checked) {
-          popupConsentErr.classList.add('visible')
-          popupConsent.focus()
-          return
-        }
-        popupConsentErr.classList.remove('visible')
         const email = popupForm.querySelector('input[type="email"]').value.trim()
         logConsent(email, 'discount_popup')
         popupForm.closest('.popup-content').querySelector('.popup-form') &&
