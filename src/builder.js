@@ -3,62 +3,58 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import gsap from 'gsap'
 
 // ── Pre-made stack configurations ──────────────────────────
-// Each entry will eventually have its own GLB file.
-// For now all use the same placeholder GLB.
+// layers: GLB node names in order (bottom → lid). Last entry is always lid (not clickable).
+// pods:   UI pod names matching each clickable layer (all except lid).
 const CONFIGS = [
   {
     id: 'classic',
     name: 'Classic',
     tagline: 'Your all-in-one daily stack',
     pods: ['Base Pill Pod', 'Hybrid Pod', 'Powder Pod'],
+    layers: ['bottom', 'middle', 'top', 'lid'],
     commonStack: 'Vitamin D, Zinc, B12 → Fish Oil, Magnesium → Creatine',
     accent: '#8BB8C8',
-    glb: './models/stack-bottle.glb',
+    glb: './models/Configurations/Classic.glb',
   },
   {
     id: 'powder-heavy',
     name: 'Powder Heavy',
     tagline: 'For those whose routine leans more on powders',
-    pods: ['Base Pill Pod', 'Powder Pod', 'Powder Pod'],
+    pods: ['Base Pill Pod', 'Hybrid Pod', 'Powder Pod', 'Powder Pod'],
+    layers: ['bottom', 'middle', 'middle_2', 'top', 'lid'],
     commonStack: 'Vitamin D, Zinc, Multivitamin → Greens Powder → Collagen or Pre-Workout',
     accent: '#7AAFC8',
-    glb: './models/stack-bottle.glb',
+    glb: './models/Configurations/Powder_Heavy.glb',
   },
   {
     id: 'capsule-loader',
     name: 'Capsule Loader',
     tagline: 'All capsules, no powders',
     pods: ['Base Pill Pod', 'Hybrid Pod', 'Hybrid Pod'],
+    layers: ['bottom', 'middle', 'top', 'lid'],
     commonStack: 'B12, Zinc, Vitamin D → Fish Oil, CoQ10 → Magnesium, Turmeric',
     accent: '#A89CC4',
-    glb: './models/stack-bottle.glb',
+    glb: './models/Configurations/Capsule_Loader.glb',
   },
   {
     id: 'minimalist',
     name: 'Minimalist',
     tagline: 'Just the essentials — light and compact',
     pods: ['Base Pill Pod', 'Hybrid Pod'],
+    layers: ['bottom', 'top', 'lid'],
     commonStack: 'Vitamin D, Zinc, Turmeric → Magnesium or Omega 3 or Electrolytes',
     accent: '#A8C4A0',
-    glb: './models/stack-bottle.glb',
+    glb: './models/Configurations/Minimalist.glb',
   },
   {
     id: 'serious-traveler',
     name: 'Serious Traveler',
-    tagline: 'Skip the small stuff',
-    pods: ['Hybrid Pod', 'Powder Pod', 'Powder Pod'],
+    tagline: 'Full coverage, every trip',
+    pods: ['Base Pill Pod', 'Hybrid Pod', 'Hybrid Pod', 'Powder Pod'],
+    layers: ['bottom', 'middle', 'middle_up', 'top', 'lid'],
     commonStack: 'Magnesium, Fish Oil, Turmeric → Creatine → Greens or Collagen',
     accent: '#C4B89C',
-    glb: './models/stack-bottle.glb',
-  },
-  {
-    id: 'biohacker',
-    name: 'Biohacker',
-    tagline: 'Maximum capacity',
-    pods: ['Base Pill Pod', 'Hybrid Pod', 'Hybrid Pod', 'Powder Pod'],
-    commonStack: 'NMN, Ashwagandha, B Complex → Fish Oil, CoQ10 or Creatine → Magnesium, Berberine or Lion\'s Mane → Creatine or Greens',
-    accent: '#C4A0B8',
-    glb: './models/stack-bottle.glb',
+    glb: './models/Configurations/Serious_Traveller.glb',
   },
 ]
 
@@ -81,15 +77,8 @@ const POD_INFO = {
   },
 }
 
-// ── Layer constants ──────────────────────────────────────────
-// With glbScene.rotation.x = +90°, local +Z = world -Y (down).
-// To send sections to sky (world +Y) we subtract from restZ.
-const LAYER_ORDER      = ['bottom', 'middle', 'top', 'lid']
-const CLICKABLE_LAYERS = ['bottom', 'middle', 'top']  // lid is a cap, not a pod
-const DROP_OFFSET      = 400   // GLB local units: ~8 world units off-screen
-const FLY_OFFSET       = 600   // GLB local units: sections fly off when disassembling
-// Label alternates right/left/right for bottom/middle/top
-const LABEL_SIDES      = ['right', 'left', 'right']
+const DROP_OFFSET = 400   // GLB local units: ~8 world units off-screen
+const FLY_OFFSET  = 600   // GLB local units: sections fly off when disassembling
 
 // ── Renderer ────────────────────────────────────────────────
 const canvasEl = document.getElementById('builder-canvas')
@@ -110,18 +99,16 @@ renderer.setSize(CW, CH)
 const scene = new THREE.Scene()
 scene.background = new THREE.Color(0x1A2E48)
 
-// ── Camera with animated look-at target ─────────────────────
-// We GSAP-animate both camera.position and cameraTarget each frame.
+// ── Camera ───────────────────────────────────────────────────
 const CAMERA_REST_POS    = new THREE.Vector3(0, 0.4, 7)
 const CAMERA_REST_TARGET = new THREE.Vector3(isMobile ? 0.6 : -0.6, 0, 0)
 
 const camera = new THREE.PerspectiveCamera(40, CW / CH, 0.1, 50)
 camera.position.copy(CAMERA_REST_POS)
 
-// Mutable look-at target (GSAP animates this vector directly)
 const cameraTarget = CAMERA_REST_TARGET.clone()
 
-// ── Lights (matching main.js) ────────────────────────────────
+// ── Lights ───────────────────────────────────────────────────
 scene.add(new THREE.AmbientLight(0xffffff, 0.35))
 
 const key = new THREE.DirectionalLight(0xffffff, 4.5)
@@ -157,7 +144,7 @@ floor.position.y = -2.4
 floor.receiveShadow = true
 scene.add(floor)
 
-// ── Outer group: decorative tilt + idle Y rotation ──────────
+// ── Outer group ──────────────────────────────────────────────
 const OUTER_REST_ROT_Z = THREE.MathUtils.degToRad(15)
 const OUTER_REST_ROT_X = THREE.MathUtils.degToRad(-8)
 const OUTER_REST_POS_Y = isMobile ? -1.5 : -2.2
@@ -168,37 +155,47 @@ outerGroup.rotation.x = OUTER_REST_ROT_X
 outerGroup.position.y = OUTER_REST_POS_Y
 scene.add(outerGroup)
 
-// ── Model state ─────────────────────────────────────────────
-let sections      = []   // [{mesh: Object3D, restZ: number}]
-let modelLoaded   = false
+// ── Model state ──────────────────────────────────────────────
+let sections        = []   // [{mesh: Object3D, restZ: number}]
+let modelLoaded     = false
+let currentGlbScene = null // reference to the currently loaded gltf.scene
 
 // ── Label state ──────────────────────────────────────────────
-let labelEls      = []   // DOM elements, one per clickable section
-let labelAnchors  = []   // Vector3 in outerGroup local space, cached after load
+let labelEls     = []
+let labelAnchors = []
 
 // ── Interaction state ────────────────────────────────────────
-let idleActive    = true   // whether the idle Y rotation is running
-let inDetailView  = false  // whether we're in pod detail view
-let transitioning = false  // locked during enter/exit animations
+let idleActive    = true
+let inDetailView  = false
+let transitioning = false
 
 // ── GLB loader ───────────────────────────────────────────────
 const loader = new GLTFLoader()
 
-function loadGLB(url, onReady) {
+function loadGLB(url, layers, onReady) {
+  // Remove previous model
+  if (currentGlbScene) {
+    outerGroup.remove(currentGlbScene)
+    currentGlbScene = null
+  }
+  sections    = []
+  modelLoaded = false
+
   loader.load(url, (gltf) => {
     const glbScene = gltf.scene
+    currentGlbScene = glbScene
     glbScene.scale.setScalar(0.020)
     glbScene.rotation.x = THREE.MathUtils.degToRad(90)
     outerGroup.add(glbScene)
 
-    sections = []
-    LAYER_ORDER.forEach(name => {
+    // All entries except the last (lid) are clickable pods
+    layers.forEach((name, i) => {
       let found = null
       glbScene.traverse(child => {
-        if (!found && child.name.toLowerCase() === name) found = child
+        if (!found && child.name.toLowerCase() === name.toLowerCase()) found = child
       })
       if (!found) {
-        console.warn(`[STACK Builder] Layer "${name}" not found in GLB.`)
+        console.warn(`[STACK Builder] Layer "${name}" not found in GLB: ${url}`)
         return
       }
       found.traverse(m => { if (m.isMesh) m.castShadow = true })
@@ -209,26 +206,29 @@ function loadGLB(url, onReady) {
     document.getElementById('builder-loading')?.classList.add('hidden')
     computeLabelAnchors()
     if (onReady) onReady()
+  }, undefined, (err) => {
+    console.error(`[STACK Builder] Failed to load ${url}:`, err)
+    document.getElementById('builder-loading')?.classList.add('hidden')
   })
 }
 
-// ── Label system ────────────────────────────────────────────
+// ── Label system ─────────────────────────────────────────────
 function initLabels(cfg) {
   const container = document.getElementById('builder-labels')
   if (!container) return
   container.innerHTML = ''
   labelEls = []
 
-  CLICKABLE_LAYERS.forEach((_, i) => {
-    const side = LABEL_SIDES[i]
-    const name = cfg.pods[i] ?? ''
+  // Clickable pods = all entries except the last (lid)
+  cfg.pods.forEach((podName, i) => {
+    const side = i % 2 === 0 ? 'right' : 'left'
     const el   = document.createElement('div')
     el.className = `blabel blabel-${side}`
     el.innerHTML = `
       <div class="blabel-dot"></div>
       <div class="blabel-line"></div>
       <div class="blabel-text">
-        <span class="blabel-name">${name}</span>
+        <span class="blabel-name">${podName}</span>
         <button class="blabel-explore">View inside</button>
       </div>
     `
@@ -241,8 +241,6 @@ function initLabels(cfg) {
   })
 }
 
-// Cache each section's bounding-box center in outerGroup local space.
-// Called once after the GLB loads. Uses the same temp-identity trick.
 function computeLabelAnchors() {
   const rx = outerGroup.rotation.x, ry = outerGroup.rotation.y
   const rz = outerGroup.rotation.z, py = outerGroup.position.y
@@ -251,12 +249,14 @@ function computeLabelAnchors() {
   outerGroup.position.y = 0
   outerGroup.updateMatrixWorld(true)
 
-  labelAnchors = sections.slice(0, 3).map(s => {
+  // Clickable sections = all except last (lid)
+  const clickable = sections.slice(0, sections.length - 1)
+  labelAnchors = clickable.map(s => {
     const box = new THREE.Box3()
     s.mesh.traverse(child => { if (child.isMesh) box.expandByObject(child) })
     const center = new THREE.Vector3()
     box.getCenter(center)
-    return outerGroup.worldToLocal(center) // store in outerGroup local space
+    return outerGroup.worldToLocal(center)
   })
 
   outerGroup.rotation.x = rx; outerGroup.rotation.y = ry
@@ -264,10 +264,9 @@ function computeLabelAnchors() {
   outerGroup.updateMatrixWorld(true)
 }
 
-// Project each cached anchor to screen space and reposition the label element.
 function updateLabels() {
   if (!labelEls.length || !labelAnchors.length) return
-  const rect = canvasEl.getBoundingClientRect()
+  const rect   = canvasEl.getBoundingClientRect()
   const hidden = inDetailView || transitioning
 
   labelEls.forEach((el, i) => {
@@ -279,7 +278,6 @@ function updateLabels() {
     outerGroup.localToWorld(worldPos)
     const ndc = worldPos.clone().project(camera)
 
-    // Cull if behind camera
     if (ndc.z > 1) { el.classList.remove('visible'); return }
 
     el.style.left = ((ndc.x *  0.5 + 0.5) * rect.width)  + 'px'
@@ -295,8 +293,7 @@ function setLabelNames(cfg) {
   })
 }
 
-// ── Drop animation (config selection) ───────────────────────
-// Sections start from sky (restZ - DROP_OFFSET) and fall into place.
+// ── Drop animation ───────────────────────────────────────────
 function playDrop() {
   if (!sections.length) return
   sections.forEach(s => gsap.killTweensOf(s.mesh.position))
@@ -313,10 +310,6 @@ function playDrop() {
 }
 
 // ── Pod detail view ──────────────────────────────────────────
-// Computes the world-space bounding box of a section as it will sit after
-// outerGroup settles to identity. Returns {center, camPos} so the camera
-// is perfectly framed over the section's actual geometry, not just its origin.
-// All done synchronously before the next render — no visual glitch.
 function getSectionDetailSetup(sectionIndex) {
   const rx = outerGroup.rotation.x
   const ry = outerGroup.rotation.y
@@ -327,7 +320,6 @@ function getSectionDetailSetup(sectionIndex) {
   outerGroup.position.y = 0
   outerGroup.updateMatrixWorld(true)
 
-  // Build bounding box from all meshes in this section
   const box = new THREE.Box3()
   sections[sectionIndex].mesh.traverse(child => {
     if (child.isMesh) box.expandByObject(child)
@@ -338,8 +330,6 @@ function getSectionDetailSetup(sectionIndex) {
   box.getCenter(center)
   box.getSize(size)
 
-  // Camera height: far enough to see the full diameter with FOV=40° + 30% margin
-  // tan(20°) ≈ 0.364; constraining axis is whichever is larger (X or Z)
   const halfSpan = Math.max(size.x, size.z) / 2
   const height   = Math.max((halfSpan / Math.tan(THREE.MathUtils.degToRad(20))) * 1.4, 3.5)
   const camPos   = new THREE.Vector3(center.x, center.y + height, center.z + 0.05)
@@ -357,13 +347,9 @@ function enterDetailView(sectionIndex) {
   if (inDetailView || transitioning || !modelLoaded) return
   transitioning = true
 
-  // Stop idle rotation
   idleActive = false
-  // Snap rotation.y to a clean value so the top-down view is canonical
   gsap.to(outerGroup.rotation, { y: 0, duration: 0.4, ease: 'power2.out' })
 
-  // Fly non-selected sections off (below selected fly down, above fly up)
-  // local +Z = world -Y (down); local -Z = world +Y (up)
   sections.forEach((s, i) => {
     if (i === sectionIndex) return
     const dir = i < sectionIndex ? FLY_OFFSET : -FLY_OFFSET
@@ -375,53 +361,28 @@ function enterDetailView(sectionIndex) {
     })
   })
 
-  // Remove tilt + center outerGroup so camera can look straight down
-  gsap.to(outerGroup.rotation, {
-    x: 0,
-    z: 0,
-    duration: 0.85,
-    ease: 'power2.inOut',
-  })
-  gsap.to(outerGroup.position, {
-    y: 0,
-    duration: 0.85,
-    ease: 'power2.inOut',
-  })
+  gsap.to(outerGroup.rotation, { x: 0, z: 0, duration: 0.85, ease: 'power2.inOut' })
+  gsap.to(outerGroup.position, { y: 0,          duration: 0.85, ease: 'power2.inOut' })
 
-  // Compute bounding-box center and appropriate camera height for this section.
   const { center: podCenter, camPos: detailCamPos } = getSectionDetailSetup(sectionIndex)
   const detailCamTarget = podCenter.clone()
 
-  // Sweep camera above the pod
   gsap.to(camera.position, {
-    x: detailCamPos.x,
-    y: detailCamPos.y,
-    z: detailCamPos.z,
-    duration: 1.05,
-    ease: 'power2.inOut',
+    x: detailCamPos.x, y: detailCamPos.y, z: detailCamPos.z,
+    duration: 1.05, ease: 'power2.inOut',
   })
   gsap.to(cameraTarget, {
-    x: detailCamTarget.x,
-    y: detailCamTarget.y,
-    z: detailCamTarget.z,
-    duration: 1.05,
-    ease: 'power2.inOut',
-    onComplete: () => {
-      transitioning = false
-      inDetailView  = true
-    },
+    x: detailCamTarget.x, y: detailCamTarget.y, z: detailCamTarget.z,
+    duration: 1.05, ease: 'power2.inOut',
+    onComplete: () => { transitioning = false; inDetailView = true },
   })
 
-  // Show back button
   document.getElementById('pod-back-btn')?.classList.add('visible')
-  // Hide selected-config info overlay so it doesn't clutter the top-down view
   document.querySelector('.builder-selected-info')?.classList.add('hidden')
-  // On mobile: slide the config panel away to give the 3D view full height
   document.querySelector('.builder-layout')?.classList.add('detail-active')
 
-  // Show pod detail panel
-  const cfg    = CONFIGS.find(c => c.id === activeConfigId)
-  const podName = cfg?.pods[sectionIndex] ?? CLICKABLE_LAYERS[sectionIndex]
+  const cfg     = CONFIGS.find(c => c.id === activeConfigId)
+  const podName = cfg?.pods[sectionIndex] ?? ''
   showPodPanel(podName)
 }
 
@@ -430,59 +391,34 @@ function exitDetailView() {
   transitioning = true
   inDetailView  = false
 
-  // Hide back button immediately
   document.getElementById('pod-back-btn')?.classList.remove('visible')
   document.querySelector('.builder-selected-info')?.classList.remove('hidden')
   document.querySelector('.builder-layout')?.classList.remove('detail-active')
   hidePodPanel()
 
-  // Restore camera
   gsap.to(camera.position, {
-    x: CAMERA_REST_POS.x,
-    y: CAMERA_REST_POS.y,
-    z: CAMERA_REST_POS.z,
-    duration: 1.0,
-    ease: 'power2.inOut',
+    x: CAMERA_REST_POS.x, y: CAMERA_REST_POS.y, z: CAMERA_REST_POS.z,
+    duration: 1.0, ease: 'power2.inOut',
   })
   gsap.to(cameraTarget, {
-    x: CAMERA_REST_TARGET.x,
-    y: CAMERA_REST_TARGET.y,
-    z: CAMERA_REST_TARGET.z,
-    duration: 1.0,
-    ease: 'power2.inOut',
-    onComplete: () => {
-      idleActive    = true
-      transitioning = false
-    },
+    x: CAMERA_REST_TARGET.x, y: CAMERA_REST_TARGET.y, z: CAMERA_REST_TARGET.z,
+    duration: 1.0, ease: 'power2.inOut',
+    onComplete: () => { idleActive = true; transitioning = false },
   })
 
-  // Restore outerGroup tilt
-  gsap.to(outerGroup.rotation, {
-    x: OUTER_REST_ROT_X,
-    z: OUTER_REST_ROT_Z,
-    duration: 0.9,
-    ease: 'power2.inOut',
-  })
-  gsap.to(outerGroup.position, {
-    y: OUTER_REST_POS_Y,
-    duration: 0.9,
-    ease: 'power2.inOut',
-  })
+  gsap.to(outerGroup.rotation, { x: OUTER_REST_ROT_X, z: OUTER_REST_ROT_Z, duration: 0.9, ease: 'power2.inOut' })
+  gsap.to(outerGroup.position, { y: OUTER_REST_POS_Y, duration: 0.9, ease: 'power2.inOut' })
 
-  // Fly all sections back to rest (reassemble)
   sections.forEach((s, i) => {
     gsap.to(s.mesh.position, {
-      z: s.restZ,
-      duration: 0.7,
-      ease: 'power3.out',
-      delay: 0.25 + i * 0.08,
+      z: s.restZ, duration: 0.7, ease: 'power3.out', delay: 0.25 + i * 0.08,
     })
   })
 }
 
 // ── Pod detail panel ─────────────────────────────────────────
 function showPodPanel(podName) {
-  const info = POD_INFO[podName]
+  const info  = POD_INFO[podName]
   const panel = document.getElementById('pod-detail-panel')
   if (!panel) return
 
@@ -503,21 +439,18 @@ function hidePodPanel() {
 let activeConfigId = null
 
 function updateOverlay(cfg) {
-  const nameEl   = document.getElementById('selected-config-name')
-  const descEl   = document.getElementById('selected-config-desc')
-  const podsEl   = document.getElementById('selected-config-pods')
-  const stackEl  = document.getElementById('selected-config-common-stack')
-  if (nameEl) nameEl.textContent = cfg.name
-  if (descEl) descEl.textContent = cfg.tagline
-  if (podsEl) podsEl.innerHTML = cfg.pods
-    .map(p => `<span class="pod-tag">${p}</span>`)
-    .join('')
+  const nameEl  = document.getElementById('selected-config-name')
+  const descEl  = document.getElementById('selected-config-desc')
+  const podsEl  = document.getElementById('selected-config-pods')
+  const stackEl = document.getElementById('selected-config-common-stack')
+  if (nameEl)  nameEl.textContent  = cfg.name
+  if (descEl)  descEl.textContent  = cfg.tagline
+  if (podsEl)  podsEl.innerHTML    = cfg.pods.map(p => `<span class="pod-tag">${p}</span>`).join('')
   if (stackEl) stackEl.textContent = cfg.commonStack || ''
 }
 
 function selectConfig(cfg, cardEl) {
   if (cfg.id === activeConfigId && !inDetailView) return
-  // If in detail view, exit first then replay
   if (inDetailView) exitDetailView()
   activeConfigId = cfg.id
 
@@ -525,12 +458,14 @@ function selectConfig(cfg, cardEl) {
   cardEl.classList.add('active')
 
   updateOverlay(cfg)
-  setLabelNames(cfg)
+  initLabels(cfg)
 
-  if (modelLoaded) {
-    const delay = inDetailView ? 800 : 0
-    setTimeout(() => playDrop(), delay)
-  }
+  // Show loading, swap GLB
+  document.getElementById('builder-loading')?.classList.remove('hidden')
+  loadGLB(cfg.glb, cfg.layers, () => {
+    setLabelNames(cfg)
+    playDrop()
+  })
 }
 
 // ── Populate panel ───────────────────────────────────────────
@@ -559,14 +494,15 @@ function populatePanel() {
   updateOverlay(CONFIGS[0])
 }
 
-// ── Raycaster: click → enter detail / hover → cursor ────────
+// ── Raycaster ────────────────────────────────────────────────
 const raycaster = new THREE.Raycaster()
 const mouse     = new THREE.Vector2()
 
 function getClickableMeshes() {
   const result = []
-  sections.forEach((s, i) => {
-    if (!CLICKABLE_LAYERS.includes(LAYER_ORDER[i])) return
+  // All sections except the last (lid) are clickable
+  const clickable = sections.slice(0, sections.length - 1)
+  clickable.forEach((s, i) => {
     s.mesh.traverse(m => {
       if (m.isMesh) result.push({ mesh: m, index: i })
     })
@@ -584,8 +520,7 @@ canvasEl.addEventListener('click', (e) => {
   const candidates = getClickableMeshes()
   const hits = raycaster.intersectObjects(candidates.map(c => c.mesh))
   if (hits.length > 0) {
-    const hitMesh = hits[0].object
-    const found   = candidates.find(c => c.mesh === hitMesh)
+    const found = candidates.find(c => c.mesh === hits[0].object)
     if (found) enterDetailView(found.index)
   }
 })
@@ -601,11 +536,9 @@ canvasEl.addEventListener('mousemove', (e) => {
   raycaster.setFromCamera(mouse, camera)
 
   const candidates = getClickableMeshes()
-  const hits = raycaster.intersectObjects(candidates.map(c => c.mesh))
-  canvasEl.style.cursor = hits.length > 0 ? 'pointer' : 'default'
+  canvasEl.style.cursor = raycaster.intersectObjects(candidates.map(c => c.mesh)).length > 0 ? 'pointer' : 'default'
 })
 
-// Touch: treat tap as click on mobile
 canvasEl.addEventListener('touchend', (e) => {
   if (inDetailView || transitioning || !modelLoaded) return
   const touch = e.changedTouches[0]
@@ -617,13 +550,11 @@ canvasEl.addEventListener('touchend', (e) => {
   const candidates = getClickableMeshes()
   const hits = raycaster.intersectObjects(candidates.map(c => c.mesh))
   if (hits.length > 0) {
-    const hitMesh = hits[0].object
-    const found   = candidates.find(c => c.mesh === hitMesh)
+    const found = candidates.find(c => c.mesh === hits[0].object)
     if (found) enterDetailView(found.index)
   }
 }, { passive: true })
 
-// Back button
 document.getElementById('pod-back-btn')?.addEventListener('click', exitDetailView)
 
 // ── Render loop ──────────────────────────────────────────────
@@ -649,4 +580,4 @@ new ResizeObserver(() => {
 populatePanel()
 initLabels(CONFIGS[0])
 animate()
-loadGLB(CONFIGS[0].glb, () => playDrop())
+loadGLB(CONFIGS[0].glb, CONFIGS[0].layers, () => playDrop())
