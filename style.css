@@ -662,7 +662,7 @@ section h2 {
   }
   .lifestyle-row--text-left .lifestyle-main-img { order: -1; }
   .lifestyle-main-img { aspect-ratio: 16 / 9; height: auto; }
-  .lifestyle-text-col { aspect-ratio: unset; padding: 2.5rem 0; }
+  .lifestyle-text-col { aspect-ratio: unset; padding: 2.5rem 1.5rem; }
   .lifestyle-text-col h2 { font-size: clamp(1.5rem, 5vw, 2rem); margin-bottom: 0.6rem; }
   .lifestyle-corner-img { width: clamp(90px, 25%, 130px); aspect-ratio: 1; }
   .layer-card-img { width: 96px; height: 96px; }

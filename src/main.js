@@ -100,6 +100,7 @@ loadModel(isMobile)
     group    = g
     sections = s
     scene.add(group)
+    if (isMobile) group.scale.setScalar(0.85)
 
     // Collect every mesh for raycasting
     group.traverse((child) => {
