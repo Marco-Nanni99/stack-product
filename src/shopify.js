@@ -293,5 +293,6 @@ async function initButtons() {
 }
 
 /* ── Boot ─────────────────────────────────── */
-injectCartDrawer();
-initButtons();
+// Shopify disabled during launch phase — re-enable when shop goes live
+// injectCartDrawer();
+// initButtons();
