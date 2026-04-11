@@ -322,10 +322,18 @@
     // ── Waitlist form ──────────────────────────────────────────────
     const waitlistForm = document.getElementById('waitlist-form')
 
-    waitlistForm.addEventListener('submit', e => {
+    waitlistForm.addEventListener('submit', async e => {
       e.preventDefault()
-      const email = waitlistForm.querySelector('input[type="email"]').value.trim()
+      const email  = waitlistForm.querySelector('input[type="email"]').value.trim()
+      const btn    = waitlistForm.querySelector('button[type="submit"]')
+      btn.disabled = true
+      btn.textContent = 'Saving…'
       logConsent(email, 'homepage_waitlist')
+      try {
+        await window.subscribeEmail(email)
+      } catch (err) {
+        console.warn('[Shopify] subscribe error:', err)
+      }
       waitlistForm.innerHTML = '<p class="form-success">You\'re on the list. Talk soon.</p>'
     })
 
@@ -349,10 +357,18 @@
       popupSkip.addEventListener('click', hidePopup)
       popupOverlay.addEventListener('click', e => { if (e.target === popupOverlay) hidePopup() })
 
-      popupForm.addEventListener('submit', e => {
+      popupForm.addEventListener('submit', async e => {
         e.preventDefault()
-        const email = popupForm.querySelector('input[type="email"]').value.trim()
+        const email  = popupForm.querySelector('input[type="email"]').value.trim()
+        const btn    = popupForm.querySelector('button[type="submit"]')
+        btn.disabled = true
+        btn.textContent = 'Saving…'
         logConsent(email, 'discount_popup')
+        try {
+          await window.subscribeEmail(email)
+        } catch (err) {
+          console.warn('[Shopify] subscribe error:', err)
+        }
         popupForm.closest('.popup-content').querySelector('.popup-form') &&
           (popupForm.innerHTML = '<p class="popup-thanks">You\'re on the list. Talk soon.</p>')
         setTimeout(hidePopup, 2200)

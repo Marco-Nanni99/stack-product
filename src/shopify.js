@@ -292,6 +292,31 @@ async function initButtons() {
   }
 }
 
+/* ── Mailing list / waitlist ──────────────── */
+export async function subscribeEmail(email) {
+  const { data, errors } = await gql(`
+    mutation CustomerCreate($input: CustomerCreateInput!) {
+      customerCreate(input: $input) {
+        customer { id email }
+        customerUserErrors { field message }
+      }
+    }
+  `, {
+    input: {
+      email,
+      acceptsMarketing: true,
+    },
+  });
+
+  if (errors?.length) throw new Error(errors[0].message);
+  const userErrors = data?.customerCreate?.customerUserErrors;
+  if (userErrors?.length) throw new Error(userErrors[0].message);
+  return data.customerCreate.customer;
+}
+
+// Expose for non-module scripts
+window.subscribeEmail = subscribeEmail;
+
 /* ── Boot ─────────────────────────────────── */
 // Shopify disabled during launch phase — re-enable when shop goes live
 // injectCartDrawer();
