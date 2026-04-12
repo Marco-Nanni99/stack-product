@@ -98,7 +98,7 @@
   <div class="lifestyle-inner">
 
     <div class="lifestyle-heading">
-      <h2>All your supplements, one system.</h2>
+      <h2>All your supplements. One system.</h2>
     </div>
 
     <!-- Row 1: text left, image right -->
@@ -172,8 +172,8 @@
           <div class="stat-num">TSA Compliant</div>
           <div class="stat-label">Designed to travel</div>
         </div>
-        <div class="stat">
-          <img src="images/about_pilr_section/BPA_Free.svg" alt="" class="stat-icon" style="height: 56px;" />
+        <div class="stat stat--bpa">
+          <img src="images/about_pilr_section/BPA_Free.svg" alt="" class="stat-icon" />
           <div class="stat-num">100% BPA-Free</div>
           <div class="stat-label">Clean by design</div>
         </div>
@@ -249,7 +249,7 @@
         <p class="signup-legal">By signing up, you agree to our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</p>
       </div>
       <div class="contact-img">
-        <img src="images/signup_section/signup_image.png" alt="" />
+        <img src="images/signup_section/signup_image.svg" alt="" />
       </div>
     </div>
   </section>
@@ -280,6 +280,27 @@
         </form>
         <p class="signup-legal">By signing up, you agree to our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</p>
         <button class="popup-skip" id="popup-skip">No thanks</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHONE POPUP -->
+  <div class="popup-overlay" id="phone-popup-overlay" role="dialog" aria-modal="true" aria-label="Text updates offer">
+    <div class="popup-card">
+      <button class="popup-close" id="phone-popup-close" aria-label="Close">&#x2715;</button>
+
+      <div class="popup-content">
+        <img src="./images/logov3.png" alt="Pilr" class="popup-logo" />
+        <div class="popup-eyebrow">Exclusive Launch Offer</div>
+        <h2 class="popup-headline">Emails get<br><strong>buried.</strong></h2>
+        <p class="popup-sub">Add your number to be first to know when we launch — plus get a free custom stainless steel scooper with your first order.</p>
+        <form class="popup-form" id="phone-popup-form">
+          <input type="tel" placeholder="your phone number" required />
+          <button type="submit" class="btn">Text me when pilr launches</button>
+        </form>
+        <p class="signup-legal">By clicking "Text me when pilr launches" you agree to receive recurring marketing texts from Pilr. Msg &amp; data rates may apply. Reply STOP to opt out. View our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</p>
+        <button class="popup-skip" id="phone-popup-skip">No thanks</button>
       </div>
 
     </div>
@@ -350,9 +371,10 @@
       }
       function hidePopup() {
         popupOverlay.classList.remove('visible')
+        schedulePhonePopup()
       }
 
-      setTimeout(showPopup, 6000)
+      setTimeout(showPopup, 3000)
       popupClose.addEventListener('click', hidePopup)
       popupSkip.addEventListener('click', hidePopup)
       popupOverlay.addEventListener('click', e => { if (e.target === popupOverlay) hidePopup() })
@@ -374,6 +396,37 @@
         setTimeout(hidePopup, 2200)
       })
     })()
+
+    // ── Phone popup ────────────────────────────────────────────────
+    function schedulePhonePopup() {
+      return // disabled — re-enable when ready to collect phone numbers
+      if (sessionStorage.getItem('phone_popup_seen')) return
+      const phoneOverlay = document.getElementById('phone-popup-overlay')
+      const phoneClose   = document.getElementById('phone-popup-close')
+      const phoneSkip    = document.getElementById('phone-popup-skip')
+      const phoneForm    = document.getElementById('phone-popup-form')
+      function showPhonePopup() {
+        phoneOverlay.classList.add('visible')
+        sessionStorage.setItem('phone_popup_seen', '1')
+      }
+      function hidePhonePopup() {
+        phoneOverlay.classList.remove('visible')
+      }
+      setTimeout(showPhonePopup, 6000)
+      phoneClose.addEventListener('click', hidePhonePopup)
+      phoneSkip.addEventListener('click', hidePhonePopup)
+      phoneOverlay.addEventListener('click', e => { if (e.target === phoneOverlay) hidePhonePopup() })
+      phoneForm.addEventListener('submit', async e => {
+        e.preventDefault()
+        const phone = phoneForm.querySelector('input[type="tel"]').value.trim()
+        const btn   = phoneForm.querySelector('button[type="submit"]')
+        btn.disabled = true
+        btn.textContent = 'Saving…'
+        logConsent(phone, 'phone_popup')
+        phoneForm.innerHTML = '<p class="popup-thanks">You\'re on the list. Talk soon.</p>'
+        setTimeout(hidePhonePopup, 2200)
+      })
+    }
 
     // ── Hide nav on scroll down, reveal on scroll up ───────────────
     const nav = document.querySelector('.nav')

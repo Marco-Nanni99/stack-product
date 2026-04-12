@@ -206,7 +206,7 @@ body {
   font-size: 0.9rem;
   line-height: 1.7;
   color: var(--muted);
-  max-width: 280px;
+  max-width: 340px;
 }
 
 /* Scroll cue */
@@ -272,14 +272,15 @@ section h2 {
 
 .lifestyle-heading {
   margin-bottom: 3rem;
+  text-align: center;
 }
 
 .lifestyle-heading h2 {
-  font-size: clamp(1.8rem, 3vw, 2.6rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-  color: var(--text);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-teal);
 }
 
 .lifestyle-row {
@@ -371,6 +372,22 @@ section h2 {
 
 .lifestyle-text-col .btn {
   align-self: flex-start;
+}
+
+/* Rounded outer corners only — row 1: text left, image right */
+.lifestyle-row--text-left .lifestyle-text-col {
+  border-radius: 6px 0 0 6px;
+}
+.lifestyle-row--text-left .lifestyle-main-img {
+  border-radius: 0 6px 6px 0;
+}
+
+/* Rounded outer corners only — row 2: image left, text right */
+.lifestyle-row--text-right .lifestyle-main-img {
+  border-radius: 6px 0 0 6px;
+}
+.lifestyle-row--text-right .lifestyle-text-col {
+  border-radius: 0 6px 6px 0;
 }
 
 /* ── ABOUT ───────────────────────────── */
@@ -480,6 +497,12 @@ section h2 {
   color: var(--muted);
 }
 
+.stat--bpa .stat-icon {
+  height: 38px;
+  margin-top: 18px;
+}
+
+
 /* ── LAYERS ──────────────────────────── */
 .layers {
   padding: 8rem 6%;
@@ -505,6 +528,7 @@ section h2 {
   background: #223757;
   border: 1px solid var(--border);
   padding: 2.5rem 2rem;
+  margin-top: 1.5rem;
   overflow: hidden;
   transition: border-color 0.3s, transform 0.3s;
 }
@@ -693,7 +717,7 @@ section h2 {
   .lifestyle-main-img { aspect-ratio: 16 / 9; height: auto; }
   .lifestyle-text-col { aspect-ratio: unset; padding: 2.5rem 1.5rem; }
   .lifestyle-text-col h2 { font-size: clamp(1.5rem, 5vw, 2rem); margin-bottom: 0.6rem; }
-  .lifestyle-corner-img { width: clamp(90px, 25%, 130px); aspect-ratio: 1; }
+  .lifestyle-corner-img { width: 180px; height: 180px; overflow: visible; }
   .layer-card-img { width: 96px; height: 96px; top: 1rem; right: 1rem; }
 }
 
@@ -748,6 +772,7 @@ section h2 {
   .about-stats { gap: 1.75rem 1rem; }
   .stat-num { font-size: 1.3rem; }
   .stat-icon { height: 36px; }
+  .stat--bpa .stat-icon { height: 26px; margin-top: 10px; }
   .layer-card-img { width: 80px; height: 80px; top: 1rem; right: 1rem; }
 
   /* Contact form stacks vertically */
@@ -1038,6 +1063,19 @@ section h2 {
 
 .popup-form input[type="email"]::placeholder { color: rgba(244,244,244,0.35); }
 .popup-form input[type="email"]:focus { border-color: var(--accent-teal); }
+.popup-form input[type="tel"]::placeholder { color: rgba(244,244,244,0.35); }
+.popup-form input[type="tel"]:focus { border-color: var(--accent-teal); }
+.popup-form input[type="tel"] {
+  flex: 1;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.65rem 1rem;
+  font-size: 0.875rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
 
 .popup-thanks {
   font-size: 0.9rem;
