@@ -262,7 +262,7 @@ section h2 {
 /* ── LIFESTYLE ───────────────────────── */
 .lifestyle {
   border-top: 1px solid var(--border);
-  padding: 5rem 6%;
+  padding: 3rem 6%;
 }
 
 .lifestyle-inner {
@@ -709,6 +709,7 @@ section h2 {
   .hero-copy { left: 5%; bottom: 12%; }
 
   .lifestyle { padding: 2rem 4%; }
+  .lifestyle-heading { margin-bottom: 2rem; }
   .lifestyle-row {
     grid-template-columns: 1fr;
     min-height: auto;
@@ -717,7 +718,7 @@ section h2 {
   .lifestyle-main-img { aspect-ratio: 16 / 9; height: auto; }
   .lifestyle-text-col { aspect-ratio: unset; padding: 2.5rem 1.5rem; }
   .lifestyle-text-col h2 { font-size: clamp(1.5rem, 5vw, 2rem); margin-bottom: 0.6rem; }
-  .lifestyle-corner-img { width: 180px; height: 180px; overflow: visible; }
+  .lifestyle-corner-img { width: 180px; height: 180px; overflow: visible; right: -30px; }
   .layer-card-img { width: 96px; height: 96px; top: 1rem; right: 1rem; }
 }
 

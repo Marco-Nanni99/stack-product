@@ -273,12 +273,7 @@
         <input type="email" placeholder="your@email.com" required />
         <button type="submit" class="btn">Notify</button>
       </form>
-      <div class="consent-checkbox-row">
-        <input type="checkbox" id="waitlist-consent" name="waitlist-consent" />
-        <label for="waitlist-consent">I agree to receive marketing emails and accept the <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</label>
-      </div>
-      <div class="consent-error" id="waitlist-consent-error">Please accept the Privacy Policy to continue.</div>
-      <p class="consent-disclosure">We collect your email and related submission data to manage the mailing list, send updates, and send promotions or discounts if you opt in. See our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a> and <a href="./terms-of-service.html" target="_blank">Terms of Service</a>.</p>
+      <p class="signup-legal">By signing up, you agree to our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</p>
     </div>
   </section>
 
@@ -322,25 +317,13 @@
     }
 
     // ── Waitlist form ──────────────────────────────────────────────
-    const waitlistForm    = document.getElementById('waitlist-form')
-    const waitlistConsent = document.getElementById('waitlist-consent')
-    const waitlistError   = document.getElementById('waitlist-consent-error')
+    const waitlistForm = document.getElementById('waitlist-form')
 
     waitlistForm.addEventListener('submit', e => {
       e.preventDefault()
-      if (!waitlistConsent.checked) {
-        waitlistError.classList.add('visible')
-        waitlistConsent.focus()
-        return
-      }
-      waitlistError.classList.remove('visible')
       const email = waitlistForm.querySelector('input[type="email"]').value.trim()
       logConsent(email, 'about_waitlist')
       waitlistForm.innerHTML = '<p class="form-success">You\'re on the list. Talk soon.</p>'
-    })
-
-    waitlistConsent.addEventListener('change', () => {
-      if (waitlistConsent.checked) waitlistError.classList.remove('visible')
     })
 
     // ── Discount popup ─────────────────────────────────────────────
