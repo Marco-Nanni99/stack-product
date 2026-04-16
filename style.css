@@ -1084,6 +1084,8 @@ section h2 {
   color: var(--accent-teal);
   letter-spacing: 0.04em;
   padding: 0.65rem 0;
+  text-align: center;
+  width: 100%;
 }
 
 .popup-skip {
