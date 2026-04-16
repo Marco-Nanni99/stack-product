@@ -710,7 +710,7 @@ section h2 {
 
   .lifestyle { padding: 2rem 4%; }
   .lifestyle-heading { margin-bottom: 2rem; }
-  .lifestyle-heading h2 { font-size: 0.94rem; }
+  .lifestyle-heading h2 { font-size: 0.85rem; }
   .lifestyle-row {
     grid-template-columns: 1fr;
     min-height: auto;
@@ -1214,7 +1214,7 @@ section h2 {
 
 /* ── SIGNUP LEGAL LINE ──────────────────── */
 .signup-legal {
-  font-size: 0.68rem;
+  font-size: 0.58rem !important;
   line-height: 1.5;
   color: var(--muted);
   margin-top: 0.75rem;
@@ -1228,6 +1228,10 @@ section h2 {
 }
 
 .signup-legal a:hover { color: var(--text); }
+
+.signup-legal--small {
+  font-size: 0.58rem !important;
+}
 
 /* ── CONSENT / LEGAL FORM ELEMENTS ─────── */
 .consent-disclosure {

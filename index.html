@@ -241,7 +241,6 @@
       <div class="contact-text">
         <div class="section-eyebrow">Early Access</div>
         <h2>Stay consistent,<br>wherever life takes you.</h2>
-        <p>Be the first to know when pilr is available and receive 10% off your first order.</p>
         <div id="waitlist-step">
           <form class="contact-form" id="waitlist-form">
             <input type="email" placeholder="your@email.com" required />
@@ -314,7 +313,7 @@
           </div>
           <button type="submit" class="btn">Text me</button>
         </form>
-        <p class="signup-legal">Agree to recurring marketing texts from Pilr by clicking above. Msg/data rates may apply. Reply STOP to cancel. <a href="./privacy-policy.html" target="_blank">View Terms &amp; Privacy</a>.</p>
+        <p class="signup-legal signup-legal--small">Agree to recurring marketing texts from Pilr by clicking above. Msg/data rates may apply. Reply STOP to cancel. <a href="./privacy-policy.html" target="_blank">View Terms &amp; Privacy</a>.</p>
         <button class="popup-skip" id="phone-popup-skip">No thanks</button>
       </div>
 
@@ -361,7 +360,7 @@
 
     function showWaitlistPhoneStep() {
       waitlistStep.innerHTML = `
-        <p class="waitlist-phone-sub">Add your number to be first to know when we launch — plus get a <strong>free custom stainless steel scooper</strong> with your first order.</p>
+        <p class="waitlist-phone-sub">Add your number to be first to know when we launch — plus get a <strong>FREE custom stainless steel scooper</strong> with your first order.</p>
         <form class="contact-form contact-form--phone" id="waitlist-phone-form">
           <div class="phone-input-wrapper">
             <select class="phone-country-select" aria-label="Country code">
@@ -379,12 +378,8 @@
           </div>
           <button type="submit" class="btn">Text me</button>
         </form>
-        <p class="signup-legal">Agree to recurring marketing texts from Pilr by clicking above. Msg/data rates may apply. Reply STOP to cancel. <a href="./privacy-policy.html" target="_blank">View Terms &amp; Privacy</a>.</p>
-        <button class="popup-skip" id="waitlist-phone-skip">No thanks</button>
+        <p class="signup-legal signup-legal--small">Agree to recurring marketing texts from Pilr by clicking above. Msg/data rates may apply. Reply STOP to cancel. <a href="./privacy-policy.html" target="_blank">View Terms &amp; Privacy</a>.</p>
       `
-      document.getElementById('waitlist-phone-skip').addEventListener('click', () => {
-        waitlistStep.innerHTML = '<p class="form-success">You\'re on the list. Talk soon.</p>'
-      })
       document.getElementById('waitlist-phone-form').addEventListener('submit', async e => {
         e.preventDefault()
         const countryCode = e.target.querySelector('select').value
