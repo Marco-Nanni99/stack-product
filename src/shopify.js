@@ -345,11 +345,6 @@ export async function subscribePhoneToKlaviyo(rawPhone) {
             attributes: { phone_number: phone },
           },
         },
-        subscriptions: {
-          sms: {
-            marketing: { consent: 'SUBSCRIBED' },
-          },
-        },
       },
       relationships: {
         list: { data: { type: 'list', id: KLAVIYO_SMS_LIST } },
