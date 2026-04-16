@@ -1124,6 +1124,9 @@ section h2 {
   .popup-content { padding: 2.5rem 1.75rem; }
   .popup-form { flex-direction: column; }
   .popup-form .btn { width: 100%; }
+  #phone-popup-form { flex-direction: column; }
+  #phone-popup-form .phone-input-wrapper { border-right: 1px solid var(--border); border-radius: 4px; }
+  #phone-popup-form .btn { width: 100%; }
 }
 
 /* ── PHONE STEP IN CONTACT SECTION ─────── */
