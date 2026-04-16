@@ -276,7 +276,7 @@ section h2 {
 }
 
 .lifestyle-heading h2 {
-  font-size: 0.75rem;
+  font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -710,6 +710,7 @@ section h2 {
 
   .lifestyle { padding: 2rem 4%; }
   .lifestyle-heading { margin-bottom: 2rem; }
+  .lifestyle-heading h2 { font-size: 0.75rem; }
   .lifestyle-row {
     grid-template-columns: 1fr;
     min-height: auto;
