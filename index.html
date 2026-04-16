@@ -296,12 +296,25 @@
         <img src="./images/logov3.png" alt="Pilr" class="popup-logo" />
         <div class="popup-eyebrow">Exclusive Launch Offer</div>
         <h2 class="popup-headline">Emails get<br><strong>buried.</strong></h2>
-        <p class="popup-sub">Add your number to be first to know when we launch — plus get a free custom stainless steel scooper with your first order.</p>
+        <p class="popup-sub">Add your number to be first to know when we launch — plus get a <strong>free custom stainless steel scooper</strong> with your first order.</p>
         <form class="popup-form" id="phone-popup-form">
-          <input type="tel" placeholder="your phone number" required />
+          <div class="phone-input-wrapper">
+            <select class="phone-country-select" aria-label="Country code">
+              <option value="+1">+1</option>
+              <option value="+44">+44</option>
+              <option value="+39">+39</option>
+              <option value="+33">+33</option>
+              <option value="+49">+49</option>
+              <option value="+34">+34</option>
+              <option value="+61">+61</option>
+              <option value="+52">+52</option>
+              <option value="+55">+55</option>
+            </select>
+            <input type="tel" placeholder="000-000-0000" required />
+          </div>
           <button type="submit" class="btn">Text me when pilr launches</button>
         </form>
-        <p class="signup-legal">By clicking "Text me when pilr launches" you agree to receive recurring marketing texts from Pilr. Msg &amp; data rates may apply. Reply STOP to opt out. View our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</p>
+        <p class="signup-legal">By clicking "Text me when pilr launches" you agree to receive recurring marketing texts from Pilr.<br>Msg &amp; data rates may apply. Reply STOP to opt out. View our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</p>
         <button class="popup-skip" id="phone-popup-skip">No thanks</button>
       </div>
 
@@ -348,11 +361,25 @@
 
     function showWaitlistPhoneStep() {
       waitlistStep.innerHTML = `
-        <form class="contact-form" id="waitlist-phone-form">
-          <input type="tel" placeholder="your phone number" />
+        <p class="waitlist-phone-sub">Add your number to be first to know when we launch — plus get a <strong>free custom stainless steel scooper</strong> with your first order.</p>
+        <form class="contact-form contact-form--phone" id="waitlist-phone-form">
+          <div class="phone-input-wrapper">
+            <select class="phone-country-select" aria-label="Country code">
+              <option value="+1">+1</option>
+              <option value="+44">+44</option>
+              <option value="+39">+39</option>
+              <option value="+33">+33</option>
+              <option value="+49">+49</option>
+              <option value="+34">+34</option>
+              <option value="+61">+61</option>
+              <option value="+52">+52</option>
+              <option value="+55">+55</option>
+            </select>
+            <input type="tel" placeholder="000-000-0000" />
+          </div>
           <button type="submit" class="btn">Text me when pilr launches</button>
         </form>
-        <p class="signup-legal">By clicking "Text me when pilr launches" you agree to receive recurring marketing texts from Pilr. Msg &amp; data rates may apply. Reply STOP to opt out. View our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</p>
+        <p class="signup-legal">By clicking "Text me when pilr launches" you agree to receive recurring marketing texts from Pilr. Msg &amp; data rates may apply. Reply STOP to opt out.<br>View our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</p>
         <button class="popup-skip" id="waitlist-phone-skip">No thanks</button>
       `
       document.getElementById('waitlist-phone-skip').addEventListener('click', () => {
@@ -360,8 +387,10 @@
       })
       document.getElementById('waitlist-phone-form').addEventListener('submit', async e => {
         e.preventDefault()
-        const phone = e.target.querySelector('input[type="tel"]').value.trim()
-        const btn   = e.target.querySelector('button[type="submit"]')
+        const countryCode = e.target.querySelector('select').value
+        const rawNumber   = e.target.querySelector('input[type="tel"]').value.trim()
+        const phone       = countryCode + rawNumber
+        const btn         = e.target.querySelector('button[type="submit"]')
         btn.disabled = true
         btn.textContent = 'Saving…'
         logConsent(phone, 'homepage_waitlist_phone')
@@ -455,8 +484,10 @@
 
     phoneForm.addEventListener('submit', async e => {
         e.preventDefault()
-        const phone = phoneForm.querySelector('input[type="tel"]').value.trim()
-        const btn   = phoneForm.querySelector('button[type="submit"]')
+        const countryCode = phoneForm.querySelector('select').value
+        const rawNumber   = phoneForm.querySelector('input[type="tel"]').value.trim()
+        const phone       = countryCode + rawNumber
+        const btn         = phoneForm.querySelector('button[type="submit"]')
         btn.disabled = true
         btn.textContent = 'Saving…'
         logConsent(phone, 'phone_popup')

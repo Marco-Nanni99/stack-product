@@ -331,10 +331,8 @@ export async function subscribeEmailToKlaviyo(email) {
 }
 
 export async function subscribePhoneToKlaviyo(rawPhone) {
-  // Normalise to E.164 — assumes US number if no country code
-  let phone = rawPhone.replace(/\D/g, '');
-  if (phone.length === 10) phone = '1' + phone;
-  phone = '+' + phone;
+  // Strip everything to digits, prepend + for E.164
+  const phone = '+' + rawPhone.replace(/\D/g, '');
 
   await klaviyoPost({
     data: {
