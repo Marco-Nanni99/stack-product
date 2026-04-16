@@ -303,7 +303,7 @@ async function klaviyoPost(body) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'revision': '2024-02-15',
+      'revision': '2023-12-15',
     },
     body: JSON.stringify(body),
   });
@@ -316,16 +316,10 @@ export async function subscribeEmailToKlaviyo(email) {
     data: {
       type: 'subscription',
       attributes: {
-        custom_source: 'Website Signup',
         profile: {
           data: {
             type: 'profile',
-            attributes: {
-              email,
-              subscriptions: {
-                email: { marketing: { consent: 'SUBSCRIBED' } },
-              },
-            },
+            attributes: { email },
           },
         },
       },
@@ -350,12 +344,7 @@ export async function subscribePhoneToKlaviyo(rawPhone) {
         profile: {
           data: {
             type: 'profile',
-            attributes: {
-              phone_number: phone,
-              subscriptions: {
-                sms: { marketing: { consent: 'SUBSCRIBED' } },
-              },
-            },
+            attributes: { phone_number: phone },
           },
         },
       },
