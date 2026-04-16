@@ -242,11 +242,13 @@
         <div class="section-eyebrow">Early Access</div>
         <h2>Stay consistent,<br>wherever life takes you.</h2>
         <p>Be the first to know when pilr is available and receive 10% off your first order.</p>
-        <form class="contact-form" id="waitlist-form">
-          <input type="email" placeholder="your@email.com" required />
-          <button type="submit" class="btn">Notify</button>
-        </form>
-        <p class="signup-legal">By signing up, you agree to our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</p>
+        <div id="waitlist-step">
+          <form class="contact-form" id="waitlist-form">
+            <input type="email" placeholder="your@email.com" required />
+            <button type="submit" class="btn">Notify</button>
+          </form>
+          <p class="signup-legal">By signing up, you agree to our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</p>
+        </div>
       </div>
       <div class="contact-img">
         <img src="images/signup_section/signup_image.svg" alt="" />
@@ -341,7 +343,36 @@
     }
 
     // ── Waitlist form ──────────────────────────────────────────────
+    const waitlistStep = document.getElementById('waitlist-step')
     const waitlistForm = document.getElementById('waitlist-form')
+
+    function showWaitlistPhoneStep() {
+      waitlistStep.innerHTML = `
+        <form class="contact-form" id="waitlist-phone-form">
+          <input type="tel" placeholder="your phone number" />
+          <button type="submit" class="btn">Text me when pilr launches</button>
+        </form>
+        <p class="signup-legal">By clicking "Text me when pilr launches" you agree to receive recurring marketing texts from Pilr. Msg &amp; data rates may apply. Reply STOP to opt out. View our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</p>
+        <button class="popup-skip" id="waitlist-phone-skip">No thanks</button>
+      `
+      document.getElementById('waitlist-phone-skip').addEventListener('click', () => {
+        waitlistStep.innerHTML = '<p class="form-success">You\'re on the list. Talk soon.</p>'
+      })
+      document.getElementById('waitlist-phone-form').addEventListener('submit', async e => {
+        e.preventDefault()
+        const phone = e.target.querySelector('input[type="tel"]').value.trim()
+        const btn   = e.target.querySelector('button[type="submit"]')
+        btn.disabled = true
+        btn.textContent = 'Saving…'
+        logConsent(phone, 'homepage_waitlist_phone')
+        try {
+          await window.subscribePhoneToKlaviyo(phone)
+        } catch (err) {
+          console.warn('[Klaviyo] phone subscribe error:', err)
+        }
+        waitlistStep.innerHTML = '<p class="form-success">You\'re on the list. Talk soon.</p>'
+      })
+    }
 
     waitlistForm.addEventListener('submit', async e => {
       e.preventDefault()
@@ -358,7 +389,7 @@
       } catch (err) {
         console.warn('[Shopify] subscribe error:', err)
       }
-      waitlistForm.innerHTML = '<p class="form-success">You\'re on the list. Talk soon.</p>'
+      showWaitlistPhoneStep()
     })
 
     // ── Discount popup ─────────────────────────────────────────────
@@ -397,32 +428,32 @@
         } catch (err) {
           console.warn('[Shopify] subscribe error:', err)
         }
-        popupForm.closest('.popup-content').querySelector('.popup-form') &&
-          (popupForm.innerHTML = '<p class="popup-thanks">You\'re on the list. Talk soon.</p>')
-        setTimeout(hidePopup, 2200)
+        // Transition directly to phone popup
+        popupOverlay.classList.remove('visible')
+        showPhonePopup()
       })
     })()
 
     // ── Phone popup ────────────────────────────────────────────────
-    function schedulePhonePopup() {
-      return // disabled — re-enable when ready to collect phone numbers
+    const phoneOverlay = document.getElementById('phone-popup-overlay')
+    const phoneClose   = document.getElementById('phone-popup-close')
+    const phoneSkip    = document.getElementById('phone-popup-skip')
+    const phoneForm    = document.getElementById('phone-popup-form')
+
+    function showPhonePopup() {
       if (sessionStorage.getItem('phone_popup_seen')) return
-      const phoneOverlay = document.getElementById('phone-popup-overlay')
-      const phoneClose   = document.getElementById('phone-popup-close')
-      const phoneSkip    = document.getElementById('phone-popup-skip')
-      const phoneForm    = document.getElementById('phone-popup-form')
-      function showPhonePopup() {
-        phoneOverlay.classList.add('visible')
-        sessionStorage.setItem('phone_popup_seen', '1')
-      }
-      function hidePhonePopup() {
-        phoneOverlay.classList.remove('visible')
-      }
-      setTimeout(showPhonePopup, 6000)
-      phoneClose.addEventListener('click', hidePhonePopup)
-      phoneSkip.addEventListener('click', hidePhonePopup)
-      phoneOverlay.addEventListener('click', e => { if (e.target === phoneOverlay) hidePhonePopup() })
-      phoneForm.addEventListener('submit', async e => {
+      phoneOverlay.classList.add('visible')
+      sessionStorage.setItem('phone_popup_seen', '1')
+    }
+    function hidePhonePopup() {
+      phoneOverlay.classList.remove('visible')
+    }
+
+    phoneClose.addEventListener('click', hidePhonePopup)
+    phoneSkip.addEventListener('click', hidePhonePopup)
+    phoneOverlay.addEventListener('click', e => { if (e.target === phoneOverlay) hidePhonePopup() })
+
+    phoneForm.addEventListener('submit', async e => {
         e.preventDefault()
         const phone = phoneForm.querySelector('input[type="tel"]').value.trim()
         const btn   = phoneForm.querySelector('button[type="submit"]')
@@ -437,7 +468,6 @@
         phoneForm.innerHTML = '<p class="popup-thanks">You\'re on the list. Talk soon.</p>'
         setTimeout(hidePhonePopup, 2200)
       })
-    }
 
     // ── Hide nav on scroll down, reveal on scroll up ───────────────
     const nav = document.querySelector('.nav')

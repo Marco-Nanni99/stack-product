@@ -269,11 +269,13 @@
       <div class="section-eyebrow">Early Access</div>
       <h2>Stay consistent,<br>wherever life takes you.</h2>
       <p>Be the first to know when pilr is available and receive 10% off your first order.</p>
-      <form class="contact-form" id="waitlist-form">
-        <input type="email" placeholder="your@email.com" required />
-        <button type="submit" class="btn">Notify</button>
-      </form>
-      <p class="signup-legal">By signing up, you agree to our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</p>
+      <div id="waitlist-step">
+        <form class="contact-form" id="waitlist-form">
+          <input type="email" placeholder="your@email.com" required />
+          <button type="submit" class="btn">Notify</button>
+        </form>
+        <p class="signup-legal">By signing up, you agree to our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</p>
+      </div>
     </div>
   </section>
 
@@ -317,13 +319,53 @@
     }
 
     // ── Waitlist form ──────────────────────────────────────────────
+    const waitlistStep = document.getElementById('waitlist-step')
     const waitlistForm = document.getElementById('waitlist-form')
 
-    waitlistForm.addEventListener('submit', e => {
+    function showWaitlistPhoneStep() {
+      waitlistStep.innerHTML = `
+        <form class="contact-form" id="waitlist-phone-form">
+          <input type="tel" placeholder="your phone number" />
+          <button type="submit" class="btn">Text me when pilr launches</button>
+        </form>
+        <p class="signup-legal">By clicking "Text me when pilr launches" you agree to receive recurring marketing texts from Pilr. Msg &amp; data rates may apply. Reply STOP to opt out. View our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</p>
+        <button class="popup-skip" id="waitlist-phone-skip">No thanks</button>
+      `
+      document.getElementById('waitlist-phone-skip').addEventListener('click', () => {
+        waitlistStep.innerHTML = '<p class="form-success">You\'re on the list. Talk soon.</p>'
+      })
+      document.getElementById('waitlist-phone-form').addEventListener('submit', async e => {
+        e.preventDefault()
+        const phone = e.target.querySelector('input[type="tel"]').value.trim()
+        const btn   = e.target.querySelector('button[type="submit"]')
+        btn.disabled = true
+        btn.textContent = 'Saving…'
+        logConsent(phone, 'about_waitlist_phone')
+        try {
+          await window.subscribePhoneToKlaviyo(phone)
+        } catch (err) {
+          console.warn('[Klaviyo] phone subscribe error:', err)
+        }
+        waitlistStep.innerHTML = '<p class="form-success">You\'re on the list. Talk soon.</p>'
+      })
+    }
+
+    waitlistForm.addEventListener('submit', async e => {
       e.preventDefault()
       const email = waitlistForm.querySelector('input[type="email"]').value.trim()
+      const btn   = waitlistForm.querySelector('button[type="submit"]')
+      btn.disabled = true
+      btn.textContent = 'Saving…'
       logConsent(email, 'about_waitlist')
-      waitlistForm.innerHTML = '<p class="form-success">You\'re on the list. Talk soon.</p>'
+      try {
+        await Promise.all([
+          window.subscribeEmail(email),
+          window.subscribeEmailToKlaviyo(email),
+        ])
+      } catch (err) {
+        console.warn('[Klaviyo] subscribe error:', err)
+      }
+      showWaitlistPhoneStep()
     })
 
     // ── Discount popup ─────────────────────────────────────────────
