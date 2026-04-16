@@ -351,7 +351,10 @@
       btn.textContent = 'Saving…'
       logConsent(email, 'homepage_waitlist')
       try {
-        await window.subscribeEmail(email)
+        await Promise.all([
+          window.subscribeEmail(email),
+          window.subscribeEmailToKlaviyo(email),
+        ])
       } catch (err) {
         console.warn('[Shopify] subscribe error:', err)
       }
@@ -387,7 +390,10 @@
         btn.textContent = 'Saving…'
         logConsent(email, 'discount_popup')
         try {
-          await window.subscribeEmail(email)
+          await Promise.all([
+            window.subscribeEmail(email),
+            window.subscribeEmailToKlaviyo(email),
+          ])
         } catch (err) {
           console.warn('[Shopify] subscribe error:', err)
         }
@@ -423,6 +429,11 @@
         btn.disabled = true
         btn.textContent = 'Saving…'
         logConsent(phone, 'phone_popup')
+        try {
+          await window.subscribePhoneToKlaviyo(phone)
+        } catch (err) {
+          console.warn('[Klaviyo] phone subscribe error:', err)
+        }
         phoneForm.innerHTML = '<p class="popup-thanks">You\'re on the list. Talk soon.</p>'
         setTimeout(hidePhonePopup, 2200)
       })

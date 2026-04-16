@@ -292,6 +292,84 @@ async function initButtons() {
   }
 }
 
+/* ── Klaviyo ──────────────────────────────── */
+const KLAVIYO_PUBLIC_KEY  = 'VqA2pQ';
+const KLAVIYO_EMAIL_LIST  = 'TFmD8A';
+const KLAVIYO_SMS_LIST    = 'RSVKC7';
+const KLAVIYO_API_URL     = `https://a.klaviyo.com/client/subscriptions/?company_id=${KLAVIYO_PUBLIC_KEY}`;
+
+async function klaviyoPost(body) {
+  const res = await fetch(KLAVIYO_API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'revision': '2024-02-15',
+    },
+    body: JSON.stringify(body),
+  });
+  // 202 Accepted = success for Klaviyo client API
+  if (!res.ok && res.status !== 202) throw new Error(`Klaviyo API ${res.status}`);
+}
+
+export async function subscribeEmailToKlaviyo(email) {
+  await klaviyoPost({
+    data: {
+      type: 'subscription',
+      attributes: {
+        custom_source: 'Website Signup',
+        profile: {
+          data: {
+            type: 'profile',
+            attributes: {
+              email,
+              subscriptions: {
+                email: { marketing: { consent: 'SUBSCRIBED' } },
+              },
+            },
+          },
+        },
+      },
+      relationships: {
+        list: { data: { type: 'list', id: KLAVIYO_EMAIL_LIST } },
+      },
+    },
+  });
+}
+
+export async function subscribePhoneToKlaviyo(rawPhone) {
+  // Normalise to E.164 — assumes US number if no country code
+  let phone = rawPhone.replace(/\D/g, '');
+  if (phone.length === 10) phone = '1' + phone;
+  phone = '+' + phone;
+
+  await klaviyoPost({
+    data: {
+      type: 'subscription',
+      attributes: {
+        custom_source: 'SMS Popup',
+        profile: {
+          data: {
+            type: 'profile',
+            attributes: {
+              phone_number: phone,
+              subscriptions: {
+                sms: { marketing: { consent: 'SUBSCRIBED' } },
+              },
+            },
+          },
+        },
+      },
+      relationships: {
+        list: { data: { type: 'list', id: KLAVIYO_SMS_LIST } },
+      },
+    },
+  });
+}
+
+// Expose for non-module scripts
+window.subscribeEmailToKlaviyo = subscribeEmailToKlaviyo;
+window.subscribePhoneToKlaviyo = subscribePhoneToKlaviyo;
+
 /* ── Mailing list / waitlist ──────────────── */
 export async function subscribeEmail(email) {
   const { data, errors } = await gql(`
