@@ -710,7 +710,7 @@ section h2 {
 
   .lifestyle { padding: 2rem 4%; }
   .lifestyle-heading { margin-bottom: 2rem; }
-  .lifestyle-heading h2 { font-size: 0.85rem; }
+  .lifestyle-heading h2 { font-size: 0.75rem; }
   .lifestyle-row {
     grid-template-columns: 1fr;
     min-height: auto;
