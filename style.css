@@ -786,6 +786,7 @@ section h2 {
     border-bottom: none;
   }
   .contact-form .btn { width: 100%; }
+
 }
 
 /* ── CART DRAWER ─────────────────────────── */
@@ -1157,6 +1158,12 @@ section h2 {
   line-height: 1.3;
   padding: 0.85rem 0.85rem;
   flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .contact-form--phone { flex-direction: column; }
+  .contact-form--phone .phone-input-wrapper { border-right: 1px solid var(--border); }
+  .contact-form--phone .btn { width: 100%; }
 }
 
 .waitlist-phone-sub {
