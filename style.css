@@ -1124,9 +1124,6 @@ section h2 {
   .popup-content { padding: 2.5rem 1.75rem; }
   .popup-form { flex-direction: column; }
   .popup-form .btn { width: 100%; }
-  #phone-popup-form { flex-direction: column; }
-  #phone-popup-form .phone-input-wrapper { border-right: 1px solid var(--border); border-radius: 4px; }
-  #phone-popup-form .btn { width: 100%; }
 }
 
 /* ── PHONE STEP IN CONTACT SECTION ─────── */
@@ -1206,13 +1203,23 @@ section h2 {
   color: rgba(244,244,244,0.35);
 }
 
-/* Phone popup button — wrap to 2 rows */
+/* Phone popup button — desktop: fixed width beside input */
 #phone-popup-form .btn {
   width: 155px;
   white-space: normal;
   line-height: 1.3;
   padding: 0.65rem 0.85rem;
   flex-shrink: 0;
+}
+
+/* Phone popup — mobile: stack button below input at full width */
+@media (max-width: 700px) {
+  #phone-popup-form { flex-direction: column; }
+  #phone-popup-form .phone-input-wrapper {
+    border-right: 1px solid var(--border);
+    border-radius: 4px;
+  }
+  #phone-popup-form .btn { width: 100%; }
 }
 
 /* ── SIGNUP LEGAL LINE ──────────────────── */
