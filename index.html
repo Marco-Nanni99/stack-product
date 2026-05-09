@@ -7,6 +7,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-85BFGXZB1R"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-85BFGXZB1R');
+  </script>
+  <script async type="text/javascript" src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=VqA2pQ"></script>
 </head>
 <body>
 
@@ -413,6 +422,8 @@
       } catch (err) {
         console.warn('[Shopify] subscribe error:', err)
       }
+      window._learnq = window._learnq || [];
+      window._learnq.push(['identify', { '$email': email }]);
       showWaitlistPhoneStep()
     })
 
@@ -452,6 +463,8 @@
         } catch (err) {
           console.warn('[Shopify] subscribe error:', err)
         }
+        window._learnq = window._learnq || [];
+        window._learnq.push(['identify', { '$email': email }]);
         // Transition directly to phone popup
         popupOverlay.classList.remove('visible')
         showPhonePopup()
@@ -508,6 +521,15 @@
       }
       lastY = y
     }, { passive: true })
+
+    window._learnq = window._learnq || [];
+    window._learnq.push(['track', 'Viewed Product', {
+      Name: 'STACK — Modular Supplement Container',
+      ProductID: 'pilr-go',
+      URL: window.location.href,
+      Brand: 'PILR',
+      Categories: ['Supplements', 'Travel', 'Fitness'],
+    }]);
   </script>
 </body>
 </html>
