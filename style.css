@@ -297,10 +297,10 @@ section h2 {
 .lifestyle-text-col {
   position: relative;
   aspect-ratio: 4 / 3;
-  padding: 3.5rem 4rem 10rem;
+  padding: 2.75rem 4rem 10rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   background: #223757;
   overflow: hidden;
 }
@@ -376,18 +376,18 @@ section h2 {
 
 /* Rounded outer corners only — row 1: text left, image right */
 .lifestyle-row--text-left .lifestyle-text-col {
-  border-radius: 6px 0 0 6px;
+  border-radius: 4px 0 0 4px;
 }
 .lifestyle-row--text-left .lifestyle-main-img {
-  border-radius: 0 6px 6px 0;
+  border-radius: 0 4px 4px 0;
 }
 
 /* Rounded outer corners only — row 2: image left, text right */
 .lifestyle-row--text-right .lifestyle-main-img {
-  border-radius: 6px 0 0 6px;
+  border-radius: 4px 0 0 4px;
 }
 .lifestyle-row--text-right .lifestyle-text-col {
-  border-radius: 0 6px 6px 0;
+  border-radius: 0 4px 4px 0;
 }
 
 /* ── ABOUT ───────────────────────────── */
@@ -724,6 +724,12 @@ section h2 {
   .lifestyle-row--text-left .lifestyle-main-img { order: -1; }
   .lifestyle-main-img { aspect-ratio: 16 / 9; height: auto; }
   .lifestyle-text-col { aspect-ratio: unset; padding: 2.5rem 1.5rem; }
+
+  /* Full rounded corners on all sides when stacked */
+  .lifestyle-row--text-left .lifestyle-text-col,
+  .lifestyle-row--text-right .lifestyle-text-col,
+  .lifestyle-row--text-left .lifestyle-main-img,
+  .lifestyle-row--text-right .lifestyle-main-img { border-radius: 4px; }
   .lifestyle-text-col h2 { font-size: clamp(1.5rem, 5vw, 2rem); margin-bottom: 0.6rem; }
   .lifestyle-corner-img { width: 180px; height: 180px; overflow: visible; right: -30px; }
   .layer-card-img { width: 96px; height: 96px; top: 1rem; right: 1rem; }
