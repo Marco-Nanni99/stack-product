@@ -363,6 +363,10 @@ section h2 {
   overflow: hidden;
 }
 
+.lifestyle-row--text-left .lifestyle-corner-img {
+  right: -20px;
+}
+
 .lifestyle-corner-img img {
   width: 100%;
   height: 100%;
@@ -731,7 +735,8 @@ section h2 {
   .lifestyle-row--text-left .lifestyle-main-img,
   .lifestyle-row--text-right .lifestyle-main-img { border-radius: 4px; }
   .lifestyle-text-col h2 { font-size: clamp(1.5rem, 5vw, 2rem); margin-bottom: 0.6rem; }
-  .lifestyle-corner-img { width: 180px; height: 180px; overflow: visible; right: -30px; }
+  .lifestyle-corner-img { width: 230px; height: 230px; overflow: visible; right: -30px; }
+  .lifestyle-row--text-left .lifestyle-corner-img { width: 260px; height: 260px; right: -50px; }
   .layer-card-img { width: 96px; height: 96px; top: 1rem; right: 1rem; }
 }
 
