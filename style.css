@@ -502,6 +502,11 @@ section h2 {
   margin-top: 18px;
 }
 
+.stat-icon--pods   { transform: translateX(-28px); height: 72px; margin-bottom: 0; }
+.stat-icon--system { transform: translateX(-28px); }
+.stat-icon--tsa    { transform: translateX(-34px); height: 72px; margin-bottom: 0; }
+.stat-icon--bpa    { transform: translateX(0); }
+
 
 /* ── LAYERS ──────────────────────────── */
 .layers {
