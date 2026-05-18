@@ -365,6 +365,7 @@ section h2 {
 
 .lifestyle-row--text-left .lifestyle-corner-img {
   right: -20px;
+  width: clamp(270px, 62%, 440px);
 }
 
 .lifestyle-corner-img img {
