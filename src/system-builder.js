@@ -86,7 +86,7 @@ scene.background = new THREE.Color(0x2E4256)
 
 // ── Camera ───────────────────────────────────────────────────
 const CAMERA_REST_POS    = new THREE.Vector3(0, 0.4, 7)
-const CAMERA_REST_TARGET = new THREE.Vector3(isMobile ? 0.6 : -0.6, 0, 0)
+const CAMERA_REST_TARGET = new THREE.Vector3(0, 0, 0)
 
 const camera = new THREE.PerspectiveCamera(40, CW / CH, 0.1, 50)
 camera.position.copy(CAMERA_REST_POS)
