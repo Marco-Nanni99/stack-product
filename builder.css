@@ -355,7 +355,7 @@ body.system-page {
 .builder-panel {
   width: 320px;
   flex-shrink: 0;
-  background: #223757;
+  background: #354D62;
   border-left: 1px solid var(--border);
   display: flex;
   flex-direction: column;

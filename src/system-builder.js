@@ -82,7 +82,7 @@ renderer.shadowMap.type      = THREE.PCFSoftShadowMap
 renderer.setSize(CW, CH)
 
 const scene = new THREE.Scene()
-scene.background = new THREE.Color(0x1A2E48)
+scene.background = new THREE.Color(0x2E4256)
 
 // ── Camera ───────────────────────────────────────────────────
 const CAMERA_REST_POS    = new THREE.Vector3(0, 0.4, 7)

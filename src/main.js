@@ -18,7 +18,7 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
 // ── Scene & Camera ────────────────────────────────────────────────────────────
 const scene = new THREE.Scene()
-scene.background = new THREE.Color(0x1A2E48)
+scene.background = new THREE.Color(0x2E4256)
 
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 50)
 camera.position.set(0, 0.4, 7)

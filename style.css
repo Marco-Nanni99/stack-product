@@ -1,8 +1,8 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #1A2E48;        /* nav, 1A2E48 about, layers, body fallback */
-  --surface: #1F2A38;
+  --bg: #2E4256;        /* nav, about, layers, body fallback */
+  --surface: #243749;
   --border: rgba(244,244,244,0.10);
   --text: #F4F4F4;
   --muted: rgba(230,230,230,0.60);
@@ -196,7 +196,7 @@ body {
 }
 
 .hero-title span {
-  color: #1A2E48;
+  color: #2E4256;
   -webkit-text-stroke: 2px rgba(244,244,244,0.85);
   paint-order: stroke fill;
 }
@@ -289,7 +289,7 @@ section h2 {
 }
 
 .lifestyle-row + .lifestyle-row {
-  border-top: 2px solid #1A2E48;
+  border-top: 2px solid #2E4256;
   margin-top: .1rem;
   padding-top: .1rem;
 }
@@ -301,7 +301,7 @@ section h2 {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  background: #223757;
+  background: #354D62;
   overflow: hidden;
 }
 
@@ -516,7 +516,7 @@ section h2 {
 /* ── LAYERS ──────────────────────────── */
 .layers {
   padding: 8rem 6%;
-  background: #1A2E48;
+  background: #2E4256;
   border-top: 1px solid var(--border);
 }
 
@@ -535,7 +535,7 @@ section h2 {
 
 .layer-card {
   position: relative;
-  background: #223757;
+  background: #354D62;
   border: 1px solid var(--border);
   padding: 2.5rem 2rem;
   margin-top: 1.5rem;
