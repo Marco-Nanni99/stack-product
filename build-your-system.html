@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Build Your System — PILR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./builder.css" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-85BFGXZB1R"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-85BFGXZB1R');
+  </script>
+  <script async type="text/javascript" src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=VqA2pQ"></script>
+</head>
+<body class="builder-page system-page">
+
+  <!-- NAV -->
+  <div class="nav-overlay" id="nav-overlay"></div>
+  <nav class="nav">
+    <a href="./index.html" class="nav-logo"><img src="images/logov3.png" alt="Pilr" class="nav-logo-img"></a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="./index.html">Home</a></li>
+      <li><a href="./about.html">About</a></li>
+      <li><a href="./index.html#contact">Contact</a></li>
+      <li><a href="./build-your-system.html" class="nav-cta nav-cta--active">Build Your System</a></li>
+    </ul>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MAIN LAYOUT -->
+  <div class="system-layout" id="system-layout">
+
+    <!-- LEFT: Supplement Selector -->
+    <aside class="system-selector" id="system-selector">
+      <div class="system-selector-inner">
+        <div class="section-eyebrow">Customize</div>
+        <h2 class="system-selector-title">What do you take?</h2>
+        <p class="system-selector-sub">Select your daily supplements — we'll build your system.</p>
+
+        <div class="supp-section">
+          <div class="supp-section-label">Powders</div>
+          <div class="supp-chips" id="powders-row"></div>
+        </div>
+
+        <div class="supp-section">
+          <div class="supp-section-label">Large Capsules &amp; Softgels</div>
+          <div class="supp-chips" id="hybrid-row"></div>
+        </div>
+
+        <div class="supp-section">
+          <div class="supp-section-label">Pills &amp; Small Capsules</div>
+          <div class="supp-chips" id="pills-row"></div>
+        </div>
+
+        <div class="supp-selected-count" id="selected-count"></div>
+      </div>
+    </aside>
+
+    <!-- CENTER: 3D Canvas -->
+    <div class="builder-canvas-wrap system-canvas-wrap">
+      <canvas id="system-canvas"></canvas>
+
+      <div class="builder-loading hidden" id="system-loading">
+        <div class="builder-loading-dot"></div>
+        <div class="builder-loading-dot"></div>
+        <div class="builder-loading-dot"></div>
+      </div>
+
+      <button class="pod-back-btn" id="system-back-btn" aria-label="Back to full stack">
+        ← Back to stack
+      </button>
+
+      <div id="system-labels" class="blabel-container"></div>
+    </div>
+
+    <!-- Pod detail panel (overlays selector on pod click) -->
+    <div class="pod-detail-panel" id="pod-detail-panel">
+      <div class="pod-detail-name" id="pod-detail-name"></div>
+      <div class="pod-detail-desc" id="pod-detail-desc"></div>
+      <ul class="pod-detail-specs" id="pod-detail-specs"></ul>
+      <div class="pod-detail-examples-label">Common supplements</div>
+      <div class="pod-detail-examples" id="pod-detail-examples"></div>
+    </div>
+
+    <!-- RIGHT: System Summary -->
+    <aside class="system-summary">
+      <div class="system-summary-inner">
+        <div class="section-eyebrow" style="margin:0 0 1.25rem">Your System</div>
+        <div id="system-summary-content" class="system-summary-content">
+          <p class="system-empty-state">Select your supplements<br>to build your system.</p>
+        </div>
+        <a href="./index.html#contact" class="btn system-cta">Get Early Access</a>
+      </div>
+    </aside>
+
+  </div>
+
+  <script>
+    const hamburger = document.getElementById('nav-hamburger')
+    const navLinks  = document.getElementById('nav-links')
+    const overlay   = document.getElementById('nav-overlay')
+    function closeMenu() {
+      hamburger.classList.remove('open')
+      navLinks.classList.remove('open')
+      overlay.classList.remove('open')
+    }
+    hamburger.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open')
+      hamburger.classList.toggle('open', open)
+      overlay.classList.toggle('open', open)
+    })
+    overlay.addEventListener('click', closeMenu)
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu))
+  </script>
+  <script type="module" src="/src/system-builder.js"></script>
+
+</body>
+</html>
