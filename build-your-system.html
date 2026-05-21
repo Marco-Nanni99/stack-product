@@ -111,11 +111,13 @@
       hamburger.classList.remove('open')
       navLinks.classList.remove('open')
       overlay.classList.remove('open')
+      document.body.style.overflow = ''
     }
     hamburger.addEventListener('click', () => {
       const open = navLinks.classList.toggle('open')
       hamburger.classList.toggle('open', open)
       overlay.classList.toggle('open', open)
+      document.body.style.overflow = open ? 'hidden' : ''
     })
     overlay.addEventListener('click', closeMenu)
     navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu))

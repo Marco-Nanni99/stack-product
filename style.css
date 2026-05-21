@@ -703,14 +703,16 @@ section h2 {
 
 /* Overlay behind the open panel */
 .nav-overlay {
-  display: none;
+  opacity: 0;
+  pointer-events: none;
   position: fixed;
   inset: 0;
   background: rgba(10, 15, 22, 0.65);
   z-index: 90;
+  transition: opacity 0.35s;
 }
 
-.nav-overlay.open { display: block; }
+.nav-overlay.open { opacity: 1; pointer-events: auto; }
 
 /* ── RESPONSIVE ──────────────────────── */
 @media (max-width: 900px) {
@@ -755,9 +757,9 @@ section h2 {
     border-left: 1px solid var(--border);
     flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 2rem;
-    padding: 4rem 2rem;
+    padding: 6rem 2rem 4rem;
     transform: translateX(100%);
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }

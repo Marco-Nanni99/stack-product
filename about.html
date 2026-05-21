@@ -302,8 +302,8 @@
     const navLinks  = document.getElementById('nav-links')
     const overlay   = document.getElementById('nav-overlay')
 
-    function openMenu()  { hamburger.classList.add('open'); navLinks.classList.add('open'); overlay.classList.add('open') }
-    function closeMenu() { hamburger.classList.remove('open'); navLinks.classList.remove('open'); overlay.classList.remove('open') }
+    function openMenu()  { hamburger.classList.add('open'); navLinks.classList.add('open'); overlay.classList.add('open'); document.body.style.overflow = 'hidden' }
+    function closeMenu() { hamburger.classList.remove('open'); navLinks.classList.remove('open'); overlay.classList.remove('open'); document.body.style.overflow = '' }
     function toggleMenu() { navLinks.classList.contains('open') ? closeMenu() : openMenu() }
 
     hamburger.addEventListener('click', toggleMenu)
