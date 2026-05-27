@@ -185,7 +185,7 @@ async function buildStack(podTypes, onReady) {
 
   try {
     const stackGroup = new THREE.Group()
-    stackGroup.scale.setScalar(16)
+    stackGroup.scale.setScalar(isMobile ? 18 : 16)
     stackGroup.rotation.x = THREE.MathUtils.degToRad(90)
     currentGlbScene = stackGroup
     outerGroup.add(stackGroup)
