@@ -826,14 +826,14 @@ body.system-page {
 @media (max-width: 900px) {
   .system-layout {
     grid-template-columns: 1fr;
-    grid-template-rows: 52vh auto auto;
+    grid-template-rows: 46vh auto auto;
     height: auto;
     overflow: visible;
   }
 
   .system-canvas-wrap {
     order: 1;
-    height: 52vh;
+    height: 46vh;
   }
 
   .system-selector {
@@ -852,13 +852,15 @@ body.system-page {
 
   .system-layout.detail-active .pod-detail-panel {
     width: 100%;
-    height: 52vh;
+    height: 46vh;
     order: 2;
     position: relative;
   }
 }
 
 @media (max-width: 600px) {
-  .system-selector { padding: 1.5rem 1.25rem; }
-  .system-summary  { padding: 1.5rem 1.25rem; }
+  .system-selector { padding: 1rem 1.25rem; }
+  .system-summary  { padding: 1rem 1.25rem; }
+  .supp-section    { margin-bottom: 0.75rem; }
+  .system-selector-sub { margin-bottom: 0.75rem; }
 }

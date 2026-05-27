@@ -629,10 +629,11 @@ function updateSystem() {
     ...Array(powderPods).fill('Powder Pod'),
   ]
 
-  const podKey = podList.join(',')
+  const stackToShow = podList.length ? podList : DEFAULT_STACK
+  const podKey = stackToShow.join(',')
   if (podKey !== lastPodKey) {
     lastPodKey = podKey
-    buildStack(podList, podList.length ? () => playDrop() : null)
+    buildStack(stackToShow, () => playDrop())
   } else {
     // Same stack shape — just update labels
     const labelNames = getLabelNamesForPods(podList)
@@ -673,3 +674,7 @@ renderChips('powders', 'powders-row')
 renderChips('hybrid',  'hybrid-row')
 renderChips('pills',   'pills-row')
 animate()
+
+// Default: show full system as a preview
+const DEFAULT_STACK = ['Pill Pod', 'Hybrid Pod', 'Powder Pod']
+buildStack(DEFAULT_STACK, () => playDrop())
