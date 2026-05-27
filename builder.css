@@ -657,6 +657,10 @@ body.system-page {
   pointer-events: none;
 }
 
+@media (max-width: 900px) {
+  .system-selector.hidden { display: none; }
+}
+
 .system-selector-title {
   font-size: 1.4rem;
   font-weight: 700;
@@ -850,11 +854,24 @@ body.system-page {
     overflow-y: visible;
   }
 
+  /* Hide selector from flow (not just visually) when detail is active */
+  .system-layout.detail-active #system-selector {
+    display: none;
+  }
+
   .system-layout.detail-active .pod-detail-panel {
-    width: 100%;
-    height: 46vh;
+    position: relative !important;
     order: 2;
-    position: relative;
+    width: calc(100% - 2.5rem) !important;
+    max-width: 480px;
+    height: auto !important;
+    left: auto !important;
+    top: auto !important;
+    margin: 0.25rem auto 1rem;
+    transform: none !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    padding: 1.5rem !important;
   }
 }
 
