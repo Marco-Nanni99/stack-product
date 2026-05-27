@@ -97,7 +97,7 @@
         <div id="system-summary-content" class="system-summary-content">
           <p class="system-empty-state">Select your supplements<br>to build your system.</p>
         </div>
-        <a href="./index.html#contact" class="btn system-cta">Get Early Access</a>
+        <button type="button" class="btn system-cta" id="early-access-btn">Get Early Access</button>
       </div>
     </aside>
 
@@ -123,6 +123,62 @@
     navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu))
   </script>
   <script type="module" src="/src/system-builder.js"></script>
+  <script type="module" src="/src/shopify.js"></script>
+
+  <!-- Email popup -->
+  <div class="popup-overlay" id="bys-popup-overlay" role="dialog" aria-modal="true">
+    <div class="popup-card">
+      <button class="popup-close" id="bys-popup-close" aria-label="Close">&#x2715;</button>
+      <div class="popup-content">
+        <img src="./images/logov3.png" alt="Pilr" class="popup-logo" />
+        <div class="popup-eyebrow">Early Access Offer</div>
+        <h2 class="popup-headline">You've Got<br><strong>10% Off</strong></h2>
+        <p class="popup-sub">Sign up to get early access and 10% off your first order.</p>
+        <form class="popup-form" id="bys-popup-form">
+          <input type="email" placeholder="your@email.com" required />
+          <button type="submit" class="btn">Notify Me</button>
+        </form>
+        <p class="signup-legal">By signing up, you agree to our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</p>
+        <button class="popup-skip" id="bys-popup-skip">No thanks</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showBysPopup() {
+      document.getElementById('bys-popup-overlay').classList.add('visible')
+    }
+    function hideBysPopup() {
+      document.getElementById('bys-popup-overlay').classList.remove('visible')
+    }
+
+    document.getElementById('early-access-btn').addEventListener('click', showBysPopup)
+    document.getElementById('bys-popup-close').addEventListener('click', hideBysPopup)
+    document.getElementById('bys-popup-skip').addEventListener('click', hideBysPopup)
+    document.getElementById('bys-popup-overlay').addEventListener('click', e => {
+      if (e.target === document.getElementById('bys-popup-overlay')) hideBysPopup()
+    })
+
+    document.getElementById('bys-popup-form').addEventListener('submit', async e => {
+      e.preventDefault()
+      const email = e.target.querySelector('input[type="email"]').value.trim()
+      const btn   = e.target.querySelector('button[type="submit"]')
+      btn.disabled = true
+      btn.textContent = 'Saving…'
+      try {
+        await Promise.all([
+          window.subscribeEmail?.(email),
+          window.subscribeEmailToKlaviyo?.(email),
+        ])
+        window._learnq = window._learnq || []
+        window._learnq.push(['identify', { '$email': email }])
+      } catch (err) {
+        console.warn('[Popup] subscribe error:', err)
+      }
+      e.target.innerHTML = '<p class="form-success" style="color:var(--text);text-align:center">You\'re on the list. Talk soon.</p>'
+      setTimeout(hideBysPopup, 2200)
+    })
+  </script>
 
 </body>
 </html>

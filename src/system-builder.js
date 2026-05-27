@@ -204,7 +204,7 @@ async function buildStack(podTypes, onReady) {
       if (podTypes[i] === 'Hybrid Pod' && dividerGltf) {
         const dividerScene = dividerGltf.scene.clone()
         dividerScene.traverse(m => { if (m.isMesh) m.material = darkMat })
-        dividerScene.position.y = 0.05  // shift up to align with pod interior
+        dividerScene.position.y = 0.05
         gltf.scene.add(dividerScene)
       }
       return gltf
@@ -255,7 +255,6 @@ async function buildStack(podTypes, onReady) {
     const TIGHT = 0.55
     const totalHeight = podData.reduce((sum, d) => sum + (d.zMax - d.zMin) * TIGHT, 0)
 
-    // Stack from positive Z (Pill Pod = world bottom) down to negative Z (Powder Pod = world top)
     let stackZ = totalHeight / 2
 
     for (let i = 0; i < podData.length; i++) {
