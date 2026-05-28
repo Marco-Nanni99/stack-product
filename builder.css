@@ -830,14 +830,14 @@ body.system-page {
 @media (max-width: 900px) {
   .system-layout {
     grid-template-columns: 1fr;
-    grid-template-rows: 46vh auto auto;
+    grid-template-rows: 40vh auto auto;
     height: auto;
     overflow: visible;
   }
 
   .system-canvas-wrap {
     order: 1;
-    height: 46vh;
+    height: 40vh;
   }
 
   .system-selector {

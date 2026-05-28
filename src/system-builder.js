@@ -130,7 +130,7 @@ scene.add(floor)
 // ── Outer group ──────────────────────────────────────────────
 const OUTER_REST_ROT_Z = THREE.MathUtils.degToRad(15)
 const OUTER_REST_ROT_X = THREE.MathUtils.degToRad(-8)
-const OUTER_REST_POS_Y = isMobile ? -0.3 : -0.5
+const OUTER_REST_POS_Y = isMobile ? -0.25 : -0.5
 
 const outerGroup = new THREE.Group()
 outerGroup.rotation.z = OUTER_REST_ROT_Z
