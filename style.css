@@ -772,11 +772,14 @@ section h2 {
   }
 
   .nav-links .nav-cta {
+    display: block !important;
     width: 100%;
+    box-sizing: border-box;
     text-align: center;
-    white-space: normal;
-    line-height: 1.3;
-    padding: 0.6rem 1rem !important;
+    white-space: nowrap;
+    font-size: 0.8rem !important;
+    letter-spacing: 0.1em !important;
+    padding: 0.6rem 0.75rem !important;
   }
 
   /* Hamburger → X */
