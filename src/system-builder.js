@@ -251,21 +251,32 @@ async function buildStack(podTypes, onReady) {
       }
     })
 
-    // Use only 55% of the bounding box height to remove empty space and pack pods tightly
-    const TIGHT = 0.55
-    const totalHeight = podData.reduce((sum, d) => sum + (d.zMax - d.zMin) * TIGHT, 0)
+    // Use the smallest pod's bounding box as the uniform step, and
+    // place each pod by its BB center — this equalises gaps across pod types
+    const TIGHT      = 0.72
+    const naturalStep = Math.min(...podData.map(d => (d.zMax - d.zMin))) * TIGHT
+    // Cap total stack height so all pods always fit in the canvas
+    const MAX_HEIGHT = 0.26
+    const maxStep    = podData.length > 1 ? MAX_HEIGHT / (podData.length - 1) : naturalStep
+    const step       = Math.min(naturalStep, maxStep)
 
+    const totalHeight = step * (podData.length - 1)
     let stackZ = totalHeight / 2
+
+    // Per-type center fraction: Pill Pod geometry sits toward the top of its BB
+    // so we bias the center upward to close the gap it creates below
+    const CENTER_BIAS = { 'Pill Pod': 0.72, 'Hybrid Pod': 0.5, 'Powder Pod': 0.5 }
 
     for (let i = 0; i < podData.length; i++) {
       const { scene: s, zMin, zMax } = podData[i]
-      const height = (zMax - zMin) * TIGHT
+      const bias     = CENTER_BIAS[podTypes[i]] ?? 0.5
+      const bbCenter = zMin + (zMax - zMin) * bias
 
-      s.position.z = stackZ - zMax
+      s.position.z = stackZ - bbCenter
       outerGroup.updateMatrixWorld(true)
 
       sections.push({ mesh: s, restZ: s.position.z })
-      stackZ -= height
+      stackZ -= step
     }
 
     modelLoaded = true
