@@ -615,9 +615,8 @@ section h2 {
 
 /* ── CONTACT ─────────────────────────── */
 .contact {
-  padding: 8rem 6% 4rem;
+  padding: 1.5rem 6%;
   border-top: 1px solid var(--border);
-  min-height: 60vh;
 }
 
 .contact-inner {
