@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get Early Access — PILR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-85BFGXZB1R"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-85BFGXZB1R');</script>
+  <script async type="text/javascript" src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=VqA2pQ"></script>
+  <style>
+    .ea-page {
+      min-height: 100vh;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ea-main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 7rem 2rem 5rem;
+    }
+
+    .ea-card {
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .ea-logo {
+      height: 32px;
+      width: auto;
+      margin-bottom: 2.5rem;
+      opacity: 0.9;
+    }
+
+    .ea-eyebrow {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .ea-headline {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .ea-headline strong {
+      font-weight: 700;
+    }
+
+    .ea-sub {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--muted);
+      max-width: 400px;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── Step panels ── */
+    .ea-steps {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .ea-step {
+      background: #FFFFFF;
+      border: 1px solid rgba(66,85,99,0.12);
+      border-radius: 12px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      text-align: left;
+    }
+
+    .ea-step-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .ea-step-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 0.1rem;
+    }
+
+    .ea-step-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .ea-step form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .ea-step input[type="email"],
+    .ea-step input[type="tel"] {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid rgba(66,85,99,0.2);
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .ea-step input:focus {
+      border-color: #425563;
+    }
+
+    .ea-phone-row {
+      display: flex;
+      gap: 0;
+      border: 1px solid rgba(66,85,99,0.2);
+      border-radius: 6px;
+      overflow: hidden;
+      background: var(--bg);
+      transition: border-color 0.2s;
+    }
+
+    .ea-phone-row:focus-within {
+      border-color: #425563;
+    }
+
+    .ea-phone-row select {
+      background: rgba(66,85,99,0.06);
+      border: none;
+      border-right: 1px solid rgba(66,85,99,0.15);
+      padding: 0.75rem 0.6rem;
+      font-family: inherit;
+      font-size: 0.85rem;
+      color: var(--text);
+      outline: none;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .ea-phone-row input {
+      border: none !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      flex: 1;
+      padding: 0.75rem 1rem !important;
+    }
+
+    .ea-step .btn {
+      width: 100%;
+      text-align: center;
+      justify-content: center;
+      background: #425563;
+      color: #FAFAF8;
+      border: none;
+      padding: 0.85rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .ea-step .btn:hover { background: #2c3a44; }
+    .ea-step .btn:disabled { opacity: 0.6; cursor: default; }
+
+    .ea-legal {
+      font-size: 0.7rem;
+      color: rgba(66,85,99,0.45);
+      line-height: 1.5;
+    }
+
+    .ea-legal a {
+      color: rgba(66,85,99,0.6);
+      text-decoration: underline;
+    }
+
+    .ea-success {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #425563;
+      padding: 0.5rem 0;
+      display: none;
+    }
+
+    .ea-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      width: 100%;
+    }
+
+    .ea-divider::before,
+    .ea-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(66,85,99,0.12);
+    }
+
+    @media (max-width: 600px) {
+      .ea-main { padding: 6rem 1.25rem 4rem; }
+      .ea-headline { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <div class="nav-overlay" id="nav-overlay"></div>
+  <nav class="nav">
+    <a href="./index.html" class="nav-logo">
+      <img src="images/lifestyle_section/blue logo transparent background 1.png" alt="Pilr" class="nav-logo-img">
+    </a>
+    <div class="nav-right">
+      <ul class="nav-links" id="nav-links">
+        <li class="nav-has-dropdown">
+          <a href="./catalog.html">Shop
+            <svg class="nav-chevron" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1l5 5 5-5"/></svg>
+          </a>
+          <div class="nav-dropdown">
+            <div class="nav-dropdown-inner">
+              <div class="nav-drop-grid">
+                <a href="./build-your-system.html" class="nav-drop-card">
+                  <div class="nav-drop-img nav-drop-img--large"><img src="images/lifestyle_section/Build Your System.png" alt="Build Your System"></div>
+                  <div class="nav-drop-text"><span class="nav-drop-title">Build Your System</span><span class="nav-drop-desc">Design your perfect stack</span></div>
+                </a>
+                <a href="./classic-stack.html" class="nav-drop-card">
+                  <div class="nav-drop-img nav-drop-img--bottom"><img src="images/lifestyle_section/Hand Render.png" alt="Classic Stack"></div>
+                  <div class="nav-drop-text"><span class="nav-drop-title">Classic Stack</span><span class="nav-drop-desc">Powder, hybrid &amp; pill pods</span></div>
+                </a>
+                <a href="./catalog.html#section-single-pods" class="nav-drop-card">
+                  <div class="nav-drop-img nav-drop-img--small"><img src="images/lifestyle_section/Powder Pod Render.png" alt="Single Pods"></div>
+                  <div class="nav-drop-text"><span class="nav-drop-title">Single Pods</span><span class="nav-drop-desc">Mix and match individual pods</span></div>
+                </a>
+                <a href="./catalog.html" class="nav-drop-card">
+                  <div class="nav-drop-img"><img src="images/lifestyle_section/Full Render.png" alt="All Products"></div>
+                  <div class="nav-drop-text"><span class="nav-drop-title">All Products</span><span class="nav-drop-desc">Browse the complete Pilr collection</span></div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li><a href="./why-pilr.html">Why Pilr</a></li>
+        <li><a href="./about.html">About</a></li>
+        <li><a href="./faq.html">FAQ</a></li>
+      </ul>
+      <a href="./cart.html" class="nav-cart-icon" aria-label="Cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      </a>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+  <div class="nav-dim-overlay" id="nav-dim-overlay"></div>
+
+  <!-- MAIN -->
+  <div class="ea-page">
+    <div class="ea-main">
+      <div class="ea-card">
+
+        <img src="./images/lifestyle_section/blue logo transparent background 1.png" alt="Pilr" class="ea-logo" />
+        <div class="ea-eyebrow">Early Access</div>
+        <h1 class="ea-headline">Be the first to<br><strong>get Pilr.</strong></h1>
+        <p class="ea-sub">Sign up below to lock in 10% off your first order and be first in line when we launch.</p>
+
+        <div class="ea-steps">
+
+          <!-- Step 1: Email -->
+          <div class="ea-step">
+            <div>
+              <div class="ea-step-label">Step 1</div>
+              <div class="ea-step-title">Get 10% off your first order</div>
+              <div class="ea-step-desc">Enter your email to claim your discount and stay in the loop.</div>
+            </div>
+            <form id="ea-email-form">
+              <input type="email" placeholder="your@email.com" required />
+              <button type="submit" class="btn">Claim My 10% Off</button>
+            </form>
+            <p class="ea-success" id="ea-email-success">You're on the list. Check your inbox.</p>
+            <p class="ea-legal">By signing up, you agree to our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</p>
+          </div>
+
+          <div class="ea-divider">or go further</div>
+
+          <!-- Step 2: SMS -->
+          <div class="ea-step">
+            <div>
+              <div class="ea-step-label">Step 2</div>
+              <div class="ea-step-title">Get a free stainless steel scooper</div>
+              <div class="ea-step-desc">Add your number to be first to know when we launch — plus get a <strong>FREE custom stainless steel scooper</strong> with your first order.</div>
+            </div>
+            <form id="ea-phone-form">
+              <div class="ea-phone-row">
+                <select aria-label="Country code">
+                  <option value="+1">+1</option>
+                  <option value="+44">+44</option>
+                  <option value="+39">+39</option>
+                  <option value="+33">+33</option>
+                  <option value="+49">+49</option>
+                  <option value="+34">+34</option>
+                  <option value="+61">+61</option>
+                  <option value="+52">+52</option>
+                  <option value="+55">+55</option>
+                </select>
+                <input type="tel" placeholder="000-000-0000" required />
+              </div>
+              <button type="submit" class="btn">Text Me Launch Updates</button>
+            </form>
+            <p class="ea-success" id="ea-phone-success">You're in. We'll text you at launch.</p>
+            <p class="ea-legal">Agree to recurring marketing texts from Pilr by clicking above. Msg/data rates may apply. Reply STOP to cancel. <a href="./privacy-policy.html" target="_blank">View Terms &amp; Privacy</a>.</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-top"><div class="footer-top-inner">
+    <div class="footer-newsletter"><h3>Never Miss a Day</h3><p>Receive special offers and first look at new products.</p><form class="footer-email-form" id="footer-email-form"><div class="footer-email-row"><input type="email" placeholder="Email address" required /><button type="submit" class="footer-email-btn" aria-label="Subscribe"><svg width="18" height="18" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#1e2c38"/><path d="M13 10l6 6-6 6" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></form><p class="footer-legal">By submitting your email, you agree to the pilr privacy policy and are opting in to marketing communications.</p></div>
+    <div class="footer-links-grid">
+      <div class="footer-col"><h4>Shop</h4><ul><li><a href="./catalog.html">All Products</a></li><li><a href="./catalog.html#section-single-pods">Single Pods</a></li><li><a href="./build-your-system.html">Build Your System</a></li><li><a href="./classic-stack.html">Classic Stack</a></li><li><a href="./catalog.html#section-accessories">Accessories</a></li></ul></div>
+      <div class="footer-col"><h4>Company</h4><ul><li><a href="./about.html">Our Story</a></li><li><a href="#">News</a></li><li><a href="mailto:support@pilrsystems.com">Contact Us</a></li><li><a href="./why-pilr.html">Why Pilr</a></li><li><a href="#">Stories</a></li></ul></div>
+      <div class="footer-col"><h4>Support</h4><ul><li><a href="./faq.html">FAQ</a></li><li><a href="#">Shipping Information</a></li><li><a href="#">Returns &amp; Exchanges</a></li><li><a href="./privacy-policy.html">Privacy Policy</a></li><li><a href="#">Order Tracking</a></li></ul></div>
+    </div>
+  </div></div>
+  <footer class="site-footer">
+    <div class="site-footer-social-row"><div class="site-footer-social-inner"><div class="footer-social">
+      <a href="https://www.instagram.com/pilrofficial/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" stroke="none"/></svg></a>
+      <a href="https://www.tiktok.com/@pilrofficial" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.74a4.85 4.85 0 01-1.01-.05z"/></svg></a>
+      <a href="https://www.youtube.com/@pilrofficial" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon fill="#3D5060" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></a>
+      <a href="https://www.linkedin.com/company/pilrsystems" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 5a2 2 0 11-4-.002 2 2 0 014 .002zM7 8.48H3V21h4V8.48zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.18-7.06-5.96-8.72-2.91l.04-1.68z"/></svg></a>
+    </div></div></div>
+    <div class="site-footer-bottom"><div class="site-footer-inner"><span class="site-footer-copy">© Pilr 2026.</span><div class="footer-payment-icons"><img src="images/lifestyle_section/Visa ss.png" alt="Visa" class="payment-icon"><img src="images/lifestyle_section/Amex ss.png" alt="Amex" class="payment-icon"><img src="images/lifestyle_section/Apple Pay ss.png" alt="Apple Pay" class="payment-icon"><img src="images/lifestyle_section/PayPal ss.png" alt="PayPal" class="payment-icon"><img src="images/lifestyle_section/Shop ss.png" alt="Shop Pay" class="payment-icon"><img src="images/lifestyle_section/Discover ss.png" alt="Discover" class="payment-icon"></div></div></div>
+  </footer>
+
+  <script src="./pilr-cart.js"></script>
+  <script>
+    // ── Nav ───────────────────────────────────────────────────────────
+    const hamburger = document.getElementById('nav-hamburger')
+    const navLinks  = document.getElementById('nav-links')
+    const overlay   = document.getElementById('nav-overlay')
+    hamburger.addEventListener('click', () => { navLinks.classList.toggle('nav-links--open'); hamburger.classList.toggle('nav-hamburger--open') })
+    overlay.addEventListener('click', () => { navLinks.classList.remove('nav-links--open'); hamburger.classList.remove('nav-hamburger--open') })
+
+    const shopAllLi    = document.querySelector('.nav-has-dropdown')
+    const shopDropdown = document.querySelector('.nav-dropdown')
+    const dimOverlay   = document.getElementById('nav-dim-overlay')
+    let dropOpen = false, dropCloseTimer = null
+    function openDrop()  { clearTimeout(dropCloseTimer); shopAllLi.classList.add('dropdown-active'); dimOverlay.classList.add('active'); dropOpen = true }
+    function closeDrop() { clearTimeout(dropCloseTimer); dropCloseTimer = null; shopAllLi.classList.remove('dropdown-active'); dimOverlay.classList.remove('active'); dropOpen = false }
+    dimOverlay.addEventListener('click', closeDrop)
+    document.addEventListener('mousemove', e => {
+      if (!dropOpen) return
+      const li = shopAllLi.getBoundingClientRect(), dd = shopDropdown.getBoundingClientRect()
+      const inZone = (e.clientX >= li.left && e.clientX <= li.right && e.clientY >= li.top && e.clientY <= li.bottom) || (e.clientY >= dd.top && e.clientY <= dd.bottom) || (e.clientY > li.bottom && e.clientY < dd.top)
+      if (!inZone) { if (!dropCloseTimer) dropCloseTimer = setTimeout(closeDrop, 120) } else { clearTimeout(dropCloseTimer); dropCloseTimer = null }
+    })
+    shopAllLi.addEventListener('mouseenter', openDrop)
+    shopAllLi.querySelector('a').addEventListener('click', e => { if (window.innerWidth > 900) e.preventDefault(); closeDrop() })
+
+    let lastY = 0
+    const nav = document.querySelector('.nav')
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY
+      if (y > lastY && y > 80) nav.classList.add('nav--hidden')
+      else nav.classList.remove('nav--hidden')
+      lastY = y
+    }, { passive: true })
+
+    // ── Klaviyo helpers (same pattern as index.html) ──────────────────
+    function logConsent(identifier, source) {
+      console.log('[Consent]', identifier, source)
+    }
+
+    // ── Email form ────────────────────────────────────────────────────
+    document.getElementById('ea-email-form').addEventListener('submit', async e => {
+      e.preventDefault()
+      const email = e.target.querySelector('input[type="email"]').value.trim()
+      const btn   = e.target.querySelector('button')
+      btn.disabled = true
+      btn.textContent = 'Saving…'
+      logConsent(email, 'early_access_email')
+      try {
+        await Promise.all([
+          window.subscribeEmail?.(email),
+          window.subscribeEmailToKlaviyo?.(email),
+        ])
+        window._learnq = window._learnq || []
+        window._learnq.push(['identify', { '$email': email }])
+      } catch (err) {
+        console.warn('[Klaviyo] email error:', err)
+      }
+      e.target.style.display = 'none'
+      document.getElementById('ea-email-success').style.display = 'block'
+    })
+
+    // ── Phone form ────────────────────────────────────────────────────
+    document.getElementById('ea-phone-form').addEventListener('submit', async e => {
+      e.preventDefault()
+      const countryCode = e.target.querySelector('select').value
+      const rawNumber   = e.target.querySelector('input[type="tel"]').value.trim()
+      const phone       = countryCode + rawNumber
+      const btn         = e.target.querySelector('button')
+      btn.disabled = true
+      btn.textContent = 'Saving…'
+      logConsent(phone, 'early_access_sms')
+      try {
+        await window.subscribePhoneToKlaviyo?.(phone)
+      } catch (err) {
+        console.warn('[Klaviyo] phone error:', err)
+      }
+      e.target.style.display = 'none'
+      document.getElementById('ea-phone-success').style.display = 'block'
+    })
+
+    // ── Footer email ──────────────────────────────────────────────────
+    document.getElementById('footer-email-form').addEventListener('submit', async e => {
+      e.preventDefault()
+      const email = e.target.querySelector('input[type="email"]').value.trim()
+      const btn   = e.target.querySelector('button[type="submit"]')
+      btn.disabled = true
+      btn.textContent = 'Done!'
+      logConsent(email, 'footer_newsletter')
+      try {
+        await Promise.all([window.subscribeEmail?.(email), window.subscribeEmailToKlaviyo?.(email)])
+      } catch (err) { console.warn(err) }
+    })
+  </script>
+</body>
+</html>

@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <title>STACK — Modular Supplement Container</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <title>Pilr — Your Routine. Anywhere.</title>
   <link rel="stylesheet" href="./style.css" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-85BFGXZB1R"></script>
@@ -19,268 +17,400 @@
 </head>
 <body>
 
-  <!-- NAV -->
+  <!-- NAV OVERLAY -->
   <div class="nav-overlay" id="nav-overlay"></div>
+
+  <!-- NAV -->
   <nav class="nav">
-    <a href="#hero" class="nav-logo"><img src="images/logov3.png" alt="Pilr" class="nav-logo-img"></a>
-    <ul class="nav-links" id="nav-links">
-      <li><a href="#hero">Home</a></li>
-      <li><a href="./about.html">About</a></li>
-      <li><a href="#contact">Contact</a></li>
-      <li><a href="./build-your-system.html" class="nav-cta">Build Your System</a></li>
-    </ul>
-    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+    <a href="/" class="nav-logo">
+      <img src="images/lifestyle_section/blue logo transparent background 1.png" alt="pilr" class="nav-logo-img">
+    </a>
+    <div class="nav-right">
+      <ul class="nav-links" id="nav-links">
+        <li class="nav-has-dropdown">
+          <a href="./catalog.html">
+            Shop
+            <svg class="nav-chevron" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1l5 5 5-5"/></svg>
+          </a>
+          <div class="nav-dropdown">
+            <div class="nav-dropdown-inner">
+              <div class="nav-drop-grid">
+                <a href="./build-your-system.html" class="nav-drop-card">
+                  <div class="nav-drop-img nav-drop-img--large"><img src="images/lifestyle_section/Build Your System.png" alt="Build Your System"></div>
+                  <div class="nav-drop-text">
+                    <span class="nav-drop-title">Build Your System</span>
+                    <span class="nav-drop-desc">Design your perfect stack</span>
+                  </div>
+                </a>
+                <a href="./classic-stack.html" class="nav-drop-card">
+                  <div class="nav-drop-img nav-drop-img--bottom"><img src="images/lifestyle_section/Hand Render.png" alt="Classic Stack"></div>
+                  <div class="nav-drop-text">
+                    <span class="nav-drop-title">Classic Stack</span>
+                    <span class="nav-drop-desc">Powder, hybrid &amp; pill pods</span>
+                  </div>
+                </a>
+                <a href="./catalog.html#section-single-pods" class="nav-drop-card">
+                  <div class="nav-drop-img nav-drop-img--small"><img src="images/lifestyle_section/Powder Pod Render.png" alt="Single Pods"></div>
+                  <div class="nav-drop-text">
+                    <span class="nav-drop-title">Single Pods</span>
+                    <span class="nav-drop-desc">Mix and match individual pods</span>
+                  </div>
+                </a>
+                <a href="./catalog.html" class="nav-drop-card">
+                  <div class="nav-drop-img"><img src="images/lifestyle_section/Full Render.png" alt="All Products"></div>
+                  <div class="nav-drop-text">
+                    <span class="nav-drop-title">All Products</span>
+                    <span class="nav-drop-desc">Browse the complete Pilr collection</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li><a href="./why-pilr.html">Why Pilr</a></li>
+        <li><a href="./about.html">About</a></li>
+        <li><a href="./faq.html">FAQ</a></li>
+      </ul>
+      <a href="./cart.html" class="nav-cart-btn" aria-label="Cart">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      </a>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </nav>
+
+  <!-- DROPDOWN DIM OVERLAY -->
+  <div class="nav-dim-overlay" id="nav-dim-overlay"></div>
 
   <!-- HERO -->
   <section id="hero" class="hero">
-    <canvas id="three-canvas"></canvas>
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="images/lifestyle_section/Home Page Video.mp4" type="video/mp4">
+      <source src="images/lifestyle_section/Home Page Video.MOV" type="video/quicktime">
+    </video>
 
-    <!-- Floating section labels — positions updated by JS -->
-    <div class="label label-left" id="label-lid">
-      <span class="label-dot"></span>
-      <span class="label-line"></span>
-      <div class="label-content">
-        <div class="label-title">MULTI-POD LID</div>
-        <ul class="label-details">
-          <li>Airtight twist-lock seal</li>
-          <li>Universal fit across all pods</li>
-        </ul>
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <div class="hero-eyebrow">PACK&nbsp;&nbsp;&nbsp;STACK&nbsp;&nbsp;&nbsp;GO</div>
+        <p class="hero-tagline">A modular system for your daily supplements,<br>wherever life takes you</p>
+        <h1 class="hero-title">Your routine. Anywhere.</h1>
+        <a href="./build-your-system.html" class="btn btn--dark">Build Your System →</a>
       </div>
-    </div>
-    <div class="label label-right" id="label-dessert">
-      <div class="label-content">
-        <div class="label-title">POWDER POD</div>
-        <ul class="label-details">
-          <li>Includes 5g scooper</li>
-          <li>Height: 2.5 in.</li>
-          <li>Pre-Workout, Collagen, Greens…</li>
-        </ul>
-      </div>
-      <span class="label-line"></span>
-      <span class="label-dot"></span>
-    </div>
-    <div class="label label-left" id="label-main">
-      <span class="label-dot"></span>
-      <span class="label-line"></span>
-      <div class="label-content">
-        <div class="label-title">HYBRID POD</div>
-        <ul class="label-details">
-          <li>2 capsule types or 1 powder</li>
-          <li>Height: 2 in.</li>
-          <li>Fish Oil, Magnesium, Creatine…</li>
-        </ul>
-      </div>
-    </div>
-    <div class="label label-right" id="label-snack">
-      <div class="label-content">
-        <div class="label-title">PILL POD</div>
-        <ul class="label-details">
-          <li>Easy dispense mechanism</li>
-          <li>Height: 1 in.</li>
-          <li>Vitamin D, Zinc, Multivitamins…</li>
-        </ul>
-      </div>
-      <span class="label-line"></span>
-      <span class="label-dot"></span>
-    </div>
-
-    <!-- Hero copy -->
-    <div class="hero-copy">
-      <div class="hero-eyebrow">PACK · STACK · GO</div>
-      <h1 class="hero-title"><span>BUILT FOR</span><br>CONSISTENCY</h1>
-      <p class="hero-sub">Three Pods. One System.<br>A modern solution for organizing your daily supplements — wherever life takes you.</p>
-    </div>
-
-    <div class="scroll-cue">
-      <div class="scroll-line"></div>
-      <span>Scroll</span>
     </div>
   </section>
 
-  <!-- LIFESTYLE -->
-  <section class="lifestyle">
-  <div class="lifestyle-inner">
-
-    <div class="lifestyle-heading">
-      <h2>All your supplements. One system.</h2>
+  <!-- TRUST BAR -->
+  <div class="trust-bar">
+    <div class="trust-scroll-wrap">
+      <div class="trust-track">
+        <span><em>TSA Compliant</em> — Fits carry-on rules</span>
+        <span class="trust-dot">·</span>
+        <span><em>Zero Leakage Seal</em> — Threaded closure keeps powders and pills contained</span>
+        <span class="trust-dot">·</span>
+        <span><em>Modular Pod System</em> — Mix and match Pill, Hybrid, and Powder pods</span>
+        <span class="trust-dot">·</span>
+        <span><em>Interchangeable Pods</em> — Every pod fits every stack</span>
+        <span class="trust-dot">·</span>
+        <span><em>Tritan TX1001</em> — BPA-free, shatter-resistant, travel-grade material</span>
+        <span class="trust-dot">·</span>
+        <span><em>Matte Black Finish</em> — Fingerprint-resistant texture</span>
+        <span class="trust-dot">·</span>
+        <span><em>Powder-to-Pill Flexibility</em> — One system, any supplement</span>
+        <span class="trust-dot">·</span>
+        <span><em>Durable Daily Use</em> — Built to survive years of travel</span>
+        <span class="trust-dot">·</span>
+        <span><em>TSA Compliant</em> — Fits carry-on rules</span>
+        <span class="trust-dot">·</span>
+        <span><em>Zero Leakage Seal</em> — Threaded closure keeps powders and pills contained</span>
+        <span class="trust-dot">·</span>
+        <span><em>Modular Pod System</em> — Mix and match Pill, Hybrid, and Powder pods</span>
+        <span class="trust-dot">·</span>
+        <span><em>Interchangeable Pods</em> — Every pod fits every stack</span>
+        <span class="trust-dot">·</span>
+        <span><em>Tritan TX1001</em> — BPA-free, shatter-resistant, travel-grade material</span>
+        <span class="trust-dot">·</span>
+        <span><em>Matte Black Finish</em> — Fingerprint-resistant texture</span>
+        <span class="trust-dot">·</span>
+        <span><em>Powder-to-Pill Flexibility</em> — One system, any supplement</span>
+        <span class="trust-dot">·</span>
+        <span><em>Durable Daily Use</em> — Built to survive years of travel</span>
+        <span class="trust-dot">·</span>
+        <span><em>TSA Compliant</em> — Fits carry-on rules</span>
+        <span class="trust-dot">·</span>
+        <span><em>Zero Leakage Seal</em> — Threaded closure keeps powders and pills contained</span>
+        <span class="trust-dot">·</span>
+        <span><em>Modular Pod System</em> — Mix and match Pill, Hybrid, and Powder pods</span>
+        <span class="trust-dot">·</span>
+        <span><em>Interchangeable Pods</em> — Every pod fits every stack</span>
+        <span class="trust-dot">·</span>
+        <span><em>Tritan TX1001</em> — BPA-free, shatter-resistant, travel-grade material</span>
+        <span class="trust-dot">·</span>
+        <span><em>Matte Black Finish</em> — Fingerprint-resistant texture</span>
+        <span class="trust-dot">·</span>
+        <span><em>Powder-to-Pill Flexibility</em> — One system, any supplement</span>
+        <span class="trust-dot">·</span>
+        <span><em>Durable Daily Use</em> — Built to survive years of travel</span>
+        <span class="trust-dot">·</span>
+        <span><em>TSA Compliant</em> — Fits carry-on rules</span>
+        <span class="trust-dot">·</span>
+        <span><em>Zero Leakage Seal</em> — Threaded closure keeps powders and pills contained</span>
+        <span class="trust-dot">·</span>
+        <span><em>Modular Pod System</em> — Mix and match Pill, Hybrid, and Powder pods</span>
+        <span class="trust-dot">·</span>
+        <span><em>Interchangeable Pods</em> — Every pod fits every stack</span>
+        <span class="trust-dot">·</span>
+        <span><em>Tritan TX1001</em> — BPA-free, shatter-resistant, travel-grade material</span>
+        <span class="trust-dot">·</span>
+        <span><em>Matte Black Finish</em> — Fingerprint-resistant texture</span>
+        <span class="trust-dot">·</span>
+        <span><em>Powder-to-Pill Flexibility</em> — One system, any supplement</span>
+        <span class="trust-dot">·</span>
+        <span><em>Durable Daily Use</em> — Built to survive years of travel</span>
+        <span class="trust-dot">·</span>
+      </div>
     </div>
-
-    <!-- Row 1: text left, image right -->
-    <div class="lifestyle-row lifestyle-row--text-left">
-      <div class="lifestyle-text-col">
-        <div class="section-eyebrow">Powders</div>
-        <h2>Any powder.<br>On the go.</h2>
-        <p>Leakproof, travel-ready storage built for a week's worth of your daily powders. No mess, no wasted space, no friction.</p>
-        <ul class="lifestyle-list">
-          <li>Stackable</li>
-          <li>Leakproof</li>
-          <li>TSA-Approved</li>
-        </ul>
-        <a href="#contact" class="btn">Get Early Access</a>
-        <div class="lifestyle-corner-img">
-          <img src="images/lifestyle_section/top_text_right_corner.svg" alt="" />
-        </div>
-      </div>
-      <div class="lifestyle-main-img">
-        <img src="images/lifestyle_section/top_right.png" alt="STACK powder pod in use" />
-      </div>
-    </div>
-
-    <!-- Row 2: image left, text right -->
-    <div class="lifestyle-row lifestyle-row--text-right">
-      <div class="lifestyle-main-img">
-        <img src="images/lifestyle_section/bottom_left.png" alt="STACK pill pods on the go" />
-      </div>
-      <div class="lifestyle-text-col">
-        <div class="section-eyebrow">Pills</div>
-        <h2>Every capsule.<br>Any place.</h2>
-        <p>Easy-access pill storage on the go, designed to keep your pills accessible no matter where you are.</p>
-        <ul class="lifestyle-list">
-          <li>Quick Access</li>
-          <li>Airtight</li>
-          <li>TSA-Approved</li>
-        </ul>
-        <a href="#contact" class="btn">Get Early Access</a>
-        <div class="lifestyle-corner-img">
-          <img src="images/lifestyle_section/Adobe Express - file (5).png" alt="" />
-        </div>
-      </div>
-    </div>
-
   </div>
+
+  <!-- SHOP CARDS -->
+  <section class="shop">
+    <div class="shop-inner">
+      <a href="./catalog.html#section-single-pods" class="shop-card">
+        <div class="shop-card-img">
+          <img src="images/lifestyle_section/Powder Pod Render.png" alt="Single Pods" />
+        </div>
+        <div class="shop-card-info">
+          <h3>Single Pods</h3>
+          <p>Choose only what you need</p>
+          <span class="shop-price">From $13</span>
+        </div>
+      </a>
+      <a href="./classic-stack.html" class="shop-card shop-card--featured">
+        <div class="shop-card-img shop-card-img--large">
+          <img src="images/lifestyle_section/Hand Render.png" alt="The Classic Stack" style="transform: translateY(6%);" />
+        </div>
+        <div class="shop-card-info">
+          <div class="shop-card-badge">Most Popular</div>
+          <h3>The Classic Stack</h3>
+          <p>Powder, hybrid, and pill pods — the base system</p>
+          <span class="shop-price">$45</span>
+        </div>
+      </a>
+      <a href="./build-your-system.html" class="shop-card">
+        <div class="shop-card-img shop-card-img--large">
+          <img src="images/lifestyle_section/Build Your System.png" alt="Build Your System" class="shop-card-img-scale" />
+        </div>
+        <div class="shop-card-info">
+          <h3>Build Your System</h3>
+          <p>Mix any combination of pods</p>
+          <span class="shop-price">From $13</span>
+        </div>
+      </a>
+    </div>
   </section>
 
-  <!-- ABOUT -->
-  <section id="about" class="about">
-    <div class="about-inner">
-      <div class="about-text">
-        <div class="section-eyebrow">About pilr</div>
-        <h2>A better way to<br>travel with your supplements.</h2>
-        <p>Staying consistent shouldn't require full-size bottles, ziploc bags, or unnecessary containers. Pilr packs a full week's supply of your daily supplement stack into one seamless system. Designed to effortlessly move with you and keep your routine on track, no matter where you are.</p>
-        <a href="#contact" class="btn">Get early access</a>
+  <!-- WHY SECTION -->
+  <section id="why" class="why">
+    <div class="why-inner">
+      <div class="why-header">
+        <p class="why-label">WHAT WE MAKE, AND WHY</p>
+        <h2>Stay consistent with your routine,<br>no matter where life takes you.</h2>
       </div>
-      <div class="about-stats">
-        
-        <div class="stat">
-          <img src="images/about_pilr_section/3_modular_pods.svg" alt="" class="stat-icon stat-icon--pods" />
-          <div class="stat-num">3 Modular Pods</div>
-          <div class="stat-label">Pills, powders, or both</div>
+      <hr class="why-rule" />
+      <div class="why-grid">
+        <div class="why-col">
+          <div class="why-num">01 / Modular</div>
+          <h4>Every pod snaps into any stack.</h4>
+          <p>All three pods interlock seamlessly, so your system grows or changes with your routine, not the other way around.</p>
         </div>
-        <div class="stat">
-          <img src="images/about_pilr_section/1_System.svg" alt="" class="stat-icon stat-icon--system" />
-          <div class="stat-num">1 System</div>
-          <div class="stat-label">Add or remove pods</div>
+        <div class="why-col">
+          <div class="why-num">02 / Portable</div>
+          <h4>Designed to move with you.</h4>
+          <p>Made to fit in your suitcase, carry-on, or gym bag, wherever you're headed.</p>
         </div>
-        <div class="stat">
-          <img src="images/about_pilr_section/TSA_compliant.svg" alt="" class="stat-icon stat-icon--tsa" />
-          <div class="stat-num">TSA Compliant</div>
-          <div class="stat-label">Designed to travel</div>
+        <div class="why-col">
+          <div class="why-num">03 / Built to Last</div>
+          <h4>Engineered to outlast what it carries.</h4>
+          <p>Pods created to survive years of travel, so your system holds up long after the first trip.</p>
         </div>
-        <div class="stat stat--bpa">
-          <img src="images/about_pilr_section/BPA_Free.svg" alt="" class="stat-icon stat-icon--bpa" />
-          <div class="stat-num">100% BPA-Free</div>
-          <div class="stat-label">Clean by design</div>
-        </div>
-        
       </div>
     </div>
   </section>
 
-  <!-- LAYERS -->
-  <section id="layers" class="layers">
-    <div class="layers-inner">
-      <div class="section-eyebrow">Modular Design</div>
-      <h2>Your daily stack.<br>One week's supply.</h2>
-      <div class="layers-grid">
-
-        <div class="layer-card" data-layer="dessert">
-          <div class="layer-card-top">
-            <div class="layer-num">01</div>
-            <img src="images/Modular_Design_section/Base_pill_pod.svg" alt="" class="layer-card-img" />
-          </div>
-          <h3>Base Pill Pod</h3>
-          <p>Carries a full week of small and medium-sized capsules — organized across 3 compartments for easy access.</p>
-          <ul>
-            <li>Easy Dispense &amp; Loading Mechanism</li>
-            <li>Height: 1 in.</li>
-            <li>Vitamin D, Zinc, Multivitamins…</li>
-          </ul>
-        </div>
-
-        <div class="layer-card" data-layer="main">
-          <div class="layer-card-top">
-            <div class="layer-num">02</div>
-            <img src="images/Modular_Design_section/hybrid_pod.svg" alt="" class="layer-card-img" />
-          </div>
-          <h3>Hybrid Pod</h3>
-          <p>Organize a week's supply of larger pill supplements — or remove the divider for powder storage. Start with one. Stack as many as you need.</p>
-          <ul>
-            <li>2 capsule types or 1 powder? You choose.</li>
-            <li>Height: 2 in.</li>
-            <li>Fish Oil, Magnesium, Electrolytes, Creatine…</li>
-          </ul>
-        </div>
-
-        <div class="layer-card" data-layer="snack">
-          <div class="layer-card-top">
-            <div class="layer-num">03</div>
-            <img src="images/Modular_Design_section/powder_pod.svg" alt="" class="layer-card-img" />
-          </div>
-          <h3>Powder Pod</h3>
-          <p>Store a full week's supply of your go-to powders. 1 or 10? Stack as many as you'd like.</p>
-          <ul>
-            <li>Includes 5g scooper</li>
-            <li>Height: 2.5 in.</li>
-            <li>Pre-Workout, Collagen, Greens Powder…</li>
-          </ul>
-        </div>
-
+  <!-- LIFESTYLE GRID -->
+  <section class="lifestyle-grid">
+    <div class="lifestyle-card">
+      <img src="images/lifestyle_section/Hand Holding Pic.JPG" alt="Own Your Routine" />
+      <div class="lifestyle-card-caption">
+        <h3>Own Your Routine</h3>
+        <p>A system built around exactly what you take, every single day. No more guessing, no more mess.</p>
+      </div>
+    </div>
+    <div class="lifestyle-card">
+      <img src="images/lifestyle_section/Airport window pic.png" alt="Take it Anywhere" />
+      <div class="lifestyle-card-caption">
+        <h3>Take it Anywhere</h3>
+        <p>Built so your routine travels as easily as you do, no matter where life takes you.</p>
       </div>
     </div>
   </section>
 
-  <!-- CTA / CONTACT -->
-  <section id="contact" class="contact">
-    <div class="contact-inner contact-inner--with-img">
-      <div class="contact-text">
-        <div class="section-eyebrow">Early Access</div>
-        <h2>Stay consistent,<br>wherever life takes you.</h2>
+  <!-- BUILD YOUR SYSTEM SECTION -->
+  <section class="build" id="build">
+    <div class="build-inner">
+      <div class="build-text">
+        <p class="build-eyebrow">BUILD YOUR SYSTEM</p>
+        <h2>One System, All of Your Supplements</h2>
+        <p>No ziploc bags, no bulky tubs, no compromise. Just one system, built to carry all of your daily supplements. Because your routine shouldn't stop the moment you leave home.</p>
+        <a href="./build-your-system.html" class="btn btn--dark">Build Your System →</a>
+      </div>
+      <div class="build-img">
+        <img src="images/lifestyle_section/Render Image 1.png" alt="pilr supplement system" />
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMUNITY / EMAIL SIGNUP -->
+  <section id="contact" class="community">
+    <div class="community-inner">
+      <div class="community-img">
+        <img src="images/lifestyle_section/Airport Pic HQ 1.jpg" alt="pilr lifestyle" />
+      </div>
+      <div class="community-content">
+        <h2>For those who never miss a day</h2>
+        <p>Stay informed about new product launches, exclusive member offers, and special community events.</p>
+        <p class="community-subtitle">Become a member and enjoy:</p>
+        <ul class="community-list">
+          <li>First look at limited drops</li>
+          <li>Early access to new products</li>
+          <li>Exclusive access to community events</li>
+          <li>Personalized content</li>
+        </ul>
         <div id="waitlist-step">
-          <form class="contact-form" id="waitlist-form">
-            <input type="email" placeholder="your@email.com" required />
-            <button type="submit" class="btn">Notify</button>
+          <form class="community-form" id="waitlist-form">
+            <button type="submit" class="btn btn--dark">Become A Member →</button>
           </form>
-          <p class="signup-legal">By signing up, you agree to our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</p>
         </div>
-      </div>
-      <div class="contact-img">
-        <img src="images/lifestyle_section/IMG_5007 4.png" alt="Pilr system on luggage" />
       </div>
     </div>
   </section>
+
+  <!-- FEATURES BAR -->
+  <div class="features-bar">
+    <div class="feature-item">
+      <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14M5 8a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2v-9a2 2 0 00-2-2M5 8V6a2 2 0 012-2h10a2 2 0 012 2v2"/></svg>
+      <div>
+        <strong>Free shipping on all orders $50+</strong>
+        <p>Enjoy fast, free shipping on orders over $50, delivering right to your door.</p>
+      </div>
+    </div>
+    <div class="feature-item">
+      <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+      <div>
+        <strong>Money-back guarantee</strong>
+        <p>Shop confidently with our money-back guarantee promise.</p>
+      </div>
+    </div>
+    <div class="feature-item">
+      <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+      <div>
+        <strong>Free &amp; easy 30-day returns</strong>
+        <p>Easy hassle-free returns within 30 days of purchase.</p>
+      </div>
+    </div>
+    <div class="feature-item">
+      <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+      <div>
+        <strong>Worldwide shipping</strong>
+        <p>Receive your order at any location worldwide, delivered right to you.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER TOP (dark) -->
+  <div class="footer-top">
+    <div class="footer-top-inner">
+      <div class="footer-newsletter">
+        <h3>Never Miss a Day</h3>
+        <p>Receive special offers and first look at new products.</p>
+        <form class="footer-email-form" id="footer-email-form">
+          <div class="footer-email-row">
+            <input type="email" placeholder="Email address" required />
+            <button type="submit" class="footer-email-btn" aria-label="Subscribe">
+              <svg width="18" height="18" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#1e2c38"/><path d="M13 10l6 6-6 6" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </form>
+        <p class="footer-legal">By submitting your email, you agree to the pilr privacy policy and are opting in to marketing communications.</p>
+      </div>
+      <div class="footer-links-grid">
+        <div class="footer-col">
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="./catalog.html">All Products</a></li>
+            <li><a href="./catalog.html#section-single-pods">Single Pods</a></li>
+            <li><a href="./build-your-system.html">Build Your System</a></li>
+            <li><a href="./classic-stack.html">Classic Stack</a></li>
+            <li><a href="./catalog.html#section-accessories">Accessories</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="./about.html">Our Story</a></li>
+            <li><a href="#">News</a></li>
+            <li><a href="mailto:support@pilrsystems.com">Contact Us</a></li>
+            <li><a href="./why-pilr.html">Why Pilr</a></li>
+            <li><a href="#">Stories</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="./faq.html">FAQ</a></li>
+            <li><a href="#">Shipping Information</a></li>
+            <li><a href="#">Returns &amp; Exchanges</a></li>
+            <li><a href="./privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="#">Order Tracking</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- SITE FOOTER -->
   <footer class="site-footer">
-    <span class="site-footer-copy">© 2026 PILR LLC. All rights reserved.</span>
-    <nav class="site-footer-links" aria-label="Legal">
-      <a href="./privacy-policy.html">Privacy Policy</a>
-      <a href="./terms-of-service.html">Terms of Service</a>
-      <a href="mailto:support@pilrsystems.com">Contact</a>
-    </nav>
+    <div class="site-footer-social-row">
+      <div class="site-footer-social-inner">
+        <div class="footer-social">
+          <a href="https://www.instagram.com/pilrofficial/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" stroke="none"/></svg></a>
+          <a href="https://www.tiktok.com/@pilrofficial" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.74a4.85 4.85 0 01-1.01-.05z"/></svg></a>
+          <a href="https://www.youtube.com/@pilrofficial" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon fill="#3D5060" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></a>
+          <a href="https://www.linkedin.com/company/pilrsystems" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 5a2 2 0 11-4-.002 2 2 0 014 .002zM7 8.48H3V21h4V8.48zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.18-7.06-5.96-8.72-2.91l.04-1.68z"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <div class="site-footer-inner">
+        <span class="site-footer-copy">© Pilr 2026.</span>
+        <div class="footer-payment-icons">
+          <img src="images/lifestyle_section/Visa ss.png" alt="Visa" class="payment-icon">
+          <img src="images/lifestyle_section/Amex ss.png" alt="Amex" class="payment-icon">
+          <img src="images/lifestyle_section/Apple Pay ss.png" alt="Apple Pay" class="payment-icon">
+          <img src="images/lifestyle_section/PayPal ss.png" alt="PayPal" class="payment-icon">
+          <img src="images/lifestyle_section/Shop ss.png" alt="Shop Pay" class="payment-icon">
+          <img src="images/lifestyle_section/Discover ss.png" alt="Discover" class="payment-icon">
+        </div>
+      </div>
+    </div>
   </footer>
 
   <!-- DISCOUNT POPUP -->
   <div class="popup-overlay" id="popup-overlay" role="dialog" aria-modal="true" aria-label="Early access offer">
     <div class="popup-card">
       <button class="popup-close" id="popup-close" aria-label="Close">&#x2715;</button>
-
       <div class="popup-content">
-        <img src="./images/logov3.png" alt="Pilr" class="popup-logo" />
+        <img src="./images/lifestyle_section/blue logo transparent background 1.png" alt="Pilr" class="popup-logo" />
         <div class="popup-eyebrow">Early Access Offer</div>
         <h2 class="popup-headline">You've Got<br><strong>10% Off</strong></h2>
         <p class="popup-sub">Sign up to get early access and 10% off your first order.</p>
@@ -291,7 +421,6 @@
         <p class="signup-legal">By signing up, you agree to our <a href="./privacy-policy.html" target="_blank">Privacy Policy</a>.</p>
         <button class="popup-skip" id="popup-skip">No thanks</button>
       </div>
-
     </div>
   </div>
 
@@ -299,9 +428,8 @@
   <div class="popup-overlay" id="phone-popup-overlay" role="dialog" aria-modal="true" aria-label="Text updates offer">
     <div class="popup-card">
       <button class="popup-close" id="phone-popup-close" aria-label="Close">&#x2715;</button>
-
       <div class="popup-content">
-        <img src="./images/logov3.png" alt="Pilr" class="popup-logo" />
+        <img src="./images/lifestyle_section/blue logo transparent background 1.png" alt="Pilr" class="popup-logo" />
         <div class="popup-eyebrow">Exclusive Launch Offer</div>
         <h2 class="popup-headline">Emails get<br><strong>buried.</strong></h2>
         <p class="popup-sub">Add your number to be first to know when we launch — plus get a <strong>FREE custom stainless steel scooper</strong> with your first order.</p>
@@ -325,11 +453,9 @@
         <p class="signup-legal signup-legal--small">Agree to recurring marketing texts from Pilr by clicking above. Msg/data rates may apply. Reply STOP to cancel. <a href="./privacy-policy.html" target="_blank">View Terms &amp; Privacy</a>.</p>
         <button class="popup-skip" id="phone-popup-skip">No thanks</button>
       </div>
-
     </div>
   </div>
 
-  <script type="module" src="/src/main.js"></script>
   <script type="module" src="/src/shopify.js"></script>
 
   <script>
@@ -345,9 +471,60 @@
     overlay.addEventListener('click', closeMenu)
     navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu))
 
-    // ── Consent logging helper ─────────────────────────────────────
-    // Stores consent records to localStorage. IP is not available
-    // from the frontend — it is not logged here.
+    // ── Shop All dropdown ──────────────────────────────────────────
+    // The gap between the "SHOP ALL" text and the dropdown panel is
+    // the nav's bottom padding (~28px). We keep the dropdown open
+    // by treating the *entire nav bar* as the safe zone via mousemove,
+    // so the cursor can travel from the text through the padding to
+    // the panel without triggering a close.
+    const navEl        = document.querySelector('nav.nav')
+    const shopAllLi    = document.querySelector('.nav-has-dropdown')
+    const shopDropdown = document.querySelector('.nav-dropdown')
+    const dimOverlay   = document.getElementById('nav-dim-overlay')
+    let dropOpen = false
+    let dropCloseTimer = null
+
+    function openDrop() {
+      clearTimeout(dropCloseTimer)
+      dropCloseTimer = null
+      shopAllLi.classList.add('dropdown-active')
+      dimOverlay.classList.add('active')
+      dropOpen = true
+    }
+    function closeDrop() {
+      clearTimeout(dropCloseTimer)
+      dropCloseTimer = null
+      shopAllLi.classList.remove('dropdown-active')
+      dimOverlay.classList.remove('active')
+      dropOpen = false
+    }
+
+    dimOverlay.addEventListener('click', closeDrop)
+    function inZone(x, y) {
+      const li = shopAllLi.getBoundingClientRect()
+      const dd = shopDropdown.getBoundingClientRect()
+      // Over the "Shop All" trigger (the <li> itself)
+      if (x >= li.left && x <= li.right && y >= li.top && y <= li.bottom) return true
+      // Over the dropdown panel (spans full width)
+      if (y >= dd.top && y <= dd.bottom) return true
+      // In the gap between the li bottom and the dropdown top (allow any x
+      // so diagonal cursor movement toward the dropdown stays open)
+      if (y > li.bottom && y < dd.top) return true
+      return false
+    }
+
+    shopAllLi.addEventListener('mouseenter', openDrop)
+
+    document.addEventListener('mousemove', (e) => {
+      if (!dropOpen) return
+      if (inZone(e.clientX, e.clientY)) {
+        clearTimeout(dropCloseTimer)
+        dropCloseTimer = null
+      } else if (!dropCloseTimer) {
+        dropCloseTimer = setTimeout(closeDrop, 150)
+      }
+    })
+
     function logConsent(email, source) {
       const record = {
         email,
@@ -363,7 +540,7 @@
       localStorage.setItem('pilr_consent_log', JSON.stringify(existing))
     }
 
-    // ── Waitlist form ──────────────────────────────────────────────
+    // ── Waitlist / Community form ───────────────────────────────────
     const waitlistStep = document.getElementById('waitlist-step')
     const waitlistForm = document.getElementById('waitlist-form')
 
@@ -385,7 +562,7 @@
             </select>
             <input type="tel" placeholder="000-000-0000" />
           </div>
-          <button type="submit" class="btn">Text me</button>
+          <button type="submit" class="btn btn--dark">Text me</button>
         </form>
         <p class="signup-legal signup-legal--small">Agree to recurring marketing texts from Pilr by clicking above. Msg/data rates may apply. Reply STOP to cancel. <a href="./privacy-policy.html" target="_blank">View Terms &amp; Privacy</a>.</p>
       `
@@ -407,13 +584,21 @@
       })
     }
 
-    waitlistForm.addEventListener('submit', async e => {
+    waitlistForm.addEventListener('submit', e => {
       e.preventDefault()
-      const email  = waitlistForm.querySelector('input[type="email"]').value.trim()
-      const btn    = waitlistForm.querySelector('button[type="submit"]')
+      const popupOverlay = document.getElementById('popup-overlay')
+      popupOverlay.classList.add('visible')
+      sessionStorage.setItem('popup_seen', '1')
+    })
+
+    // ── Footer email form ───────────────────────────────────────────
+    document.getElementById('footer-email-form').addEventListener('submit', async e => {
+      e.preventDefault()
+      const email = e.target.querySelector('input[type="email"]').value.trim()
+      const btn   = e.target.querySelector('button[type="submit"]')
       btn.disabled = true
-      btn.textContent = 'Saving…'
-      logConsent(email, 'homepage_waitlist')
+      btn.textContent = 'Done!'
+      logConsent(email, 'footer_newsletter')
       try {
         await Promise.all([
           window.subscribeEmail(email),
@@ -422,14 +607,10 @@
       } catch (err) {
         console.warn('[Shopify] subscribe error:', err)
       }
-      window._learnq = window._learnq || [];
-      window._learnq.push(['identify', { '$email': email }]);
-      showWaitlistPhoneStep()
     })
 
-    // ── Discount popup ─────────────────────────────────────────────
+    // ── Discount popup ──────────────────────────────────────────────
     ;(function() {
-      if (sessionStorage.getItem('popup_seen')) return
       const popupOverlay  = document.getElementById('popup-overlay')
       const popupClose    = document.getElementById('popup-close')
       const popupSkip     = document.getElementById('popup-skip')
@@ -440,13 +621,19 @@
       }
       function hidePopup() {
         popupOverlay.classList.remove('visible')
-        schedulePhonePopup()
+        if (typeof schedulePhonePopup === 'function') schedulePhonePopup()
       }
 
-      setTimeout(showPopup, 3000)
+      // Always attach close handlers so X and No thanks work even when
+      // the popup is opened via the "Become A Member" button
       popupClose.addEventListener('click', hidePopup)
       popupSkip.addEventListener('click', hidePopup)
       popupOverlay.addEventListener('click', e => { if (e.target === popupOverlay) hidePopup() })
+
+      // Only auto-show if not already seen this session
+      if (!sessionStorage.getItem('popup_seen')) {
+        setTimeout(showPopup, 3000)
+      }
 
       popupForm.addEventListener('submit', async e => {
         e.preventDefault()
@@ -465,13 +652,12 @@
         }
         window._learnq = window._learnq || [];
         window._learnq.push(['identify', { '$email': email }]);
-        // Transition directly to phone popup
         popupOverlay.classList.remove('visible')
         showPhonePopup()
       })
     })()
 
-    // ── Phone popup ────────────────────────────────────────────────
+    // ── Phone popup ─────────────────────────────────────────────────
     const phoneOverlay = document.getElementById('phone-popup-overlay')
     const phoneClose   = document.getElementById('phone-popup-close')
     const phoneSkip    = document.getElementById('phone-popup-skip')
@@ -491,24 +677,24 @@
     phoneOverlay.addEventListener('click', e => { if (e.target === phoneOverlay) hidePhonePopup() })
 
     phoneForm.addEventListener('submit', async e => {
-        e.preventDefault()
-        const countryCode = phoneForm.querySelector('select').value
-        const rawNumber   = phoneForm.querySelector('input[type="tel"]').value.trim()
-        const phone       = countryCode + rawNumber
-        const btn         = phoneForm.querySelector('button[type="submit"]')
-        btn.disabled = true
-        btn.textContent = 'Saving…'
-        logConsent(phone, 'phone_popup')
-        try {
-          await window.subscribePhoneToKlaviyo(phone)
-        } catch (err) {
-          console.warn('[Klaviyo] phone subscribe error:', err)
-        }
-        phoneForm.innerHTML = '<p class="popup-thanks">You\'re on the list. Talk soon.</p>'
-        setTimeout(hidePhonePopup, 2200)
-      })
+      e.preventDefault()
+      const countryCode = phoneForm.querySelector('select').value
+      const rawNumber   = phoneForm.querySelector('input[type="tel"]').value.trim()
+      const phone       = countryCode + rawNumber
+      const btn         = phoneForm.querySelector('button[type="submit"]')
+      btn.disabled = true
+      btn.textContent = 'Saving…'
+      logConsent(phone, 'phone_popup')
+      try {
+        await window.subscribePhoneToKlaviyo(phone)
+      } catch (err) {
+        console.warn('[Klaviyo] phone subscribe error:', err)
+      }
+      phoneForm.innerHTML = '<p class="popup-thanks">You\'re on the list. Talk soon.</p>'
+      setTimeout(hidePhonePopup, 2200)
+    })
 
-    // ── Hide nav on scroll down, reveal on scroll up ───────────────
+    // ── Hide nav on scroll down, reveal on scroll up ─────────────
     const nav = document.querySelector('.nav')
     let lastY = 0
     window.addEventListener('scroll', () => {

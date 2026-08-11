@@ -7,10 +7,17 @@ import { playExplodeIn, idleRotation, updateLabels, hoverExplode } from './anima
 
 // ── Renderer ──────────────────────────────────────────────────────────────────
 const canvas = document.getElementById('three-canvas')
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true })
+
+function canvasSize() {
+  return { w: Math.round(window.innerWidth * 0.58), h: window.innerHeight }
+}
+
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true })
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-renderer.setSize(window.innerWidth, window.innerHeight)
+const { w: initW, h: initH } = canvasSize()
+renderer.setSize(initW, initH, false)
 renderer.toneMapping = THREE.NoToneMapping
+renderer.setClearColor(0x000000, 0)
 
 const isMobile = window.innerWidth < 768
 renderer.shadowMap.enabled = !isMobile
@@ -18,11 +25,12 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
 // ── Scene & Camera ────────────────────────────────────────────────────────────
 const scene = new THREE.Scene()
-scene.background = new THREE.Color(0x2E4256)
+// transparent — let the hero background show through
 
-const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 50)
-camera.position.set(0, 0.4, 7)
-camera.lookAt(new THREE.Vector3(isMobile ? 0 : -1.2, 0, 0))
+const { w: cW, h: cH } = canvasSize()
+const camera = new THREE.PerspectiveCamera(45, (cW || window.innerWidth * 0.58) / (cH || window.innerHeight), 0.1, 50)
+camera.position.set(0, 0.4, 6.3)
+camera.lookAt(new THREE.Vector3(0, 0, 0))
 
 // ── Lights — studio 3-point setup ─────────────────────────────────────────────
 // Low ambient so dark sides of product stay dark vs background
@@ -66,7 +74,7 @@ scene.add(topSpot)
 // ── Floor (shadow only) ───────────────────────────────────────────────────────
 const floor = new THREE.Mesh(
   new THREE.CircleGeometry(9, 128),
-  new THREE.ShadowMaterial({ opacity: 0.80 })
+  new THREE.ShadowMaterial({ opacity: 0.18 })
 )
 floor.rotation.x = -Math.PI / 2
 floor.position.y = -2.4
@@ -78,7 +86,7 @@ const composer = new EffectComposer(renderer)
 composer.addPass(new RenderPass(scene, camera))
 
 const bloom = new UnrealBloomPass(
-  new THREE.Vector2(window.innerWidth, window.innerHeight),
+  new THREE.Vector2(initW, initH),
   0.5,   // strength
   0.5,   // radius
   0.85   // threshold
@@ -118,8 +126,9 @@ loadModel(isMobile)
 // ── Mouse / Touch events ──────────────────────────────────────────────────────
 canvas.addEventListener('mousemove', (e) => {
   if (isMobile) return
-  mouse.x =  (e.clientX / window.innerWidth)  * 2 - 1
-  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1
+  const rect = canvas.getBoundingClientRect()
+  mouse.x =  ((e.clientX - rect.left) / rect.width)  * 2 - 1
+  mouse.y = -((e.clientY - rect.top)  / rect.height) * 2 + 1
 })
 
 canvas.addEventListener('mouseleave', () => {
@@ -143,9 +152,10 @@ canvas.addEventListener('touchend', (e) => {
   if (dx > 10 || dy > 10) return  // was a scroll/swipe, not a tap
 
   const t = e.changedTouches[0]
+  const rect = canvas.getBoundingClientRect()
   const tapMouse = new THREE.Vector2(
-    (t.clientX / window.innerWidth)  * 2 - 1,
-    -(t.clientY / window.innerHeight) * 2 + 1
+    ((t.clientX - rect.left) / rect.width)  * 2 - 1,
+    -((t.clientY - rect.top)  / rect.height) * 2 + 1
   )
   raycaster.setFromCamera(tapMouse, camera)
   const hit = raycaster.intersectObjects(allMeshes).length > 0
@@ -178,17 +188,14 @@ function animate() {
     }
   }
 
-  updateLabels(sections, camera, canvas)
-  composer.render()
+  renderer.render(scene, camera)
 }
 
 // ── Resize ────────────────────────────────────────────────────────────────────
 window.addEventListener('resize', () => {
-  const w = window.innerWidth
-  const h = window.innerHeight
+  const { w, h } = canvasSize()
   camera.aspect = w / h
-  camera.lookAt(new THREE.Vector3(w < 768 ? 0 : -1.2, 0, 0))
+  camera.lookAt(new THREE.Vector3(0, 0, 0))
   camera.updateProjectionMatrix()
-  renderer.setSize(w, h)
-  composer.setSize(w, h)
+  renderer.setSize(w, h, false)
 })

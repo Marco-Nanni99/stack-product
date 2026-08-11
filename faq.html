@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>FAQ — Pilr</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+
+  <div class="nav-dim-overlay" id="nav-dim-overlay"></div>
+
+  <nav class="nav">
+    <a href="/" class="nav-logo">
+      <img src="images/lifestyle_section/blue logo transparent background 1.png" alt="pilr" class="nav-logo-img">
+    </a>
+    <div class="nav-right">
+      <ul class="nav-links" id="nav-links">
+        <li class="nav-has-dropdown">
+          <a href="./catalog.html">
+            Shop
+            <svg class="nav-chevron" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1l5 5 5-5"/></svg>
+          </a>
+          <div class="nav-dropdown">
+            <div class="nav-dropdown-inner">
+              <div class="nav-drop-grid">
+                <a href="./build-your-system.html" class="nav-drop-card">
+                  <div class="nav-drop-img nav-drop-img--large"><img src="images/lifestyle_section/Build Your System.png" alt="Build Your System"></div>
+                  <div class="nav-drop-text">
+                    <span class="nav-drop-title">Build Your System</span>
+                    <span class="nav-drop-desc">Design your perfect stack</span>
+                  </div>
+                </a>
+                <a href="./classic-stack.html" class="nav-drop-card">
+                  <div class="nav-drop-img nav-drop-img--bottom"><img src="images/lifestyle_section/Hand Render.png" alt="Classic Stack"></div>
+                  <div class="nav-drop-text">
+                    <span class="nav-drop-title">Classic Stack</span>
+                    <span class="nav-drop-desc">Powder, hybrid &amp; pill pods</span>
+                  </div>
+                </a>
+                <a href="./catalog.html#section-single-pods" class="nav-drop-card">
+                  <div class="nav-drop-img nav-drop-img--small"><img src="images/lifestyle_section/Powder Pod Render.png" alt="Single Pods"></div>
+                  <div class="nav-drop-text">
+                    <span class="nav-drop-title">Single Pods</span>
+                    <span class="nav-drop-desc">Mix and match individual pods</span>
+                  </div>
+                </a>
+                <a href="./catalog.html" class="nav-drop-card">
+                  <div class="nav-drop-img"><img src="images/lifestyle_section/Full Render.png" alt="All Products"></div>
+                  <div class="nav-drop-text">
+                    <span class="nav-drop-title">All Products</span>
+                    <span class="nav-drop-desc">Browse the complete Pilr collection</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li><a href="./why-pilr.html">Why Pilr</a></li>
+        <li><a href="./about.html">About</a></li>
+        <li><a href="./faq.html">FAQ</a></li>
+      </ul>
+      <a href="./cart.html" class="nav-cart-btn" aria-label="Cart">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      </a>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="stub-page">
+    <p class="stub-eyebrow">FAQ</p>
+    <h1>Coming Soon</h1>
+    <p>This page is under construction.</p>
+    <a href="/" class="btn btn--dark">← Back to Home</a>
+  </div>
+
+  <script>
+    const shopAllLi    = document.querySelector('.nav-has-dropdown')
+    const shopDropdown = document.querySelector('.nav-dropdown')
+    const dimOverlay   = document.getElementById('nav-dim-overlay')
+    let dropOpen = false, dropCloseTimer = null
+    function openDrop()  { clearTimeout(dropCloseTimer); dropCloseTimer = null; shopAllLi.classList.add('dropdown-active'); dimOverlay.classList.add('active'); dropOpen = true }
+    function closeDrop() { clearTimeout(dropCloseTimer); dropCloseTimer = null; shopAllLi.classList.remove('dropdown-active'); dimOverlay.classList.remove('active'); dropOpen = false }
+    dimOverlay.addEventListener('click', closeDrop)
+    function inZone(x, y) {
+      const li = shopAllLi.getBoundingClientRect(), dd = shopDropdown.getBoundingClientRect()
+      if (x >= li.left && x <= li.right && y >= li.top && y <= li.bottom) return true
+      if (y >= dd.top && y <= dd.bottom) return true
+      if (y > li.bottom && y < dd.top) return true
+      return false
+    }
+    shopAllLi.addEventListener('mouseenter', openDrop)
+    document.addEventListener('mousemove', e => {
+      if (!dropOpen) return
+      if (inZone(e.clientX, e.clientY)) { clearTimeout(dropCloseTimer); dropCloseTimer = null }
+      else if (!dropCloseTimer) { dropCloseTimer = setTimeout(closeDrop, 150) }
+    })
+    const hamburger = document.getElementById('nav-hamburger')
+    const navLinks  = document.getElementById('nav-links')
+    function closeMenu() { hamburger.classList.remove('open'); navLinks.classList.remove('open'); document.body.style.overflow = '' }
+    hamburger.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open')
+      hamburger.classList.toggle('open', open)
+      document.body.style.overflow = open ? 'hidden' : ''
+    })
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu))
+  </script>
+</body>
+</html>
