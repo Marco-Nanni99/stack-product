@@ -12,6 +12,7 @@ export default defineConfig({
         system: resolve(__dirname, 'build-your-system.html'),
         privacy: resolve(__dirname, 'privacy-policy.html'),
         terms: resolve(__dirname, 'terms-of-service.html'),
+        earlyAccess: resolve(__dirname, 'early-access.html'),
       },
     },
   },

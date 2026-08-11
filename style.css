@@ -84,6 +84,18 @@ body {
   background: rgba(244,244,244,0.08);
   border-color: rgba(244,244,244,0.32);
 }
+.nav-cta-filled {
+  padding: 0.55rem 1.2rem;
+  background: #fafaf8;
+  color: #2E4256 !important;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.nav-cta-filled:hover {
+  background: #e8e8e8 !important;
+  color: #2E4256 !important;
+}
 
 /* ── HERO ────────────────────────────── */
 .hero {
