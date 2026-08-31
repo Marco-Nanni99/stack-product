@@ -82,7 +82,7 @@ body.system-page {
   left: 1.5rem;
   z-index: 10;
   background: rgba(255,255,255,0.97);
-  color: #425563;
+  color: #5e6e7a;
   border: 1px solid #E5E4DF;
   font-family: inherit;
   font-size: 0.72rem;
@@ -133,7 +133,7 @@ body.system-page {
 .pod-detail-name {
   font-size: 1rem;
   font-weight: 800;
-  color: #425563;
+  color: #5e6e7a;
   letter-spacing: -0.01em;
   line-height: 1.1;
   margin-bottom: 0.6rem;
@@ -141,7 +141,7 @@ body.system-page {
 
 .pod-detail-desc {
   font-size: 0.71rem;
-  color: #425563;
+  color: #5e6e7a;
   opacity: 0.75;
   line-height: 1.6;
   margin-bottom: 0.85rem;
@@ -159,7 +159,7 @@ body.system-page {
 .pod-detail-specs li {
   font-size: 0.67rem;
   font-weight: 600;
-  color: #425563;
+  color: #5e6e7a;
   letter-spacing: 0.02em;
   padding-left: 0.85rem;
   position: relative;
@@ -177,14 +177,14 @@ body.system-page {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #425563;
+  color: #5e6e7a;
   opacity: 0.5;
   margin-bottom: 0.2rem;
 }
 
 .pod-detail-examples {
   font-size: 0.67rem;
-  color: #425563;
+  color: #5e6e7a;
   opacity: 0.7;
   line-height: 1.5;
   font-style: italic;
@@ -256,7 +256,7 @@ body.system-page {
 .blabel-name {
   font-size: 0.8rem;
   font-weight: 700;
-  color: #425563;
+  color: #5e6e7a;
   letter-spacing: 0.03em;
   line-height: 1;
 }
@@ -904,7 +904,7 @@ body.system-page {
 
 .bas-summary-text {
   font-size: 0.88rem;
-  color: #425563;
+  color: #5e6e7a;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   line-height: 1.4;
 }
@@ -916,7 +916,7 @@ body.system-page {
 .bas-summary-change {
   flex-shrink: 0;
   font-size: 0.82rem;
-  color: #425563;
+  color: #5e6e7a;
   background: none;
   border: none;
   cursor: pointer;
@@ -956,7 +956,7 @@ body.system-page {
 
 .bas-rating-text {
   font-size: 0.82rem;
-  color: #425563;
+  color: #5e6e7a;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
@@ -968,7 +968,7 @@ body.system-page {
 .bas-title {
   font-size: 2.8rem;
   font-weight: 500;
-  color: #425563;
+  color: #5e6e7a;
   letter-spacing: -0.02em;
   line-height: 1.1;
   margin-bottom: 0.75rem;
@@ -989,7 +989,7 @@ body.system-page {
 .bas-section-q {
   font-size: 1rem;
   font-weight: 500;
-  color: #425563;
+  color: #5e6e7a;
   margin-bottom: 1.5rem;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -1011,7 +1011,7 @@ body.system-page {
 
 /* Chip overrides for light-mode */
 .bas-top-section .supp-chip {
-  color: #425563;
+  color: #5e6e7a;
   border-color: #C8C7C2;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 0.85rem;
@@ -1025,9 +1025,9 @@ body.system-page {
 }
 
 .bas-top-section .supp-chip.selected {
-  background: #425563;
+  background: #5e6e7a;
   color: #FAFAF8;
-  border-color: #425563;
+  border-color: #5e6e7a;
 }
 
 /* Footer row: count + CTA */
@@ -1051,7 +1051,7 @@ body.system-page {
   width: 100%;
   max-width: 480px;
   padding: 1.05rem 2rem;
-  background: #425563;
+  background: #5e6e7a;
   color: #FAFAF8;
   border: none;
   border-radius: 6px;
@@ -1079,7 +1079,7 @@ body.system-page {
 .sys-edit-title {
   font-size: 1.55rem;
   font-weight: 500;
-  color: #425563;
+  color: #5e6e7a;
   letter-spacing: -0.01em;
   line-height: 1.15;
   margin: 0 0 0.45rem;
@@ -1135,7 +1135,7 @@ body.system-page {
 .sys-acc-name {
   flex: 1;
   font-size: 0.85rem;
-  color: #425563;
+  color: #5e6e7a;
   font-weight: 400;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -1204,7 +1204,7 @@ body.system-page {
 
 .sys-acc-info-value {
   font-size: 0.82rem;
-  color: #425563;
+  color: #5e6e7a;
   line-height: 1.4;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -1247,5 +1247,5 @@ body.system-page {
 
 .sys-acc-add:hover {
   border-color: #7a8a94;
-  color: #425563;
+  color: #5e6e7a;
 }

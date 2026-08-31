@@ -22,6 +22,8 @@ export default defineConfig({
         pillPod: resolve(__dirname, 'pill-pod.html'),
         travelScooper: resolve(__dirname, 'travel-scooper.html'),
         singleLid: resolve(__dirname, 'single-lid.html'),
+        whyPilr: resolve(__dirname, 'why-pilr.html'),
+        stack: resolve(__dirname, 'stack.html'),
       },
     },
   },

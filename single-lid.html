@@ -15,14 +15,15 @@
 
   <div class="product-sticky-bar" id="product-sticky-bar">
     <div class="product-sticky-img"><img src="images/lifestyle_section/Full Render.png" alt="Single Lid" /></div>
-    <span class="product-sticky-name">Single Lid</span>
+    <div class="product-sticky-info"><span class="product-sticky-name">Single Lid</span>
     <span class="product-sticky-price">$7</span>
+  </div>
     <button class="product-sticky-cta">ADD TO CART</button>
   </div>
 
   <div class="nav-dim-overlay" id="nav-dim-overlay"></div>
   <nav class="nav">
-    <a href="./index.html" class="nav-logo"><img src="images/lifestyle_section/blue logo transparent background 1.png" alt="Pilr" class="nav-logo-img"></a>
+    <a href="./index.html" class="nav-logo"><img src="images/logov3-cropped.png" alt="Pilr" class="nav-logo-img"></a>
     <div class="nav-right">
       <ul class="nav-links" id="nav-links">
         <li class="nav-has-dropdown">
@@ -55,21 +56,25 @@
         <span class="product-variant-label">Slate — $7</span>
       </div>
       <div class="product-info-sections">
-        <div class="product-info-section">
-          <div class="product-info-section-hdr">
-            <span class="product-info-section-title">Details &amp; Size</span>
-
+        <div class="product-accordion">
+          <button class="product-accordion-trigger" aria-expanded="false">
+            <span>Details &amp; Size</span>
+            <span class="product-accordion-icon">+</span>
+          </button>
+          <div class="product-accordion-panel">
+            <p class="product-accordion-sub">See what fits in each pod</p>
+            <a href="#" class="product-info-link"><span>Full Size Guide</span><span>&rarr;</span></a>
           </div>
-          <p class="product-info-section-sub">See what fits in each pod</p>
-          <a href="#" class="product-info-link"><span>Full Size Guide</span><span>→</span></a>
         </div>
-        <div class="product-info-section">
-          <div class="product-info-section-hdr">
-            <span class="product-info-section-title">Customize Your Stack</span>
-
+        <div class="product-accordion">
+          <button class="product-accordion-trigger" aria-expanded="false">
+            <span>Customize Your Stack</span>
+            <span class="product-accordion-icon">+</span>
+          </button>
+          <div class="product-accordion-panel">
+            <p class="product-accordion-sub">Pick the pods that fit your routine</p>
+            <a href="./build-your-system.html" class="product-info-link"><span>Build Your System</span><span>&rarr;</span></a>
           </div>
-          <p class="product-info-section-sub">Pick the pods that fit your routine</p>
-          <a href="./build-your-system.html" class="product-info-link"><span>Build Your System</span><span>→</span></a>
         </div>
       </div>
       <div class="product-qty-cart-row">
@@ -97,7 +102,7 @@
 
   <section class="pilr-system-section">
     <p class="pilr-system-eyebrow">The Pilr System</p>
-    <p class="pilr-system-badge"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#425563"/><polyline points="18 8 9.5 16 5.5 11.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>TSA-Compliant</p>
+    <p class="pilr-system-badge"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#5e6e7a"/><polyline points="18 8 9.5 16 5.5 11.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>TSA-Compliant</p>
     <div class="pilr-system-pods">
       <div><div class="pilr-system-pod-img-wrap"><img class="pilr-system-pod-img" src="images/lifestyle_section/Powder Pod Render.png" alt="Powder Pod" /></div><p class="pilr-system-pod-name">Powder Pod</p><p class="pilr-system-pod-desc">Powder-sealed tight</p></div>
       <div><div class="pilr-system-pod-img-wrap"><img class="pilr-system-pod-img pilr-system-pod-img--lower" src="images/lifestyle_section/Hybrid Pod.png" alt="Hybrid Pod" /></div><p class="pilr-system-pod-name">Hybrid Pod</p><p class="pilr-system-pod-desc">For medium &amp; large sized capsules</p></div>
@@ -105,7 +110,7 @@
     </div>
   </section>
 
-  <section class="built-routine-section"><div class="built-routine-img"><img src="images/lifestyle_section/Hand Transparent Background.png" alt="Pilr lifestyle" /></div><div class="built-routine-content"><h2 class="built-routine-title">Built to Hold Your Routine</h2><p class="built-routine-desc">We didn't just pick a size and hope it worked. We researched the most common pills and powders people take daily and built each pod around those real volumes.</p><div class="built-routine-table"><div class="built-routine-row"><span class="built-routine-item">CREATINE</span><span class="built-routine-val">~ 70-75g</span></div><div class="built-routine-row"><span class="built-routine-item">COLLAGEN</span><span class="built-routine-val">~ 60g</span></div><div class="built-routine-row"><span class="built-routine-item">FISH OIL</span><span class="built-routine-val">17 capsules</span></div><div class="built-routine-row"><span class="built-routine-item">MAGNESIUM</span><span class="built-routine-val">26 capsules</span></div><div class="built-routine-row"><span class="built-routine-item">COQ10</span><span class="built-routine-val">10 capsules</span></div></div><button class="built-routine-btn">VIEW THE FULL TEST <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#425563"/><line x1="7.5" y1="12" x2="16.5" y2="12" stroke="white" stroke-width="2" stroke-linecap="round"/><polyline points="12.5 8.5 16.5 12 12.5 15.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
+  <section class="built-routine-section"><div class="built-routine-img"><img src="images/lifestyle_section/Hand Transparent Background.png" alt="Pilr lifestyle" /></div><div class="built-routine-content"><h2 class="built-routine-title">Built to Hold Your Routine</h2><p class="built-routine-desc">We didn't just pick a size and hope it worked. We researched the most common pills and powders people take daily and built each pod around those real volumes.</p><div class="built-routine-table"><div class="built-routine-row"><span class="built-routine-item">CREATINE</span><span class="built-routine-val">~ 70-75g</span></div><div class="built-routine-row"><span class="built-routine-item">COLLAGEN</span><span class="built-routine-val">~ 60g</span></div><div class="built-routine-row"><span class="built-routine-item">FISH OIL</span><span class="built-routine-val">17 capsules</span></div><div class="built-routine-row"><span class="built-routine-item">MAGNESIUM</span><span class="built-routine-val">26 capsules</span></div><div class="built-routine-row"><span class="built-routine-item">COQ10</span><span class="built-routine-val">10 capsules</span></div></div><button class="built-routine-btn">VIEW THE FULL TEST <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#5e6e7a"/><line x1="7.5" y1="12" x2="16.5" y2="12" stroke="white" stroke-width="2" stroke-linecap="round"/><polyline points="12.5 8.5 16.5 12 12.5 15.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
 
   <div class="product-benefits">
     <div class="product-benefits-text">
@@ -113,7 +118,7 @@
       <p class="product-benefits-desc">Designed to store your powders &amp; pills in one seamless system. Built to move with you and keep your routine on track, no matter where you are.</p>
       <div class="product-benefits-icons">
         <div class="product-benefit-item"><div class="benefit-icon-wrap"><img class="product-benefit-icon" src="images/lifestyle_section/suitcase.svg" alt="TSA Compliant" width="48" height="48" /></div><p class="product-benefit-name">TSA Compliant</p><p class="product-benefit-desc">Designed for travel and to fit in any bag</p></div>
-        <div class="product-benefit-item"><div class="benefit-icon-wrap"><svg class="product-benefit-icon" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#425563" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="6" rx="2"/><line x1="12" y1="8" x2="12" y2="9.5"/><rect x="2" y="9.5" width="20" height="6" rx="2"/><line x1="12" y1="15.5" x2="12" y2="17"/><rect x="2" y="17" width="20" height="6" rx="2"/></svg></div><p class="product-benefit-name">Modular System</p><p class="product-benefit-desc">Mix and match pods to fit your routine</p></div>
+        <div class="product-benefit-item"><div class="benefit-icon-wrap"><svg class="product-benefit-icon" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#5e6e7a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="6" rx="2"/><line x1="12" y1="8" x2="12" y2="9.5"/><rect x="2" y="9.5" width="20" height="6" rx="2"/><line x1="12" y1="15.5" x2="12" y2="17"/><rect x="2" y="17" width="20" height="6" rx="2"/></svg></div><p class="product-benefit-name">Modular System</p><p class="product-benefit-desc">Mix and match pods to fit your routine</p></div>
         <div class="product-benefit-item"><div class="benefit-icon-wrap"><img class="product-benefit-icon" src="images/lifestyle_section/Leakproof.svg" alt="Leakproof Pods" width="57" height="57" style="transform: translate(-5px, 6px);" /></div><p class="product-benefit-name">Leakproof Pods</p><p class="product-benefit-desc">No spills, no mess, no compromises</p></div>
       </div>
     </div>
@@ -132,8 +137,8 @@
     </div>
   </div>
 
-  <div class="footer-top"><div class="footer-top-inner"><div class="footer-newsletter"><h3>Never Miss a Day</h3><p>Receive special offers and first look at new products.</p><form class="footer-email-form" id="footer-email-form"><div class="footer-email-row"><input type="email" placeholder="Email address" required /><button type="submit" class="footer-email-btn" aria-label="Subscribe"><svg width="18" height="18" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#1e2c38"/><path d="M13 10l6 6-6 6" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></form><p class="footer-legal">By submitting your email, you agree to the pilr privacy policy and are opting in to marketing communications.</p></div><div class="footer-links-grid"><div class="footer-col"><h4>Shop</h4><ul><li><a href="./catalog.html">All Products</a></li><li><a href="./catalog.html#section-single-pods">Single Pods</a></li><li><a href="./build-your-system.html">Build Your System</a></li><li><a href="./classic-stack.html">Classic Stack</a></li><li><a href="./catalog.html#section-accessories">Accessories</a></li></ul></div><div class="footer-col"><h4>Company</h4><ul><li><a href="./about.html">Our Story</a></li><li><a href="#">News</a></li><li><a href="mailto:support@pilrsystems.com">Contact Us</a></li><li><a href="./why-pilr.html">Why Pilr</a></li><li><a href="#">Stories</a></li></ul></div><div class="footer-col"><h4>Support</h4><ul><li><a href="./faq.html">FAQ</a></li>
-  <footer class="site-footer"><div class="site-footer-social-row"><div class="site-footer-social-inner"><div class="footer-social"><a href="https://www.instagram.com/pilrofficial/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" stroke="none"/></svg></a><a href="https://www.tiktok.com/@pilrofficial" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.74a4.85 4.85 0 01-1.01-.05z"/></svg></a><a href="https://www.youtube.com/@pilrofficial" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon fill="#3D5060" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></a><a href="https://www.linkedin.com/company/pilrsystems" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 5a2 2 0 11-4-.002 2 2 0 014 .002zM7 8.48H3V21h4V8.48zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.18-7.06-5.96-8.72-2.91l.04-1.68z"/></svg></a></div></div></div><div class="site-footer-bottom"><div class="site-footer-inner"><span class="site-footer-copy">© Pilr 2026.</span><div class="footer-payment-icons"><img src="images/lifestyle_section/Visa ss.png" alt="Visa" class="payment-icon"><img src="images/lifestyle_section/Amex ss.png" alt="Amex" class="payment-icon"><img src="images/lifestyle_section/Apple Pay ss.png" alt="Apple Pay" class="payment-icon"><img src="images/lifestyle_section/PayPal ss.png" alt="PayPal" class="payment-icon"><img src="images/lifestyle_section/Shop ss.png" alt="Shop Pay" class="payment-icon"><img src="images/lifestyle_section/Discover ss.png" alt="Discover" class="payment-icon"></div></div></div></footer>
+  <div class="footer-top"><div class="footer-top-inner"><div class="footer-newsletter"><h3>Never Miss a Day</h3><p>Receive special offers and first look at new products.</p><form class="footer-email-form" id="footer-email-form"><div class="footer-email-row"><input type="email" placeholder="Email address" required /><button type="submit" class="footer-email-btn" aria-label="Subscribe"><svg width="18" height="18" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#3d4f5c"/><path d="M13 10l6 6-6 6" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></form><p class="footer-legal">By submitting your email, you agree to the pilr privacy policy and are opting in to marketing communications.</p></div><div class="footer-links-grid"><div class="footer-col"><h4>Shop</h4><ul><li><a href="./catalog.html">All Products</a></li><li><a href="./catalog.html#section-single-pods">Single Pods</a></li><li><a href="./build-your-system.html">Build Your System</a></li><li><a href="./classic-stack.html">Classic Stack</a></li><li><a href="./catalog.html#section-accessories">Accessories</a></li></ul></div><div class="footer-col"><h4>Company</h4><ul><li><a href="./about.html">Our Story</a></li><li><a href="#">News</a></li><li><a href="mailto:support@pilrsystems.com">Contact Us</a></li><li><a href="./why-pilr.html">Why Pilr</a></li><li><a href="#">Stories</a></li></ul></div><div class="footer-col"><h4>Support</h4><ul><li><a href="./faq.html">FAQ</a></li>
+  <footer class="site-footer"><div class="site-footer-social-row"><div class="site-footer-social-inner"><div class="footer-social"><a href="https://www.instagram.com/pilrofficial/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" stroke="none"/></svg></a><a href="https://www.tiktok.com/@pilrofficial" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.74a4.85 4.85 0 01-1.01-.05z"/></svg></a><a href="https://www.youtube.com/@pilrofficial" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon fill="#4d6070" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></a><a href="https://www.linkedin.com/company/pilrsystems" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 5a2 2 0 11-4-.002 2 2 0 014 .002zM7 8.48H3V21h4V8.48zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.18-7.06-5.96-8.72-2.91l.04-1.68z"/></svg></a></div></div></div><div class="site-footer-bottom"><div class="site-footer-inner"><span class="site-footer-copy">© Pilr 2026.</span><div class="footer-payment-icons"><img src="images/lifestyle_section/Visa ss.png" alt="Visa" class="payment-icon"><img src="images/lifestyle_section/Amex ss.png" alt="Amex" class="payment-icon"><img src="images/lifestyle_section/Apple Pay ss.png" alt="Apple Pay" class="payment-icon"><img src="images/lifestyle_section/PayPal ss.png" alt="PayPal" class="payment-icon"><img src="images/lifestyle_section/Shop ss.png" alt="Shop Pay" class="payment-icon"><img src="images/lifestyle_section/Discover ss.png" alt="Discover" class="payment-icon"></div></div></div></footer>
 
   <script>
     const navEl=document.querySelector('nav.nav'),shopAllLi=document.querySelector('.nav-has-dropdown'),shopDropdown=document.querySelector('.nav-dropdown'),dimOverlay=document.getElementById('nav-dim-overlay');let dropOpen=false,dropCloseTimer=null;function openDrop(){clearTimeout(dropCloseTimer);dropCloseTimer=null;shopAllLi.classList.add('dropdown-active');dimOverlay.classList.add('active');dropOpen=true}function closeDrop(){clearTimeout(dropCloseTimer);dropCloseTimer=null;shopAllLi.classList.remove('dropdown-active');dimOverlay.classList.remove('active');dropOpen=false}dimOverlay.addEventListener('click',closeDrop);function inZone(x,y){const li=shopAllLi.getBoundingClientRect(),dd=shopDropdown.getBoundingClientRect();if(x>=li.left&&x<=li.right&&y>=li.top&&y<=li.bottom)return true;if(y>=dd.top&&y<=dd.bottom)return true;if(y>li.bottom&&y<dd.top)return true;return false}shopAllLi.addEventListener('mouseenter',openDrop);document.addEventListener('mousemove',(e)=>{if(!dropOpen)return;if(inZone(e.clientX,e.clientY)){clearTimeout(dropCloseTimer);dropCloseTimer=null}else if(!dropCloseTimer){dropCloseTimer=setTimeout(closeDrop,150)}});
@@ -141,7 +146,7 @@
     const hero=document.querySelector('.product-hero'),NAV_H=76;
     let maxOff=0;
     function initHero(){
-      const vpH=window.innerHeight;
+      const vpH=Math.min(window.innerHeight,932);
       const imgCardBottom=document.querySelector('.product-images-col').getBoundingClientRect().bottom;
       const offerBox=document.querySelector('.offer-box');
       if(offerBox){maxOff=Math.max(0,offerBox.getBoundingClientRect().bottom-imgCardBottom);}
@@ -151,12 +156,13 @@
       if(pilrSection)pilrSection.style.marginTop='-'+maxOff+'px';
     }
     function updateScroll(){
-      stickyBar.classList.toggle('is-visible',window.scrollY>80);
       infoInner.style.transform='translateY(-'+Math.min(window.scrollY,maxOff)+'px)';
     }
     initHero();
     window.addEventListener('scroll',updateScroll,{passive:true});
     updateScroll();
+    var _addBtn=document.querySelector('.product-btn-add');
+    if(_addBtn){new IntersectionObserver(function(e){stickyBar.classList.toggle('is-visible',!e[0].isIntersecting);},{threshold:0}).observe(_addBtn);}
     let qty=1;document.getElementById('qty-minus').addEventListener('click',()=>{if(qty>1){qty--;document.getElementById('qty-val').textContent=qty}});document.getElementById('qty-plus').addEventListener('click',()=>{qty++;document.getElementById('qty-val').textContent=qty});
     document.querySelectorAll('.product-acc-trigger').forEach(btn=>btn.addEventListener('click',()=>btn.closest('.product-acc-item').classList.toggle('open')));
     document.querySelectorAll('.faq-trigger').forEach(btn=>btn.addEventListener('click',()=>btn.closest('.faq-item').classList.toggle('open')));
@@ -172,6 +178,16 @@
       document.querySelector('.product-btn-buy').addEventListener('click',function(){PilrCart.add(PRODUCT,qty);window.location.href='./cart.html';});
       document.querySelector('.offer-item-add').addEventListener('click',function(){PilrCart.add(SCOOPER,1);flashBtn(this,'ADD TO CART');});
     })();
+  </script>
+  <script>
+    document.querySelectorAll(".product-accordion-trigger").forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        var expanded = btn.getAttribute("aria-expanded") === "true";
+        btn.setAttribute("aria-expanded", String(!expanded));
+        btn.nextElementSibling.classList.toggle("is-open", !expanded);
+        setTimeout(function() { if(typeof initHero === "function") initHero(); }, 320);
+      });
+    });
   </script>
 </body>
 </html>
