@@ -943,7 +943,7 @@ body {
   transition: max-height 0.3s ease, padding-bottom 0.3s ease;
   padding-bottom: 0;
 }
-.why-accordion-panel.is-open { max-height: 200px; padding-bottom: 1.25rem; }
+.why-accordion-panel.is-open { max-height: 320px; padding-bottom: 1.25rem; }
 
 .why-accordion-panel h4 {
   font-size: 0.95rem; font-weight: 700; color: #5e6e7a;
@@ -954,6 +954,41 @@ body {
 .why-accordion-panel p {
   font-size: 0.88rem; line-height: 1.65; color: #7a8a94;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.why-accordion-rows {
+  list-style: none; margin: 0; padding: 0;
+}
+
+.why-accordion-rows li {
+  font-size: 0.88rem; line-height: 1.65; color: #7a8a94;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.why-inner--reverse .why-left { order: 2; }
+.why-inner--reverse .why-right { order: 1; }
+
+#capacity {
+  padding-bottom: 4rem;
+}
+
+#capacity .why-left {
+  height: auto;
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 4 / 5;
+  margin: 0 auto;
+  background: rgba(94, 110, 122, 0.7);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#capacity .why-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: bottom right;
+  border-radius: 0;
 }
 
 /* ── LIFESTYLE GRID ───────────────────────── */
@@ -2079,6 +2114,8 @@ body {
   .why { padding: 4rem 1.5rem; }
   .why-inner { grid-template-columns: 1fr; gap: 2.5rem; }
   .why-left img { height: 320px; }
+  .why-inner--reverse .why-left,
+  .why-inner--reverse .why-right { order: initial; }
 
   .build { padding: 4rem 1.5rem; }
   .build-inner {
