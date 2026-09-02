@@ -921,6 +921,10 @@ body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+.why-accordion-trigger--static {
+  cursor: default;
+}
+
 .why-accordion-label {
   font-size: 1rem; font-weight: 500; color: #5e6e7a;
   display: flex; align-items: center; gap: 0.75rem;
@@ -968,42 +972,160 @@ body {
 .why-inner--reverse .why-left { order: 2; }
 .why-inner--reverse .why-right { order: 1; }
 
-#capacity {
-  padding-bottom: 4rem;
+.capacity {
+  padding: 0 3rem 4rem;
+  background: var(--bg);
 }
 
-#capacity .why-left {
-  height: auto;
-  width: 100%;
-  max-width: 480px;
-  aspect-ratio: 4 / 5;
+.capacity-inner {
+  max-width: 1160px;
   margin: 0 auto;
-  background: rgba(94, 110, 122, 0.7);
+}
+
+.capacity-inner .why-label {
+  margin-bottom: 1.25rem;
+}
+
+.capacity-inner h2 {
+  font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #5e6e7a;
+  margin-bottom: 2.5rem;
+  max-width: 640px;
+}
+
+.capacity-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.capacity-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border: none;
+  padding: 0;
   border-radius: 8px;
   overflow: hidden;
+  background: rgba(94, 110, 122, 0.7);
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
 }
 
-#capacity .why-left img {
+.capacity-card img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: bottom right;
-  border-radius: 0;
+  object-fit: contain;
+  padding: 2.5rem;
+  display: block;
+  transition: opacity 0.3s ease;
+}
+
+.capacity-card:hover img,
+.capacity-card.is-revealed img {
+  opacity: 0.12;
+}
+
+.capacity-card-label {
+  position: absolute;
+  left: 1.25rem;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: opacity 0.25s ease;
+}
+
+.capacity-card:hover .capacity-card-label,
+.capacity-card.is-revealed .capacity-card-label {
+  opacity: 0;
+}
+
+.capacity-card-num {
+  font-size: 0.68rem;
+  font-weight: 600;
+  opacity: 0.7;
+}
+
+.capacity-card-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.capacity-card:hover .capacity-card-overlay,
+.capacity-card.is-revealed .capacity-card-overlay,
+.capacity-card:focus-visible .capacity-card-overlay {
+  opacity: 1;
+}
+
+.capacity-card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.85rem;
+  flex-shrink: 0;
+}
+
+.capacity-card-overlay .why-accordion-rows {
+  overflow-y: auto;
+}
+
+.capacity-card-overlay .why-accordion-rows li {
+  font-size: 0.76rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.88);
 }
 
 /* ── LIFESTYLE GRID ───────────────────────── */
 .lifestyle-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.75rem;
   padding: 0 3rem 4rem;
   background: var(--bg);
-  max-width: 1050px;
+}
+
+.lifestyle-viewport {
+  max-width: 1160px;
   margin: 0 auto;
+  overflow: hidden;
+}
+
+.lifestyle-track {
+  display: flex;
+  width: max-content;
+  gap: 1.25rem;
+  animation: lifestyle-slide 32s linear infinite;
+}
+
+.lifestyle-grid:hover .lifestyle-track {
+  animation-play-state: paused;
+}
+
+@keyframes lifestyle-slide {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
 }
 
 .lifestyle-card {
   position: relative;
+  flex: 0 0 auto;
+  width: 320px;
   aspect-ratio: 450 / 570;
   overflow: hidden;
   border-radius: 14px;
@@ -1026,20 +1148,20 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 2rem 2.25rem;
+  padding: 1.25rem 1.4rem;
   background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 100%);
   color: #FFFFFF;
 }
 
 .lifestyle-card-caption h3 {
-  font-size: 1.3rem;
+  font-size: 1rem;
   font-weight: 700;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.3rem;
 }
 
 .lifestyle-card-caption p {
-  font-size: 0.82rem;
-  line-height: 1.55;
+  font-size: 0.72rem;
+  line-height: 1.45;
   opacity: 0.82;
 }
 
@@ -1047,7 +1169,10 @@ body {
 .pilr-diff {
   background: rgba(94, 110, 122, 0.7);
   padding: 2.5rem 3rem;
-  margin-bottom: 8rem;
+  width: calc(100% - 6rem);
+  max-width: 1160px;
+  margin: 0 auto 8rem;
+  border-radius: 14px;
   overflow: hidden;
 }
 
@@ -2117,6 +2242,12 @@ body {
   .why-inner--reverse .why-left,
   .why-inner--reverse .why-right { order: initial; }
 
+  .capacity { padding: 4rem 1.5rem; }
+  .capacity-cards { grid-template-columns: 1fr; gap: 1rem; }
+  .capacity-card { aspect-ratio: 16 / 10; }
+
+  .lifestyle-grid { padding: 0 1.5rem 4rem; }
+
   .build { padding: 4rem 1.5rem; }
   .build-inner {
     grid-template-columns: 1fr;
@@ -2193,8 +2324,7 @@ body {
   .hero-inner { padding: 2.5rem 1.25rem 2rem; }
   .hero-tagline { font-size: 0.92rem; }
 
-  .lifestyle-grid { grid-template-columns: 1fr; }
-  .lifestyle-card { aspect-ratio: 3/2; }
+  .lifestyle-card { width: 230px; }
 
   .features-bar { grid-template-columns: 1fr; }
   .feature-item { border-top: 1px solid var(--border); }
