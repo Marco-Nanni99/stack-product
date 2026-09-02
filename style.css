@@ -961,7 +961,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.75rem;
-  padding: 0 3rem 4rem;
+  padding: 0 3rem 2rem;
   background: var(--bg);
   max-width: 1050px;
   margin: 0 auto;
@@ -1006,6 +1006,91 @@ body {
   font-size: 0.82rem;
   line-height: 1.55;
   opacity: 0.82;
+}
+
+/* ── SINGLE PODS ──────────────────────────── */
+.single-pods {
+  padding: 3.5rem 3rem 6rem;
+  background: var(--bg);
+  text-align: center;
+}
+
+.single-pods-eyebrow {
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: #5e6e7a;
+  margin-bottom: 2.5rem;
+}
+
+.single-pods-grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(280px, 380px));
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.single-pods-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.single-pods-card--pill,
+.single-pods-card--hybrid,
+.single-pods-card--powder {
+  background: transparent;
+}
+
+.single-pods-card img {
+  width: 54%;
+  height: 54%;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 18px 24px rgba(0,0,0,0.18));
+  transition: transform 0.4s ease;
+}
+
+.single-pods-card:hover img {
+  transform: translateY(-6px);
+}
+
+.single-pods-label {
+  position: absolute;
+  top: 1.75rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #3d4a54;
+  font-size: 1.1rem;
+  font-weight: 500;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.single-pods-btn {
+  position: absolute;
+  left: 50%;
+  bottom: 1.75rem;
+  transform: translateX(-50%);
+  background: #5e6e7a;
+  color: #FAFAF8;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.6rem;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.single-pods-card:hover .single-pods-btn {
+  background: #4a5a67;
 }
 
 /* ── PILR DIFFERENCE BANNER ──────────────── */
@@ -2079,6 +2164,10 @@ body {
   .why { padding: 4rem 1.5rem; }
   .why-inner { grid-template-columns: 1fr; gap: 2.5rem; }
   .why-left img { height: 320px; }
+
+  .single-pods { padding: 3.5rem 1.5rem 4rem; }
+  .single-pods-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .single-pods-card { aspect-ratio: 16 / 10; }
 
   .build { padding: 4rem 1.5rem; }
   .build-inner {
